@@ -1,0 +1,189 @@
+
+:root {
+    --main-color: #3578e5;
+    --body-color: #f2f2f2;
+}
+
+html, body {
+    background-color: var(--body-color);
+    font-family: Helvetica, Arial, sans-serif !important;
+    color: #313030 !important;
+}
+
+.bg-main-color{
+
+    background-color: var(--main-color);
+}
+
+.bg-text-info{
+
+    background: #7ccad7;
+    color: #FFFFFF;
+}
+
+.bg-redrose{
+    background: #e66771;
+    color: #FFFFFF;
+}
+.bg-lightpurple{
+    background: #805ebf;
+    color: #FFFFFF;
+}
+
+.content-wrapper{
+    margin-left: 0;
+    background-color: var(--body-color);
+}
+
+
+.nav-icon{
+
+    font-size: 22px !important;
+}
+
+.nav-item:hover{
+    background-color: #ececec;
+}
+
+.nav-pills .nav-link {
+    color: #1c1e21;
+}
+
+.container{
+    margin-top: 30px;
+}
+
+.table.dataTable {
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-size: 13px;
+    color: #0a0e14;
+}
+.table.dataTable thead tr th {
+    text-align: center;
+    color: #0a0e14;
+}
+
+.table.dataTable thead tr th a{
+    color: #0a0e14;
+}
+.text-left{
+    text-align: left;
+}
+
+/***
+    POsition
+ */
+.pull-right {
+    float: right;
+}
+.pull-left {
+    float: left;
+}
+
+
+div.jfilestyle label {
+    background-color: var(--body-color) !important;
+    color: #0a0e14 !important;
+}
+
+
+/**
+    CARD SHOP ITEM
+ */
+
+.thumb-wrapper {
+    padding: 25px 15px;
+    background: #fff;
+    border-radius: 6px;
+    text-align: center;
+    position: relative;
+    box-shadow: 0 2px 3px rgba(0,0,0,0.2);
+}
+
+.img-box {
+    height: 120px;
+    margin-bottom: 20px;
+    width: 100%;
+    position: relative;
+}
+.img-box img {
+    max-width: 100%;
+    max-height: 100%;
+    display: inline-block;
+    position: absolute;
+    bottom: 0;
+    margin: 0 auto;
+    left: 0;
+    right: 0;
+}
+
+.item h4 {
+    font-size: 18px;
+}
+
+.item h4, .item p, .item ul {
+    margin-bottom: 5px;
+}
+.btn-ver-product{
+    color: var(--main-color);
+    font-size: 11px;
+    font-weight: bold;
+    background: none;
+    border: 1px solid var(--main-color);
+    padding: 6px 14px;
+    margin-top: 5px;
+    line-height: 16px;
+    border-radius: 20px;
+}
+
+.thumb-content .btn:hover, .thumb-content .btn:focus {
+    color: #fff;
+    background: var(--main-color);
+    box-shadow: none;
+}
+
+.i-product-icon {
+    font-size: 14px;
+    font-weight: bold;
+    margin-left: 5px;
+}
+.item-price {
+    font-size: 13px;
+    padding: 2px 0;
+}
+
+.item-price strike {
+    opacity: 0.7;
+    margin-right: 5px;
+}
+.wish-icon {
+     position: absolute;
+     right: 10px;
+     top: 10px;
+     z-index: 99;
+     cursor: pointer;
+     font-size: 16px;
+     color: #abb0b8;
+ }
+.h4-shop, .h6-shop{
+    font-family: 'Font Awesome 5 Free' !important;
+    color: #313030 !important;
+}
+.icon-cart{
+    position: relative;
+    left: -2px;
+}
+
+#dropdown-cart{
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+/**
+    widht controls
+ */
+
+.font-size-table-his-price{
+    font-size: 15px;
+}
+
