@@ -67,3 +67,4 @@
 
 
 </div>
+<?= $this->Html->script('shopping_cart.js') ?>

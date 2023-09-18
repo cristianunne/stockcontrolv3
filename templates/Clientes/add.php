@@ -103,6 +103,7 @@
     </div>
 
     <?= $this->Html->script('../plugins/bootstrap-colorpicker/js/bootstrap-colorpicker.min.js') ?>
+    <?= $this->Html->script('shopping_cart.js') ?>
     <script>
         $(function () {
             // Basic instantiation:

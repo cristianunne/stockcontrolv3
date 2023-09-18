@@ -26,13 +26,19 @@ class ProductosController extends AppController
         $user = $this->Authentication->getIdentity();
         if(isset($user) and $user->role === 'user')
         {
-            if (!in_array($this->request->getParam('action'), ['index', 'edit'])) {
+            if (!in_array($this->request->getParam('action'), ['index', 'edit', 'viewConfig', 'getSubCategoriesByCategory',
+                'getProductById', 'addProductoToCartSession', 'getPricesByProduct', 'getDescuentosByProduct', 'deleteDescuentoById',
+                'deleteProductFromCartSession'])) {
                 //$this->redirect($this->request->referer());
                 $this->Flash->error('Usted no esta autorizado para acceder al Sitio Solicitado');
                 $this->redirect(['controller' => 'Index', 'action' => 'index']);
             }
 
         }
+
+
+        $this->loadCartProduct();
+
     }
 
     public $paginate = [
@@ -45,27 +51,38 @@ class ProductosController extends AppController
      */
     public function index()
     {
+        $id_users = $this->Authentication->getIdentity()->idusers;
 
         $productos = $this->Productos->find('all', [
-            'contain' => ['Categories']
-        ]);
+            'contain' => ['Categories', 'Subcategories', 'Proveedores','Precios' => function(Query $q){
 
-        $productos = $this->paginate($productos);
+                return $q->where(['active' => 1]);
+            }, 'Descuentos' => function(Query $q){
+
+                return $q->where(['active' => 1]);
+            }, 'CartSession' => function(Query $q) use ($id_users){
+
+            return $q->where(['users_idusers' => $id_users]);
+            }, 'StockProductos']
+        ])->order(['idproductos' => 'ASC']);
+
 
         //debug($productos->toArray());
+        //debug($this->cart_product);
 
         $this->set(compact('productos'));
 
 
     }
 
-
     public function add()
     {
-
         $producto = $this->Productos->newEmptyEntity();
+        $model_sotck_product = $this->getTableLocator()->get('StockProductos');
+        $stock_products = $model_sotck_product->newEmptyEntity();
 
         $model_categories = $this->getTableLocator()->get('Categories');
+        $model_proveedores = $this->getTableLocator()->get('Proveedores');
 
         $categories = $model_categories->find('list',
             [
@@ -75,6 +92,194 @@ class ProductosController extends AppController
             ])->toArray();
 
         $this->set(compact('categories'));
+
+
+        $proveedores = $model_proveedores->find('list',
+            [
+                'keyField' => 'idproveedores',
+                'valueField' => 'name',
+                'order' => ['name' => 'ASC']
+            ])->toArray();
+
+        $this->set(compact('proveedores'));
+
+        if ($this->request->is('post')) {
+
+            //Almaceno la imagen que se cargara con el producto
+            $data = $this->request->getData();
+            $producto = $this->Productos->patchEntity($producto, $data);
+            $producto->stock_producto = $stock_products;
+
+            if($data['file']['name'] != '') {
+                //limito a 2bm la subida de las imagenes
+                if (($data['file']['size'] / 1024) > 4096) {
+                    //Excedi los 2 MB, informo
+                    $this->Flash->error(__('Seleccione una imágen con un tamaño inferior a 4MB'));
+                } else {
+
+                    $attachment = $this->request->getUploadedFile('file');
+
+                    $binario = file_get_contents($attachment->getStream()->getMetadata('uri'));
+
+                    $producto->image = base64_encode($binario);
+                    //$producto->stock_producto = [];
+
+                    //debug($producto);
+
+                    if($this->Productos->save($producto, )){
+
+                        $this->Flash->success(__('El Producto se ha almacenado correctamente'));
+                        //traigo los datos nuevamente y actualizo el current user
+
+                        return $this->redirect(['action' => 'index']);
+                    } else {
+                        debug($producto->getErrors());
+                    }
+
+                }
+            } else {
+                //COmo no vino una imagen, guardo igual
+                if ($this->Productos->save($producto)){
+
+                    $this->Flash->success(__('El Producto se ha almacenado correctamente'));
+                    //traigo los datos nuevamente y actualizo el current user
+
+                    return $this->redirect(['action' => 'index']);
+                }
+                debug($producto->getErrors());
+
+            }
+
+        }
+
+        $this->set(compact('producto'));
+    }
+
+
+    public function edit($id = null)
+    {
+        try {
+
+            $producto = $this->Productos->get($id);
+
+            $model_categories = $this->getTableLocator()->get('Categories');
+            $model_proveedores = $this->getTableLocator()->get('Proveedores');
+
+            $categories = $model_categories->find('list',
+                [
+                    'keyField' => 'idcategories',
+                    'valueField' => 'name',
+                    'order' => ['name' => 'ASC']
+                ])->toArray();
+
+            $this->set(compact('categories'));
+
+
+            $proveedores = $model_proveedores->find('list',
+                [
+                    'keyField' => 'idproveedores',
+                    'valueField' => 'name',
+                    'order' => ['name' => 'ASC']
+                ])->toArray();
+
+            $this->set(compact('proveedores'));
+
+
+            $subcategoriesController = new SubcategoriesController();
+            $sucategorias = $subcategoriesController->getSubCategoriesByCategoryList($producto->categories_idcategories);
+
+            $this->set(compact('sucategorias'));
+
+            if ($this->request->is(['patch', 'post', 'put'])) {
+                //Almaceno la imagen que se cargara con el producto
+                $data = $this->request->getData();
+                $producto = $this->Productos->patchEntity($producto, $data);
+
+                if($data['file']['name'] != '') {
+                    //limito a 2bm la subida de las imagenes
+                    if (($data['file']['size'] / 1024) > 4096) {
+                        //Excedi los 2 MB, informo
+                        $this->Flash->error(__('Seleccione una imágen con un tamaño inferior a 4MB'));
+                    } else {
+
+                        $attachment = $this->request->getUploadedFile('file');
+
+                        $binario = file_get_contents($attachment->getStream()->getMetadata('uri'));
+
+                        $producto->image = base64_encode($binario);
+
+                        //debug($producto);
+
+                        if($this->Productos->save($producto)){
+
+                            $this->Flash->success(__('El Producto se ha almacenado correctamente'));
+                            //traigo los datos nuevamente y actualizo el current user
+
+                            return $this->redirect(['action' => 'index']);
+                        } else {
+                            $this->Flash->error(__('Error al almacenar los cambios. Intenta nuevamente'));
+                        }
+
+                    }
+                } else {
+                    //COmo no vino una imagen, guardo igual
+                    if ($this->Productos->save($producto)){
+
+                        $this->Flash->success(__('El Producto se ha almacenado correctamente'));
+                        //traigo los datos nuevamente y actualizo el current user
+
+                        return $this->redirect(['action' => 'index']);
+                    }
+
+                    $this->Flash->error(__('Error al almacenar los cambios. Intenta nuevamente'));
+                }
+
+
+            }
+
+
+            $this->set(compact('producto'));
+
+
+        } catch (InvalidPrimaryKeyException $e){
+            $this->Flash->error(__('Error al almacenar los cambios. Intenta nuevamente'));
+
+        } catch (RecordNotFoundException $e){
+            $this->Flash->error(__('Error al almacenar los cambios. Intenta nuevamente'));
+
+        }
+        catch (Exception $e){
+            $this->Flash->error(__('Error al almacenar los cambios. Intenta nuevamente'));
+
+        }
+    }
+
+    public function add_()
+    {
+
+        $producto = $this->Productos->newEmptyEntity();
+
+        $model_categories = $this->getTableLocator()->get('Categories');
+        $model_proveedores = $this->getTableLocator()->get('Proveedores');
+
+        $categories = $model_categories->find('list',
+            [
+                'keyField' => 'idcategories',
+                'valueField' => 'name',
+                'order' => ['name' => 'ASC']
+            ])->toArray();
+
+        $this->set(compact('categories'));
+
+
+        $proveedores = $model_proveedores->find('list',
+            [
+                'keyField' => 'idproveedores',
+                'valueField' => 'name',
+                'order' => ['name' => 'ASC']
+            ])->toArray();
+
+        $this->set(compact('proveedores'));
 
 
         if ($this->request->is('post')) {
@@ -93,6 +298,15 @@ class ProductosController extends AppController
                     //Excedi los 2 MB, informo
                     $this->Flash->error(__('Seleccione una imágen con un tamaño inferior a 5MB'));
                 } else {
+
+                    //$attachment = $this->request->getUploadedFile('file');
+
+                    //debug($attachment->getStream());
+
+                    //$binario = file_get_contents($attachment->getStream()->getMetadata('uri'));
+                    //debug($binario);
+                    //$imagen_base = base64_encode($binario);
+                    //debug($imagen_base);
 
                     //procedo a trabajar porque cumplio las funciones
                     //Llamo al controlador de archivos
@@ -113,7 +327,7 @@ class ProductosController extends AppController
                             $this->Flash->success(__('El Producto se ha almacenado correctamente'));
                             //traigo los datos nuevamente y actualizo el current user
 
-                            return $this->redirect(['action' => 'index']);
+                            //return $this->redirect(['action' => 'index']);
                         }
 
                     }
@@ -128,7 +342,7 @@ class ProductosController extends AppController
                     $this->Flash->success(__('El Producto se ha almacenado correctamente'));
                     //traigo los datos nuevamente y actualizo el current user
 
-                    return $this->redirect(['action' => 'index']);
+                    //return $this->redirect(['action' => 'index']);
                 }
             }
 
@@ -159,7 +373,10 @@ class ProductosController extends AppController
                 'contain' => ['Categories', 'Subcategories', 'Precios' => function(Query $q){
 
                     return $q->where(['active' => 1]);
-                }]
+                }, 'Descuentos' => function(Query $q){
+
+                    return $q->where(['active' => 1]);
+                }, 'StockProductos' => ['StockEvents']]
             ]);
 
             //debug($producto);
@@ -167,9 +384,14 @@ class ProductosController extends AppController
             //traigo los precios
             $precios = $this->getPricesByProduct($id);
 
+            //ttaigo los descuentos
+            $descuentos = $this->getDescuentosByProduct($id);
+
+
 
             $this->set(compact('producto'));
             $this->set(compact('precios'));
+            $this->set(compact('descuentos'));
 
         } catch (InvalidPrimaryKeyException $e){
             $this->Flash->error(__('Error al almacenar los cambios. Intenta nuevamente'));
@@ -210,16 +432,17 @@ class ProductosController extends AppController
         //comprobacion de definicion de variable
         if ($producto_id != null) {
 
-            $productos = $this->Productos->find('all', [
 
-                ]
-            )
-                ->where(['idproductos' => $producto_id])
-                ->toArray();
 
             //puedo agregar desde aqui
             if($this->addProductoToCartSession( $producto_id)){
 
+                $productos = $this->Productos->find('all', [
+                        'contain' => ['CartSession']
+                    ]
+                )
+                    ->where(['idproductos' => $producto_id])
+                    ->toArray();
                 return $this->json($productos);
             }
 
@@ -250,6 +473,59 @@ class ProductosController extends AppController
         }
 
         return false;
+    }
+
+
+    public function deleteProductFromCartSession()
+    {
+        $data = $this->request->getData();
+        $idcartsession= $data['idcartsession'];
+
+        $model_cart_session = $this->getTableLocator()->get('CartSession');
+
+        try{
+            $product_cart = $model_cart_session->get($idcartsession);
+
+            if ($model_cart_session->delete($product_cart)) {
+                return $this->json(['result' => true]);
+            } else {
+                return $this->json(['result' => false]);
+            }
+
+        } catch (InvalidPrimaryKeyException $e){
+            return $this->json(['result' => false]);
+
+        } catch (RecordNotFoundException $e){
+            return $this->json(['result' => false]);
+        }
+        catch (Exception $e){
+            return $this->json(['result' => false]);
+        }
+
+
+
+        //comprobacion de definicion de variable
+        if ($producto_id != null) {
+
+            $productos = $this->Productos->find('all', [
+
+                ]
+            )
+                ->where(['idproductos' => $producto_id])
+                ->toArray();
+
+            //puedo agregar desde aqui
+            if($this->addProductoToCartSession( $producto_id)){
+
+                return $this->json($productos);
+            }
+
+            return $this->json(['result' => false]);
+
+        }
+
+        return $this->json(['result' => false]);
+
     }
 
 
@@ -315,6 +591,98 @@ class ProductosController extends AppController
         }
 
 
+    }
+
+
+    private function getDescuentosByProduct($id = null)
+    {
+
+        if ($id == null){
+            return null;
+        } else {
+
+            try{
+
+                $model_descuentos = $this->getTableLocator()->get('Descuentos');
+
+                $descuento =  $model_descuentos->find('all', [
+                    'order' => ['active' => 'DESC']
+                ])
+                    ->where(['productos_idproductos' => $id]);
+                // debug($precio->toArray());
+                return $descuento;
+
+
+            } catch (InvalidPrimaryKeyException $e){
+                return null;
+            } catch (RecordNotFoundException $e){
+                return null;
+            }
+            catch (Exception $e){
+                return null;
+
+            }
+        }
+
+    }
+
+    public function deleteDescuentoById($id = null)
+    {
+        $this->autoRender = false;
+        $this->request->allowMethod(['post', 'delete']);
+
+        try{
+            $model_descuentos = $this->getTableLocator()->get('Descuentos');
+            $descuento =  $model_descuentos->get($id);
+
+            if ($model_descuentos->delete($descuento)) {
+                $this->Flash->success(__('El Registro ha sido eliminado.'));
+
+                return $this->redirect($this->request->referer());
+            } else {
+                $this->Flash->error(__('El Registro no pudo ser eliminado. Intente nuevamente.'));
+            }
+
+        } catch (InvalidPrimaryKeyException $e){
+            $this->Flash->error(__('El Registro no pudo ser eliminado. Intente nuevamente.'));
+
+        } catch (RecordNotFoundException $e){
+            $this->Flash->error(__('El Registro no pudo ser eliminado. Intente nuevamente.'));
+        }
+        catch (Exception $e){
+            $this->Flash->error(__('El Registro no pudo ser eliminado. Intente nuevamente.'));
+        }
+
+
+    }
+
+    public function delete($id = null)
+    {
+        $this->request->allowMethod(['post', 'delete']);
+
+        try{
+            $clientes =  $this->Productos->get($id);
+
+            if ($this->Productos->delete($clientes)) {
+                $this->Flash->success(__('El Registro ha sido eliminado.'));
+
+                return $this->redirect(['action' => 'index']);
+            } else {
+                $this->Flash->error(__('El Registro no pudo ser eliminado. Intente nuevamente.'));
+            }
+
+        } catch (InvalidPrimaryKeyException $e){
+
+            $this->Flash->error(__('El Registro no pudo ser eliminado. Intente nuevamente.'));
+
+        } catch (RecordNotFoundException $e){
+            $this->Flash->error(__('El Registro no pudo ser eliminado. Intente nuevamente.'));
+
+        }
+        catch (Exception $e){
+            $this->Flash->error(__('El Registro no pudo ser eliminado. Intente nuevamente.'));
+
+        }
     }
 
 }

@@ -11,6 +11,8 @@ use Cake\Validation\Validator;
 /**
  * Productos Model
  *
+ * @property \App\Model\Table\PedidosTable&\Cake\ORM\Association\BelongsToMany $Pedidos
+ *
  * @method \App\Model\Entity\Producto newEmptyEntity()
  * @method \App\Model\Entity\Producto newEntity(array $data, array $options = [])
  * @method \App\Model\Entity\Producto[] newEntities(array $data, array $options = [])
@@ -62,6 +64,40 @@ class ProductosTable extends Table
             'bindingKey' => 'idproductos', //actual
             'joinType' => 'INNER'
         ]);
+
+        $this->hasMany('Descuentos', [
+            'foreignKey' => 'productos_idproductos',
+            'bindingKey' => 'idproductos', //actual
+            'joinType' => 'INNER'
+        ]);
+
+        $this->hasMany('CartSession', [
+            'foreignKey' => 'productos_idproductos',
+            'bindingKey' => 'idproductos', //actual
+            'joinType' => 'INNER'
+        ]);
+
+        $this->belongsToMany('Pedidos', [
+            'foreignKey' => 'productos_idproductos',
+            'bindingKey' => 'idproductos',
+            'targetForeignKey' => 'pedidos_idpedidos', //pedidos_idpedidos
+            'joinTable' => 'productos_pedidos',
+        ]);
+
+        $this->hasOne('Proveedores', [
+            'foreignKey' => 'idproveedores',
+            'bindingKey' => 'proveedores_idproveedores', //actual
+
+        ]);
+
+        $this->hasOne('StockProductos', [
+            'foreignKey' => 'productos_idproductos',
+            'bindingKey' => 'idproductos', //actual
+
+        ]);
+
+
+
     }
 
     /**
@@ -107,18 +143,17 @@ class ProductosTable extends Table
             ->notEmptyString('active');
 
         $validator
-            ->scalar('photo')
-            ->maxLength('photo', 255)
-            ->allowEmptyString('photo');
-
-        $validator
-            ->scalar('folder')
-            ->maxLength('folder', 255)
-            ->allowEmptyString('folder');
-
-        $validator
             ->integer('categories_idcategories')
             ->allowEmptyString('categories_idcategories');
+
+        $validator
+            ->integer('proveedores_idproveedores')
+            ->allowEmptyString('proveedores_idproveedores');
+
+        $validator
+            ->scalar('image')
+            ->maxLength('image', 4294967295)
+            ->allowEmptyFile('image');
 
         return $validator;
     }

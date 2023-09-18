@@ -43,7 +43,7 @@ class CartSessionTable extends Table
 
         $this->hasOne('Productos', [
             'foreignKey' => 'idproductos',
-            'bindingKey' => 'id_product', //actual
+            'bindingKey' => 'productos_idproductos', //actual
             'joinType' => 'INNER'
         ]);
 

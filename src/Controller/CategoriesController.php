@@ -29,6 +29,7 @@ class CategoriesController extends AppController
             }
 
         }
+        $this->loadCartProduct();
     }
 
     public function index()

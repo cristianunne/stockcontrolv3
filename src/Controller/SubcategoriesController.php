@@ -26,6 +26,7 @@ class SubcategoriesController extends AppController
                 $this->redirect(['controller' => 'Index', 'action' => 'index']);
             }
         }
+        $this->loadCartProduct();
     }
 
     public function index()
@@ -66,10 +67,33 @@ class SubcategoriesController extends AppController
         $this->set(compact('sub_categories'));
     }
 
-    public function getSubCategoriesByCategory($category = null)
+    public function getSubCategoriesByCategoryList($category = null)
     {
 
 
+
+        //comprobacion de definicion de variable
+        if ($category != null) {
+
+            $subcategories = $this->Subcategories->find(
+                'list',
+                [
+                    'keyField' => 'idsubcategories',
+                    'valueField' => 'name',
+                    'order' => ['name' => 'ASC'],
+                ]
+            )
+                ->where(['categories_idcategories' => $category])
+                ->toArray();
+
+            return $subcategories;
+        }
+
+        return false;
+    }
+
+    public function getSubCategoriesByCategory($category = null)
+    {
 
         //comprobacion de definicion de variable
         if ($category != null) {

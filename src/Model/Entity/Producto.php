@@ -18,11 +18,17 @@ use Cake\ORM\Entity;
  * @property bool $active
  * @property \Cake\I18n\FrozenTime|null $created
  * @property \Cake\I18n\FrozenTime|null $modified
- * @property string|null $photo
- * @property string|null $folder
  * @property int|null $categories_idcategories
+ * @property int|null $proveedores_idproveedores
+ * @property string|null $image
  *
  * @property \App\Model\Entity\Subcategory $subcategory
+ * @property \App\Model\Entity\Category $category
+ * @property \App\Model\Entity\Precio[] $precios
+ * @property \App\Model\Entity\Descuento[] $descuentos
+ * @property \App\Model\Entity\CartSession[] $cart_session
+ * @property \App\Model\Entity\Pedido[] $pedidos
+ * @property \App\Model\Entity\Proveedore $proveedore
  */
 class Producto extends Entity
 {
@@ -45,9 +51,16 @@ class Producto extends Entity
         'active' => true,
         'created' => true,
         'modified' => true,
-        'photo' => true,
-        'folder' => true,
         'categories_idcategories' => true,
+        'proveedores_idproveedores' => true,
+        'image' => true,
         'subcategory' => true,
+        'category' => true,
+        'precios' => true,
+        'descuentos' => true,
+        'cart_session' => true,
+        'pedidos' => true,
+        'proveedore' => true,
+        'stock_producto' => true,
     ];
 }

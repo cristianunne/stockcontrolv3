@@ -2,6 +2,7 @@
 :root {
     --main-color: #3578e5;
     --body-color: #f2f2f2;
+    --light-gray: #b0b0b0;
 }
 
 html, body {
@@ -13,7 +14,9 @@ html, body {
 .bg-main-color{
 
     background-color: var(--main-color);
+    color: #FFFFFF;
 }
+
 
 .bg-text-info{
 
@@ -30,10 +33,46 @@ html, body {
     color: #FFFFFF;
 }
 
+.bg-lightgray{
+    background-color: var(--light-gray);
+}
+
+.text-darkgreen{
+    color: #0b2e13;
+}
+.text-darkbluestock{
+    color: #19292c;
+}
+
 .content-wrapper{
     margin-left: 0;
     background-color: var(--body-color);
 }
+
+
+.status-order{
+    background-color: #71ceff;
+}
+.status-processing{
+    background-color: #f5f122;
+    color: #656419;
+}
+.status-completed{
+    background-color: #2effc1;
+    color: #194924;
+}
+.status-canceled{
+    background-color: #ff5858;
+}
+
+.status-distribution{
+    background-color: #0c43f8;
+}
+
+.font-size-small{
+    font-size: small;
+}
+
 
 
 .nav-icon{
@@ -51,6 +90,13 @@ html, body {
 
 .container{
     margin-top: 30px;
+}
+
+.table{
+    font-size: 0.8rem;
+}
+.form-control {
+    font-size: 0.9rem !important;
 }
 
 .table.dataTable {
@@ -179,6 +225,11 @@ div.jfilestyle label {
     overflow-y: auto;
 }
 
+.thumb-wrapper:hover{
+    background-color: aliceblue;
+}
+
+
 /**
     widht controls
  */
@@ -187,3 +238,89 @@ div.jfilestyle label {
     font-size: 15px;
 }
 
+.cart-container {
+    border: 1px solid rgba(0, 0, 0, 0.05);
+
+}
+.cart-container .cart-body {
+    border-top: 1px solid rgba(0, 0, 0, 0.05);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    padding: 30px 0 20px;
+    margin: 20px 0 30px;
+}
+
+#tbody-cart-review tr:hover {
+    background-color: aliceblue;
+}
+
+.card-head-heiht{
+    padding: 30px;
+    max-height: 875px;
+    overflow: auto;
+}
+
+.card-head-heiht::-webkit-scrollbar {
+    width: 8px;
+    background-color: #F5F5F5;
+}
+
+
+.card-head-heiht::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 6px rgba(104, 140, 240, 0.3);
+}
+
+.card-head-heiht::-webkit-scrollbar-thumb {
+    background-color: lightgrey;
+}
+
+
+.product-image-table{
+    width: 50px;
+    height: 50px;
+}
+
+
+/** TAMA;OS ***/
+
+@media (min-width: 992px) and (max-width: 1200px){
+
+    .table{
+        font-size: 10px;
+    }
+    .table>thead{
+        font-size: 10px;
+    }
+    .table>tbody>tr>td{
+        font-size: 10px;
+    }
+
+}
+
+@media (min-width: 1200px)
+.col-xl-11 {
+    .table{
+        font-size: 12px;
+    }
+    .table>thead{
+        font-size: 12px;
+    }
+    .table>tbody>tr>td{
+        font-size: 12px;
+    }
+}
+
+
+.brand {
+    width: 120px;
+    height: 120px;
+    overflow: hidden;
+    margin: 40px auto;
+    box-shadow: 0 4px 8px rgba(0,0,0,.05);
+    position: relative;
+    z-index: 1;
+}
+
+.product-image-table-2 {
+    width: 100px;
+    height: 100px;
+}

@@ -79,11 +79,34 @@ class DescuentosTable extends Table
         return $validator;
     }
 
+    public function validatePrecio (Validator $validator)
+    {
+        $validator = $this->validationDefault($validator);
+
+        $validator->add('precio', 'validPrecio', [
+        'rule' => ['comparison', '>', 0],
+        'message' => __('El valor tiene que ser mayor o igual que 0'),
+        'provider' => 'table',
+            ]);
+
+        /*$validator->add('precio', 'comparison', ['rule' => ['>', 0]]);
+
+        array(
+            'precio' => array(
+                'rule' => array('comparison', '>', 0),
+                'message' => 'El valor tiene que ser mayor o igual que 0.'
+            )
+        );*/
+        return $validator;
+    }
+
+
+
     public function findGetLastDescuentoValor(Query $query, $options = [])
     {
 
-        $iddescuentos = $options['iddescuentos'];
-        $result = $query->select(['iddescuentos'])->where(['productos_idproductos' => $iddescuentos, 'active' => 1]);
+        $idproducto = $options['idproducto'];
+        $result = $query->select(['iddescuentos'])->where(['productos_idproductos' => $idproducto, 'active' => 1]);
         return $result;
 
     }

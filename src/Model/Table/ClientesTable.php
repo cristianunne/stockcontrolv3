@@ -24,6 +24,8 @@ use Cake\Validation\Validator;
  * @method \App\Model\Entity\Cliente[]|\Cake\Datasource\ResultSetInterface saveManyOrFail(iterable $entities, $options = [])
  * @method \App\Model\Entity\Cliente[]|\Cake\Datasource\ResultSetInterface|false deleteMany(iterable $entities, $options = [])
  * @method \App\Model\Entity\Cliente[]|\Cake\Datasource\ResultSetInterface deleteManyOrFail(iterable $entities, $options = [])
+ *
+ * @mixin \Cake\ORM\Behavior\TimestampBehavior
  */
 class ClientesTable extends Table
 {
@@ -40,6 +42,8 @@ class ClientesTable extends Table
         $this->setTable('clientes');
         $this->setDisplayField('idclientes');
         $this->setPrimaryKey('idclientes');
+
+        $this->addBehavior('Timestamp');
     }
 
     /**
@@ -111,6 +115,11 @@ class ClientesTable extends Table
             ->scalar('observaciones')
             ->maxLength('observaciones', 500)
             ->allowEmptyString('observaciones');
+
+        $validator
+            ->scalar('telefono')
+            ->maxLength('telefono', 45)
+            ->allowEmptyString('telefono');
 
         return $validator;
     }

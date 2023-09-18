@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use Cake\Datasource\Exception\InvalidPrimaryKeyException;
+use Cake\Datasource\Exception\RecordNotFoundException;
 use Cake\Event\EventInterface;
 
 /**
@@ -28,6 +30,7 @@ class DescuentosController extends AppController
             }
 
         }
+        $this->loadCartProduct();
     }
 
     public function add($id_productos = null)
@@ -42,33 +45,195 @@ class DescuentosController extends AppController
 
         if ($this->request->is('post')) {
 
+
+
             $options['idproducto'] = $id_productos;
             //traigo el ultimo precio con valor
-            $id_precio_valor = $this->Descuentos->find('GetLastPrecioValor', $options)->toArray()[0]->idprecios;
+            //debug(isset($this->Descuentos->find('GetLastDescuentoValor', $options)->toArray()[0]->idprecios));
+            $id_descuento_valor = !isset($this->Descuentos->find('GetLastDescuentoValor', $options)->toArray()[0]->iddescuentos) ?
+                false : $this->Descuentos->find('GetLastDescuentoValor', $options)->toArray()[0]->iddescuentos;
+
+            //debug($id_descuento_valor);
+            if ($id_descuento_valor) {
+                if($this->_setDescuentoToFalse($id_descuento_valor))
+                {
+                    $descuento = $this->Descuentos->patchEntity($descuento, $this->request->getData());
+
+                    //recupero el tipe de descuento
+                    $tipo = $this->request->getData()['tipo'];
+                    if ($tipo == 1)
+                    {
+                        $descuento->precio = $this->_getValueDescuentoFromType($this->request->getData()['precio'], $id_productos);
+                    }
+
+                    if ($descuento->precio != null)
+                    {
+                        $descuento->productos_idproductos = $id_productos;
+
+                         if ($this->Descuentos->save($descuento)) {
+                             $this->Flash->success(__('El Descuento se almaceno correctamente gugugug.'));
 
 
-            if($this->_setPriceToFalse($id_precio_valor))
-            {
-                $precio = $this->Precios->patchEntity($precio, $this->request->getData());
-
-                $precio->productos_idproductos = $id_productos;
-
-                if ($this->Precios->save($precio)) {
-                    $this->Flash->success(__('El Precio se almaceno correctamente.'));
+                             return $this->redirect(['controller' => 'Productos', 'action' => 'viewConfig', $id_productos]);
+                         }
+                    }
 
 
-                    return $this->redirect(['controller' => 'Productos', 'action' => 'viewConfig', $id_productos]);
+                    $this->Flash->error(__('El Descuento no se pudo guardar. Intente nuevamente.'));
+                } else {
+                    $this->Flash->error(__('El Descuento no se pudo guardar. Intente nuevamente.'));
                 }
-                $this->Flash->error(__('El Precio no se pudo guardar. Intente nuevamente.'));
             } else {
-                $this->Flash->error(__('El Precio no se pudo guardar. Intente nuevamente.'));
+
+                $descuento = $this->Descuentos->patchEntity($descuento, $this->request->getData());
+
+                $descuento->productos_idproductos = $id_productos;
+
+                //recupero el tipe de descuento
+                $tipo = $this->request->getData()['tipo'];
+                if ($tipo == 1)
+                {
+                    $descuento->precio = $this->_getValueDescuentoFromType($this->request->getData()['precio'], $id_productos);
+                }
+
+                if ($descuento->precio != null)
+                {
+                    $descuento->productos_idproductos = $id_productos;
+
+                    if ($this->Descuentos->save($descuento)) {
+                        $this->Flash->success(__('El Descuento se almaceno correctamente.'));
+
+
+                        return $this->redirect(['controller' => 'Productos', 'action' => 'viewConfig', $id_productos]);
+                    }
+                }
+                $this->Flash->error(__('El Descuento no se pudo guardar. Intente nuevamente.'));
             }
+
+
 
 
         }
 
-        $this->set(compact('precio'));
+        $this->set(compact('descuento'));
 
+    }
+
+
+    public function edit($id = null, $id_productos = null)
+    {
+        try{
+
+            $descuentos =  $this->Descuentos->get($id);
+
+
+            if ($this->request->is(['patch', 'post', 'put'])) {
+                $descuentos = $this->Descuentos->patchEntity($descuentos, $this->request->getData());
+
+                $tipo = $this->request->getData()['tipo'];
+
+                if ($tipo == 1)
+                {
+                    $descuentos->precio = $this->_getValueDescuentoFromType($this->request->getData()['precio'], $id_productos);
+                }
+
+                if ($descuentos->precio != null)
+                {
+
+                    if ($this->Descuentos->save($descuentos)) {
+                        $this->Flash->success(__('El Descuento se almaceno correctamente.'));
+
+                        return $this->redirect(['controller' => 'Productos', 'action' => 'viewConfig', $id_productos]);
+                    }
+                }
+
+                $this->Flash->error(__('El Descuento no se pudo editar. Intente nuevamente.'));
+
+            }
+            $this->set(compact('descuentos'));
+        } catch (InvalidPrimaryKeyException $e){
+            $this->Flash->error(__('Error al almacenar los cambios. Intenta nuevamente'));
+
+        } catch (RecordNotFoundException $e){
+            $this->Flash->error(__('Error al almacenar los cambios. Intenta nuevamente'));
+        }
+        catch (Exception $e){
+            $this->Flash->error(__('Error al almacenar los cambios. Intenta nuevamente'));
+        }
+    }
+    private function _getValueDescuentoFromType($descuento = null, $id_productos)
+    {
+        //tengo que usar la tabla precio
+        $model_precio = $this->getTableLocator()->get('Precios');
+
+        $precio = $model_precio->find('all', [
+            'fields' => ['precio']
+        ])->where(['active' => 1, 'productos_idproductos' => $id_productos]);
+
+        //debug($precio->toArray()[0]->precio);
+
+        if (isset($precio->toArray()[0]->precio))
+        {
+            return ($precio->toArray()[0]->precio / 100 * $descuento);
+        }
+
+
+
+        return null;
+
+
+
+    }
+    private function _setDescuentoToFalse($id_product)
+    {
+        try{
+
+            $precio =  $this->Descuentos->get($id_product);
+            $precio->active = 0;
+            date_default_timezone_set('America/Argentina/Buenos_Aires');
+            $precio->finished = date("Y-m-d H:i:s");;
+
+            if ($this->Descuentos->save($precio)) {
+                return true;
+
+            }
+
+        } catch (InvalidPrimaryKeyException $e){
+            return false;
+        } catch (RecordNotFoundException $e){
+            return false;
+        }
+        catch (Exception $e){
+            return false;
+
+        }
+    }
+
+    public function setDescuentoToFalse($id = null)
+    {
+        $this->autoRender = false;
+        try{
+
+            $precio =  $this->Descuentos->get($id);
+            $precio->active = 0;
+            date_default_timezone_set('America/Argentina/Buenos_Aires');
+            $precio->finished = date("Y-m-d H:i:s");;
+
+            if ($this->Descuentos->save($precio)) {
+
+                $this->Flash->success(__('El Descuento se desactivo correctamente.'));
+            }
+
+        } catch (InvalidPrimaryKeyException $e){
+            $this->Flash->error(__('El Descuento no se pudo guardar. Intente nuevamente.'));
+        } catch (RecordNotFoundException $e){
+            $this->Flash->error(__('El Descuento no se pudo guardar. Intente nuevamente.'));
+        }
+        catch (Exception $e){
+            $this->Flash->error(__('El Descuento no se pudo guardar. Intente nuevamente.'));
+
+        }
+        $this->redirect($this->request->referer());
     }
 
 

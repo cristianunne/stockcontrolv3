@@ -42,7 +42,7 @@
 
                             <div class="form-group">
                                 <?=  $this->Form->label('Tamaño: ') ?>
-                                <?= $this->Form->text('content', ['class' => 'form-control', 'placeholder' => 'Tamaño']) ?>
+                                <?= $this->Form->number('content', ['class' => 'form-control', 'placeholder' => 'Tamaño']) ?>
                             </div>
 
                             <div class="form-group">
@@ -57,6 +57,13 @@
                                     'empty' => '(Elija una Subcategoria)', 'type' => 'select',
                                     'class' => 'form-control', 'placeholder' => '',
                                     'label' => 'Subcategoria:', 'id' => 'subcategories_idsubcategories']) ?>
+                            </div>
+
+                            <div class="form-group">
+                                <?= $this->Form->control('proveedores_idproveedores', ['options' => $proveedores,
+                                    'empty' => '(Elija un Proveedor)', 'type' => 'select',
+                                    'class' => 'form-control', 'placeholder' => '',
+                                    'label' => 'Proveedor:', 'id' => 'proveedores_idproveedores']) ?>
                             </div>
 
 
@@ -97,6 +104,7 @@
         </div>
     </div>
     <?= $this->Html->script('jquery-filestyle.js') ?>
+    <?= $this->Html->script('shopping_cart.js') ?>
 
 </div>
 

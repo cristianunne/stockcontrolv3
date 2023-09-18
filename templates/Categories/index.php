@@ -81,7 +81,7 @@ echo $this->element('sidebar');
 <?= $this->Html->script('../plugins/datatables-buttons/js/buttons.html5.min.js') ?>
 <?= $this->Html->script('../plugins/datatables-buttons/js/buttons.print.min.js') ?>
 <?= $this->Html->script('../plugins/datatables-buttons/js/buttons.colVis.min.js') ?>
-
+<?= $this->Html->script('shopping_cart.js') ?>
 
 <script>
     $(function () {

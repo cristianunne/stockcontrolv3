@@ -4,9 +4,10 @@ async function onChangedCategories(category)
 {
 
     let cat_number = $(category).val();
-    console.log(cat_number);
 
-    let categories = await getSubCategories(cat_number);
+    let action = category.getAttribute('attr');
+
+    let categories = await getSubCategories(cat_number, action);
 
     if (categories !== undefined)
     {
@@ -27,11 +28,12 @@ async function onChangedCategories(category)
 
 
 
-async function getSubCategories(category_select)
+async function getSubCategories(category_select, action)
 {
 
-    let headers = new Headers();
 
+
+    let headers = new Headers();
 
     //const csrfToken = $.cookie('csrfToken');
     let csrf = $("meta[name='csrfToken']").attr("content");
@@ -40,8 +42,12 @@ async function getSubCategories(category_select)
     headers.append('Content-Type', 'application/json'); // This one sends body
     headers.append('X-CSRF-Token', csrf);
 
+    let url_ = 'getSubCategoriesByCategory?category=' + category_select;
+    let url_edit = '../getSubCategoriesByCategory?category=' + category_select;
 
-    let url = 'getSubCategoriesByCategory?category=' + category_select;
+    let url = action === 'edit' ? url_edit : url_;
+
+
     let data_ = null;
     /*let result = await fetch(url, {
         method: 'POST',

@@ -20,6 +20,9 @@ use Cake\ORM\Entity;
  * @property string|null $altura
  * @property string $shop_name
  * @property string|null $observaciones
+ * @property \Cake\I18n\FrozenTime|null $created
+ * @property \Cake\I18n\FrozenTime|null $modified
+ * @property string|null $telefono
  */
 class Cliente extends Entity
 {
@@ -44,5 +47,8 @@ class Cliente extends Entity
         'altura' => true,
         'shop_name' => true,
         'observaciones' => true,
+        'created' => true,
+        'modified' => true,
+        'telefono' => true,
     ];
 }

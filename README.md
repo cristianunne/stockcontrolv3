@@ -51,3 +51,8 @@ Other environment agnostic settings can be changed in `config/app.php`.
 The app skeleton uses [Milligram](https://milligram.io/) (v1.3) minimalist CSS
 framework by default. You can, however, replace it with any other library or
 custom styles.
+
+
+  <td class="dt-center align-middle"> <?= $this->Html->image($producto->photo,
+                                                ['alt' => 'Sin Imagen', 'pathPrefix' => '/img/assets/products/',
+                                                    'class' => 'img-fluid img-responsive rounded product-image-table']); ?></td>

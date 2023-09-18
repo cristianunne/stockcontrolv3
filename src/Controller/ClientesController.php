@@ -22,13 +22,14 @@ class ClientesController extends AppController
         $user = $this->Authentication->getIdentity();
         if(isset($user) and $user->role === 'user')
         {
-            if (!in_array($this->request->getParam('action'), ['index', 'edit'])) {
+            if (!in_array($this->request->getParam('action'), [])) {
                 //$this->redirect($this->request->referer());
                 $this->Flash->error('Usted no esta autorizado para acceder al Sitio Solicitado');
                 $this->redirect(['controller' => 'Index', 'action' => 'index']);
             }
 
         }
+        $this->loadCartProduct();
     }
 
 
