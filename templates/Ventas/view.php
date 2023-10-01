@@ -194,17 +194,22 @@ echo $this->element('sidebar');
 
 
                                         <td class="actions" style="text-align: center">
-                                            <div class="d-flex justify-content-around gap-2">
-                                                <?= $this->Html->link($this->Html->tag('span', '', ['class' => 'fas fa-edit', 'aria-hidden' => 'true']),
-                                                    ['controller' => 'ProductosPedidos' ,'action' => 'edit', $producto->_joinData->pedidos_idpedidos,
-                                                        $producto->_joinData->idproductos_pedidos,
-                                                        $producto->name  . ' - ' .  $producto->marca . ' (' . $producto->content. ')'],
-                                                    ['class' => 'btn bg-lightpurple', 'escape' => false]) ?>
 
-                                                <?= $this->Form->postLink(__($this->Html->tag('span', '', ['class' => 'fas fa-trash-alt', 'aria-hidden' => 'true'])),
-                                                    ['controller' => 'ProductosPedidos', 'action' => 'delete', $producto->_joinData->pedidos_idpedidos, $producto->_joinData->idproductos_pedidos],
-                                                    ['confirm' => __('Eliminar {0}?', $producto->_joinData->idproductos_pedidos), 'class' => 'btn btn-danger bg-redrose','escape' => false]) ?>
-                                            </div>
+                                            <?php if($role == 'admin'): ?>
+
+
+                                                <div class="d-flex justify-content-around gap-2">
+                                                    <?= $this->Html->link($this->Html->tag('span', '', ['class' => 'fas fa-edit', 'aria-hidden' => 'true']),
+                                                        ['controller' => 'ProductosPedidos' ,'action' => 'edit', $producto->_joinData->pedidos_idpedidos,
+                                                            $producto->_joinData->idproductos_pedidos,
+                                                            $producto->name  . ' - ' .  $producto->marca . ' (' . $producto->content. ')'],
+                                                        ['class' => 'btn bg-lightpurple', 'escape' => false]) ?>
+
+                                                    <?= $this->Form->postLink(__($this->Html->tag('span', '', ['class' => 'fas fa-trash-alt', 'aria-hidden' => 'true'])),
+                                                        ['controller' => 'ProductosPedidos', 'action' => 'delete', $producto->_joinData->pedidos_idpedidos, $producto->_joinData->idproductos_pedidos],
+                                                        ['confirm' => __('Eliminar {0}?', $producto->_joinData->idproductos_pedidos), 'class' => 'btn btn-danger bg-redrose','escape' => false]) ?>
+                                                </div>
+                                             <?php endif; ?>
                                             </td>
 
                                     </tr>

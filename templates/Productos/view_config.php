@@ -307,8 +307,8 @@ echo $this->element('sidebar');
                                     </thead>
                                     <tbody>
 
-                                    <?php if (isset($producto->stock_producto->stock_events)): ?>
-                                        <?php foreach ($producto->stock_producto->stock_events as $stock_events): ?>
+                                    <?php if (isset($prod->stock_producto->stock_events)): ?>
+                                        <?php foreach ($prod->stock_producto->stock_events as $stock_events): ?>
                                             <tr>
 
                                                 <td class="dt-center "><?= h($stock_events->idstock_events) ?></td>

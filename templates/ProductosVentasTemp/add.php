@@ -19,19 +19,35 @@
                     <div class="row">
                         <div class="col-md-6 card box-simm-shadow" style="margin: 0 auto; padding: 1.25rem">
 
-                            <?= $this->Form->create($prod_ped, ['enctype' => 'multipart/form-data']) ?>
+                            <div class="row justify-content-center">
+                                <div class="col-md-3 mt-1">
+                                    <img src="data:image/png;base64, <?=h($producto['img'])?>" alt="Sin Imagen"
+                                         class="img-fluid img-responsive rounded product-image"/>
+                                </div>
+                                <div class="col-md-12 mt-1">
+                                    <p class="text-center text-bold"><?=h($producto['name'])?></p>
+                                    <div class="mt-1 mb-1 spec-1 text-center"><span class="text-bold">Stock del Camión:</span><span class="dot"></span>
 
-                            <div class="form-group">
-                                <?=  $this->Form->label('Pedido N°: ') ?>
-                                <?= $this->Form->number('pedidos_idpedidos', ['class' => 'form-control', 'readonly', 'placeholder' => 'Pedido N°', 'value' => $id_pedido]) ?>
+                                        <span>
+                                             <?= h(!isset($stock) ? 'Sin Datos' : $stock) ?>
+
+                                        <span class="dot"></span></div>
+                                </div>
+
                             </div>
 
+                            <br>
+
+                            <?= $this->Form->create($producto_ventas_temp, ['enctype' => 'multipart/form-data']) ?>
+
                             <div class="form-group">
-                                <?=  $this->Form->label('Producto: ') ?>
-                                <?= $this->Form->control('prod', ['class' => 'form-control', 'placeholder' => 'Producto',
-                                    'label' => false, 'readonly',
-                                    'value' => $prod]) ?>
+                                <?=  $this->Form->label('Venta N°: ') ?>
+                                <?= $this->Form->number('ventas_idventas_temp', ['class' => 'form-control', 'readonly',
+                                    'placeholder' => 'Compra N°', 'value' => $ventas_idventas_temp]) ?>
                             </div>
+
+                            <?= $this->Form->number('productos_idproductos', ['class' => 'form-control d-none', 'readonly',
+                                'placeholder' => '', 'value' => $id_producto]) ?>
 
                             <div class="form-group">
                                 <?=  $this->Form->label('Cantidad: ') ?>
@@ -39,20 +55,17 @@
                                     'oninput' => 'this.value = Math.round(this.value);',
                                     'placeholder' => 'Cantidad']) ?>
                             </div>
-
                             <div class="form-group">
-                                <?=  $this->Form->label('Precio ($/U): ') ?>
-                                <?= $this->Form->number('precio_unidad', ['class' => 'form-control', 'required',
-                                    'value' => $precio,
-                                    'placeholder' => 'Precio ($/U)']) ?>
+                                <?=  $this->Form->label('Precio: ') ?>
+                                <?= $this->Form->number('precio_unidad', ['class' => 'form-control', 'required', 'value' => $precio,
+                                    'placeholder' => 'Precio']) ?>
+                            </div>
+                            <div class="form-group">
+                                <?=  $this->Form->label('Descuento: ') ?>
+                                <?= $this->Form->number('descuento_unidad', ['class' => 'form-control', 'value' => $descuento,
+                                    'placeholder' => 'Descuento']) ?>
                             </div>
 
-                            <div class="form-group">
-                                <?=  $this->Form->label('Descuento ($/U): ') ?>
-                                <?= $this->Form->number('descuento_unidad', ['class' => 'form-control',
-                                'value' => $descuento,
-                                    'placeholder' => 'Descuento ($/U)']) ?>
-                            </div>
 
 
                             <div class="form-group" style="margin-top: 40px;">

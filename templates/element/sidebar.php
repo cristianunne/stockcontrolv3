@@ -29,6 +29,13 @@
                                         '<i class="fas fa-calendar-alt nav-icon text-info"></i> Campañas',
                                         ['controller' => 'Campaign', 'action' => 'index'], ['class' => 'nav-link', 'escape' => false]) ?>
                                 </li>
+                            <?php else:?>
+
+                                <li class="nav-item">
+                                    <?=  $this->Html->link(
+                                        '<i class="fas fa-calendar-alt nav-icon text-info"></i> Campañas',
+                                        ['controller' => 'Campaign', 'action' => 'indexUser'], ['class' => 'nav-link', 'escape' => false]) ?>
+                                </li>
                             <?php endif;?>
 
                             <li class="nav-item">
@@ -126,7 +133,7 @@
                             <?php endif;?>
 
 
-                            <?php if($role == 'admin'):  ?>
+
                                 <li class="nav-item menu-close" id="sidebar_configuracion">
 
                                     <a href="#" class="nav-link" id="title-analisis_costos">
@@ -140,23 +147,33 @@
                                     <ul class="nav nav-treeview">
 
                                         <li class="nav-item">
+                                            <?php if($role == 'admin'):  ?>
 
                                             <?=  $this->Html->link(
                                                 '<i class="fas fa-plus nav-icon"></i> Nuevo',
-                                                ['controller' => 'Categories', 'action' => 'index'], ['class' => 'nav-link', 'escape' => false,
+                                                ['controller' => 'Camiones', 'action' => 'add'], ['class' => 'nav-link', 'escape' => false,
                                                 'id' => 'nav-icon-analisis_costos-Inicio']) ?>
 
                                             <?=  $this->Html->link(
                                                 '<i class="fas fa-eye nav-icon"></i> Ver Camiones',
-                                                ['controller' => 'Subcategories', 'action' => 'index'], ['class' => 'nav-link', 'escape' => false,
+                                                ['controller' => 'Camiones', 'action' => 'index'], ['class' => 'nav-link', 'escape' => false,
                                                 'id' => 'nav-icon-analisis_costos-Grupos_costos']) ?>
+                                            <?php endif;?>
+
+                                            <?php if($role == 'empleado'):  ?>
+
+                                                <?=  $this->Html->link(
+                                                    '<i class="fas fa-eye nav-icon"></i> Ver Camion',
+                                                    ['controller' => 'Camiones', 'action' => 'index'], ['class' => 'nav-link', 'escape' => false,
+                                                    'id' => 'nav-icon-analisis_costos-Grupos_costos']) ?>
+                                            <?php endif;?>
 
                                         </li>
 
                                     </ul>
                                 </li>
 
-                            <?php endif;?>
+
 
 
 

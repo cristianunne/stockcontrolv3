@@ -11,79 +11,98 @@
         <?= $this->Flash->render() ?>
         <div class="container-fluid mt-lg-5">
             <div class="row">
-                <div class="col-md-5 p-5 pt-3">
-                    <div class="card card-warning">
-                        <div class="card-header" style="position: relative;">
-                            <h3 class="card-title">Campaña Activa</h3>
-                            <div class="card-tools">
-                                <!-- Buttons, labels, and many other things can be placed here! -->
-                                <!-- Here is a label for example -->
+
+                <?php if ($is_campaign_active): ?>
+                    <div class="col-md-5 p-5 pt-3">
+                        <div class="card card-warning">
+                            <div class="card-header" style="position: relative;">
+                                <h3 class="card-title">Campaña Activa</h3>
+                                <div class="card-tools">
+                                    <!-- Buttons, labels, and many other things can be placed here! -->
+                                    <!-- Here is a label for example -->
+                                </div>
+                                <!-- /.card-tools -->
                             </div>
-                            <!-- /.card-tools -->
-                        </div>
+                            <div class="card-body">
+                                <div>
+                                    <div class="row p-2 bg-white border rounded">
+                                        <div class="col-md-3 mt-1">
+                                            <?php echo $this->Html->image('campaign.png', ["alt" => 'Image' , "class" => 'img-fluid img-responsive rounded product-image']) ?>
 
-                        <?php if($estado): ?>
-                        <div class="card-body">
+                                        </div>
+                                        <div class="col-md-9 mt-1">
+                                            <div class="d-flex flex-row">
+                                                <div class="mt-1 mb-1 spec-1"><span class="text-bold">Número de Campaña:</span><span class="dot"></span>
 
-                            <div>
-                                <div class="row p-2 bg-white border rounded">
-                                    <div class="col-md-3 mt-1">
-                                        <?php echo $this->Html->image('campaign.png', ["alt" => 'Image' , "class" => 'img-fluid img-responsive rounded product-image']) ?>
+                                                    <span>
+                                                 <?= h($campaign['number']) ?>
 
-                                    </div>
-                                    <div class="col-md-9 mt-1">
-                                        <div class="d-flex flex-row">
-                                            <div class="mt-1 mb-1 spec-1"><span class="text-bold">Número de Campaña:</span><span class="dot"></span>
+                                            <span class="dot"></span></div>
 
+                                            </div>
+
+                                            <div class="mt-1 mb-1 spec-1">
+                                                <span class="text-bold">Fecha de Inicio: </span>
                                                 <span>
-                                             <?= h($campaign['number']) ?>
+                                           <?= h($campaign->fecha_inicio->format('d-m-Y')) ?>
+                                        </span>
+                                            </div>
 
-                                        <span class="dot"></span></div>
+                                            <div class="mt-1 mb-1 spec-1">
+                                                <span class="text-bold">Fecha de Finalización: </span>
+                                                <span>
+                                            <?= h($campaign->fecha_fin->format('d-m-Y')) ?>
+                                        </span>
+                                            </div>
 
                                         </div>
+                                        <div class="align-items-center align-content-center col-xl-3 col-md-3 col-sm-3 border-left mt-1">
 
-                                        <div class="mt-1 mb-1 spec-1">
-                                            <span class="text-bold">Fecha de Inicio: </span>
-                                            <span>
-                                       <?= h($campaign->fecha_inicio->format('d-m-Y')) ?>
-                                    </span>
                                         </div>
-
-                                        <div class="mt-1 mb-1 spec-1">
-                                            <span class="text-bold">Fecha de Finalización: </span>
-                                            <span>
-                                        <?= h($campaign->fecha_fin->format('d-m-Y')) ?>
-                                    </span>
-                                        </div>
-
                                     </div>
-                                    <div class="align-items-center align-content-center col-xl-3 col-md-3 col-sm-3 border-left mt-1">
+                                </div>
+                            </div>
 
+                            <div class="card-footer">
+                                <div class="pull-right">
+                                    <?=  $this->Html->link(
+                                        '<i class="fas fa-search"></i> Ver',
+                                        ['controller' => 'Campaign', 'action' => 'viewUser', $campaign->idcampaign],
+                                        ['class' => 'btn btn-warning', 'escape' => false]) ?>
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </div>
+                <?php else: ?>
+
+                    <div class="col-md-5 p-5 pt-3">
+                        <div class="card card-danger">
+                            <div class="card-header" style="position: relative;">
+                                <h3 class="card-title">Sin Campañas Activas</h3>
+                                <div class="card-tools">
+                                    <!-- Buttons, labels, and many other things can be placed here! -->
+                                    <!-- Here is a label for example -->
+                                </div>
+                                <!-- /.card-tools -->
+                            </div>
+                            <div class="card-body">
+                                <div>
+                                    <div class="row p-2 bg-white border rounded justify-content-center">
+                                        <div class="col-md-3 mt-1">
+                                            <?php echo $this->Html->image('riesgo.png', ["alt" => 'Image' , "class" => 'img-fluid img-responsive rounded product-image']) ?>
+
+                                        </div>
+
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-
-                        <div class="card-footer">
-                            <div class="pull-right">
-                                <?=  $this->Html->link(
-                                    '<i class="fas fa-search"></i> Ver',
-                                    ['controller' => 'Campaign' ,'action' => 'viewAdmin', $campaign->idcampaign],
-                                    ['class' => 'btn btn-warning', 'escape' => false]) ?>
-                            </div>
-
-                            <div class="pull-right">
-                                <?=  $this->Html->link(
-                                    '<i class="fas fa-cog"></i> Configurar',
-                                    ['controller' => 'Campaign', 'action' => 'config', $campaign->idcampaign],
-                                    ['class' => 'btn btn-danger mr-3', 'escape' => false]) ?>
-                            </div>
-                        </div>
-                        <?php endif;?>
                     </div>
 
-                </div>
-
+                <?php endif; ?>
 
                 <div class="col-xl-12 col-md-12 col-sm-12 p-2 pt-2">
                     <div>
@@ -126,7 +145,7 @@
 
                                             <td class="actions" style="text-align: center">
                                                 <?= $this->Html->link($this->Html->tag('span', '', ['class' => 'fas fa-eye', 'aria-hidden' => 'true']),
-                                                    ['controller' => 'Campaign' ,'action' => 'viewAdmin', $camp->idcampaign],
+                                                    ['controller' => 'Campaign' ,'action' => 'viewUser', $camp->idcampaign],
                                                     ['class' => 'btn btn-success', 'escape' => false]) ?>
 
 

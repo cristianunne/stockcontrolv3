@@ -5,6 +5,7 @@ namespace App\Controller;
 
 use Cake\Event\EventInterface;
 
+
 /**
  * Users Controller
  *
@@ -165,5 +166,21 @@ class UsersController extends AppController
             $this->Authentication->logout();
             return $this->redirect(['controller' => 'Users', 'action' => 'login']);
         }
+    }
+
+
+    public function getUsersList($users_list)
+    {
+
+        $users = $this->Users->find('list', [
+            'keyField' => 'idusers',
+            'valueField' => function($row){
+                return $row['firstname'] . ' ' .$row['lastname'];
+            },
+            'order' => ['firstname' => 'ASC']
+        ])->where(['idusers NOT IN' => $users_list]);
+
+        return $users->toArray();
+
     }
 }

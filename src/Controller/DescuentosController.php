@@ -237,4 +237,47 @@ class DescuentosController extends AppController
     }
 
 
+    public function getDescuentoByProducto($id_producto = null)
+    {
+        $this->autoRender = false;
+
+        if ($id_producto == null) {
+            return false;
+        } else {
+
+            try {
+
+                $conditions = ['active' => 1, 'productos_idproductos' => $id_producto];
+
+                $descuentos = $this->Descuentos->find('all', [
+
+                ])->where($conditions)
+                    ->first();
+
+
+
+                return $descuentos == null ? null : $descuentos->precio;
+
+
+            } catch (InvalidPrimaryKeyException $e) {
+                //$this->redirect($this->request->referer());
+                $this->Flash->error(__('Error al almacenar los cambios. Intenta nuevamente'));
+
+            } catch (RecordNotFoundException $e) {
+                //$this->redirect($this->request->referer());
+                $this->Flash->error(__('Error al almacenar los cambios. Intenta nuevamente'));
+            } catch (Exception $e) {
+                //debug($e);
+                //$this->redirect($this->request->referer());
+                $this->Flash->error(__('Error al almacenar los cambios. Intenta nuevamente'));
+            }
+
+            return false;
+
+        }
+
+
+    }
+
+
 }
