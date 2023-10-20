@@ -48,7 +48,9 @@ echo $this->element('sidebar');
                                     <th scope="col" class="actions"><?= __('Ver') ?></th>
                                     <th scope="col" class="actions"><?= __('Acciones') ?></th>
 
-
+                                    <?php if($role == 'admin'):  ?>
+                                        <th scope="col" class="actions"><?= __('Aprobar') ?></th>
+                                    <?php endif;?>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -101,19 +103,74 @@ echo $this->element('sidebar');
 
 
                                         <td class="actions align-middle" style="text-align: center">
-                                            <div class="d-flex justify-content-around gap-2">
-                                                <?= $this->Html->link($this->Html->tag('span', '', ['class' => 'fas fa-edit', 'aria-hidden' => 'true']),
-                                                    ['controller' => 'StockCampaignProducto', 'action' => 'edit', $prod->idstock_campaign_producto, $prod->producto->idproductos, $idstock_camion_campaign,
-                                                        $idcampaign, $prod->producto->stock_producto->stock, $id_camion],
-                                                    ['class' => 'btn bg-lightpurple', 'escape' => false]) ?>
 
-                                                <?= $this->Form->postLink(__($this->Html->tag('span', '', ['class' => 'fas fa-trash-alt', 'aria-hidden' => 'true'])),
-                                                    ['controller' => 'StockCampaignProducto', 'action' => 'delete', $prod->idstock_campaign_producto],
-                                                    ['confirm' => __('Eliminar {0}?', $prod->producto->name),
-                                                        'class' => 'btn btn-danger bg-redrose','escape' => false]) ?>
-                                            </div>
+                                             <?php if(!$prod->status):  ?>
+
+                                                <?php if($role == 'empleado'):  ?>
+
+                                                    <div class="d-flex justify-content-around gap-2">
+                                                        <?= $this->Html->link($this->Html->tag('span', '', ['class' => 'fas fa-edit', 'aria-hidden' => 'true']),
+                                                            ['controller' => 'StockCampaignProducto', 'action' => 'edit', $prod->idstock_campaign_producto, $prod->producto->idproductos, $idstock_camion_campaign,
+                                                                $idcampaign, $prod->producto->stock_producto->stock, $id_camion],
+                                                            ['class' => 'btn bg-lightpurple', 'escape' => false]) ?>
+
+                                                        <?= $this->Form->postLink(__($this->Html->tag('span', '', ['class' => 'fas fa-trash-alt', 'aria-hidden' => 'true'])),
+                                                            ['controller' => 'StockCampaignProducto', 'action' => 'delete', $prod->idstock_campaign_producto],
+                                                            ['confirm' => __('Eliminar {0}?', $prod->producto->name),
+                                                                'class' => 'btn btn-danger bg-redrose','escape' => false]) ?>
+                                                    </div>
+                                                 <?php endif;?>
+
+                                             <?php endif;?>
+
+
+                                            <?php if($role == 'admin'):  ?>
+
+                                                <div class="d-flex justify-content-around gap-2">
+                                                    <?= $this->Html->link($this->Html->tag('span', '', ['class' => 'fas fa-edit', 'aria-hidden' => 'true']),
+                                                        ['controller' => 'StockCampaignProducto', 'action' => 'edit', $prod->idstock_campaign_producto, $prod->producto->idproductos, $idstock_camion_campaign,
+                                                            $idcampaign, $prod->producto->stock_producto->stock, $id_camion],
+                                                        ['class' => 'btn bg-lightpurple', 'escape' => false]) ?>
+
+                                                    <?= $this->Form->postLink(__($this->Html->tag('span', '', ['class' => 'fas fa-trash-alt', 'aria-hidden' => 'true'])),
+                                                        ['controller' => 'StockCampaignProducto', 'action' => 'delete', $prod->idstock_campaign_producto],
+                                                        ['confirm' => __('Eliminar {0}?', $prod->producto->name),
+                                                            'class' => 'btn btn-danger bg-redrose','escape' => false]) ?>
+                                                </div>
+
+                                            <?php endif;?>
+
+
                                         </td>
+                                        <?php if($role == 'admin'):  ?>
+                                            <?php if($prod->status == 0):  ?>
 
+                                                <td>
+
+                                                    <div class="d-flex justify-content-around gap-2">
+
+                                                            <?= $this->Form->postLink(__($this->Html->tag('span', '', ['class' => 'fas fa-check', 'aria-hidden' => 'true'])),
+                                                                ['controller' => 'StockCampaignProducto', 'action' => 'setStateProducto', $prod->idstock_campaign_producto, 1],
+                                                                ['confirm' => __('Aprobar {0}?', $prod->producto->name),
+                                                                    'class' => 'btn btn-primary','escape' => false]) ?>
+
+                                                    </div>
+                                                </td>
+                                            <?php else: ?>
+
+                                                <td>
+
+                                                    <div class="d-flex justify-content-around gap-2">
+
+                                                        <?= $this->Form->postLink(__($this->Html->tag('span', '', ['class' => 'fas fa-times', 'aria-hidden' => 'true'])),
+                                                            ['controller' => 'StockCampaignProducto', 'action' => 'setStateProducto', $prod->idstock_campaign_producto, 0],
+                                                            ['confirm' => __('Quitar Aprobacion {0}?', $prod->producto->name),
+                                                                'class' => 'btn btn-warning','escape' => false]) ?>
+
+                                                    </div>
+                                                </td>
+                                            <?php endif;?>
+                                        <?php endif;?>
                                     </tr>
                                 <?php endforeach; ?>
                                 </tbody>
@@ -123,8 +180,13 @@ echo $this->element('sidebar');
 
                         <div class="card-footer">
                             <div class="pull-left">
-                                <?= $this->Html->link("Volver", ['controller' => 'Campaign', 'action' => 'config',
-                                  $idcampaign], ['class' => 'btn bg-redrose']) ?>
+                                <?php if($role == 'admin'):  ?>
+                                    <?= $this->Html->link("Volver", ['controller' => 'Campaign', 'action' => 'config',
+                                      $idcampaign], ['class' => 'btn bg-redrose']) ?>
+                                <?php else: ?>
+                                    <?= $this->Html->link("Volver", ['controller' => 'Campaign', 'action' => 'viewUser',
+                                        $idcampaign], ['class' => 'btn bg-redrose']) ?>
+                                <?php endif;?>
                             </div>
 
                         </div>

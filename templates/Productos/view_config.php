@@ -307,15 +307,15 @@ echo $this->element('sidebar');
                                     </thead>
                                     <tbody>
 
-                                    <?php if (isset($prod->stock_producto->stock_events)): ?>
-                                        <?php foreach ($prod->stock_producto->stock_events as $stock_events): ?>
+                                    <?php if (isset($producto->stock_producto->stock_events)): ?>
+                                        <?php foreach ($producto->stock_producto->stock_events as $stock_eve): ?>
                                             <tr>
 
-                                                <td class="dt-center "><?= h($stock_events->idstock_events) ?></td>
-                                                <td class="dt-center "><?= h($stock_events->categoria) ?></td>
-                                                <td class="dt-center"><?= h($stock_events->created->format('d-m-Y')) ?></td>
-                                                <td class="dt-center"><?= h($stock_events->cantidad) ?></td>
-                                                <td class="dt-center "><?= h($stock_events->observaciones) ?></td>
+                                                <td class="dt-center "><?= h($stock_eve->idstock_events) ?></td>
+                                                <td class="dt-center "><?= h($stock_eve->categoria) ?></td>
+                                                <td class="dt-center"><?= h($stock_eve->created->format('d-m-Y')) ?></td>
+                                                <td class="dt-center"><?= h($stock_eve->cantidad) ?></td>
+                                                <td class="dt-center "><?= h($stock_eve->observaciones) ?></td>
 
                                                 <td class="actions" style="text-align: center">
 

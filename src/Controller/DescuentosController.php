@@ -114,7 +114,7 @@ class DescuentosController extends AppController
 
 
         }
-
+        $this->set(compact('id_productos'));
         $this->set(compact('descuento'));
 
     }

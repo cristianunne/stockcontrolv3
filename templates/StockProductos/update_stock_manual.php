@@ -37,7 +37,7 @@
 
                                 </div>
                                 <div class="pull-left">
-                                    <?= $this->Html->link("Volver", ['controller' => 'Categories', 'action' => 'index'], ['class' => 'btn bg-redrose']) ?>
+                                    <?= $this->Html->link("Volver", ['controller' => 'Productos', 'action' => 'viewConfig', $id_producto], ['class' => 'btn bg-redrose']) ?>
                                 </div>
 
                             </div>

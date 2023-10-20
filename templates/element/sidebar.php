@@ -164,7 +164,7 @@
 
                                                 <?=  $this->Html->link(
                                                     '<i class="fas fa-eye nav-icon"></i> Ver Camion',
-                                                    ['controller' => 'Camiones', 'action' => 'index'], ['class' => 'nav-link', 'escape' => false,
+                                                    ['controller' => 'Camiones', 'action' => 'viewUser'], ['class' => 'nav-link', 'escape' => false,
                                                     'id' => 'nav-icon-analisis_costos-Grupos_costos']) ?>
                                             <?php endif;?>
 

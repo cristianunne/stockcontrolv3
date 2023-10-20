@@ -17,8 +17,7 @@ echo $this->element('sidebar');
 
             <div class="row">
 
-                <div class="col-xl-3 col-lg-3 col-md-3 col-sm-3">
-
+                <div class="col-xl-2 col-lg-2 col-md-2 col-sm-2">
 
                     <div class="card">
                         <div class="card-header bg-teal">
@@ -26,7 +25,6 @@ echo $this->element('sidebar');
 
                         </div>
                         <div class="card-body" >
-
 
                             <table class="table mt-2 table-borderless">
                                 <tbody>
@@ -77,6 +75,27 @@ echo $this->element('sidebar');
                             </table>
                         </div>
                     </div>
+                    <?php if($compras_stock->is_closed == 0):  ?>
+                        <div class="card">
+                            <div class="card-header bg-red">
+                                <h3 class="card-title">¿Cerrar Compra?:</h3>
+                            </div>
+
+                            <div class="card-body">
+
+                                      <div class="pull-right">
+                                        <?= $this->Form->postLink(__($this->Html->tag('span', ' Aceptar', ['class' => 'fas fa-check', 'aria-hidden' => 'true'])),
+                                            ['controller' => 'ComprasStock', 'action' => 'cerrarCompra', $compras_stock->idcompras_stock],
+                                            ['confirm' => __('¿Desea Cerrar la Compra?',),
+                                                'class' => 'btn btn-danger bg-redrose','escape' => false]) ?>
+                                    </div>
+
+                            </div>
+
+                        </div>
+
+                    <?php endif; ?>
+
                     <?php if($number_compras_update <= 0):  ?>
                         <div class="card card-secondary">
                         <div class="card-header">
@@ -135,12 +154,9 @@ echo $this->element('sidebar');
                     </div>
                     <?php endif; ?>
 
-
-
                 </div>
 
-
-                <div class="col-xl-9 col-lg-9 col-md-9 col-sm-9">
+                <div class="col-xl-10 col-lg-10 col-md-10 col-sm-10">
 
                     <?php if($has_compras_update):  ?>
                         <div class="alert bg-redrose" role="alert" style="display: flow-root;">
@@ -158,13 +174,14 @@ echo $this->element('sidebar');
                             <div class="card-tools">
                                 <!-- Buttons, labels, and many other things can be placed here! -->
                                 <!-- Here is a label for example -->
-                                <?php if(!$compras_stock->status):  ?>
 
-                                    <?=  $this->Html->link(
-                                        '<i class="fas fa-plus "></i> Agregar Producto',
-                                        ['controller' => 'ComprasStock', 'action' => 'addProductoIndex', $compras_stock->idcompras_stock],
-                                        ['class' => 'btn bg-teal', 'escape' => false]) ?>
-                                <?php endif; ?>
+                                    <?php if($compras_stock->assign == 0):  ?>
+
+                                        <?=  $this->Html->link(
+                                            '<i class="fas fa-plus "></i> Agregar Producto',
+                                            ['controller' => 'ComprasStock', 'action' => 'addProductoIndex', $compras_stock->idcompras_stock],
+                                            ['class' => 'btn bg-teal', 'escape' => false]) ?>
+                                    <?php endif; ?>
                             </div>
                         </div>
                         <!-- /.card-header -->
@@ -177,7 +194,8 @@ echo $this->element('sidebar');
                                     <th scope="col"><?= $this->Paginator->sort('Marca') ?></th>
                                     <th scope="col"><?= $this->Paginator->sort('Contenido') ?></th>
                                     <th scope="col"><?= $this->Paginator->sort('Categoria') ?></th>
-                                    <th scope="col"><?= $this->Paginator->sort('Cantidad') ?></th>
+                                    <th scope="col"><?= $this->Paginator->sort('Cantidad Pedido') ?></th>
+                                    <th scope="col"><?= $this->Paginator->sort('Cantidad Comprado') ?></th>
                                     <th scope="col"><?= $this->Paginator->sort('Precio ($)') ?></th>
                                     <th scope="col"><?= $this->Paginator->sort('Descuentos ($)') ?></th>
                                     <th scope="col"><?= $this->Paginator->sort('Total ($)') ?></th>
@@ -186,9 +204,7 @@ echo $this->element('sidebar');
                                     <?php if($compras_stock->status):  ?>
                                     <th scope="col" class="actions"><?= __('Stock?') ?></th>
                                     <?php endif; ?>
-                                    <?php if(!$compras_stock->status):  ?>
-                                        <th scope="col" class="actions"><?= __('Acciones') ?></th>
-                                    <?php endif; ?>
+
 
 
 
@@ -212,6 +228,7 @@ echo $this->element('sidebar');
                                                 <?= h($producto->category->name) ?>
 
                                         </td>
+                                        <td class="dt-center align-middle"><?= h($producto->_joinData->cantidad_pedido) ?></td>
                                         <td class="dt-center align-middle"><?= h($producto->_joinData->cantidad) ?></td>
                                         <td class="dt-center align-middle"><?= h($producto->_joinData->precio_unidad) ?></td>
                                         <td class="dt-center align-middle"><?= h($producto->_joinData->descuento_unidad) ?></td>
@@ -224,60 +241,46 @@ echo $this->element('sidebar');
 
                                         </td>
                                         <td class="dt-center align-middle font-weight-bold">
+                                             <?php if($compras_stock->is_closed == 0):  ?>
                                               <?php if($producto->_joinData->status == 1):  ?>
                                                   <?php if($producto->_joinData->is_stock == 0):  ?>
 
                                                     <?= $this->Form->postLink(__($this->Html->tag('span', '', ['class' => 'fas fa-minus-circle', 'aria-hidden' => 'true'])),
-                                                        ['action' => 'desaprobarCompra', $compras_stock->idcompras_stock, $producto->_joinData->idproductos_comprasstock],
+                                                        ['action' => 'desaprobarCompra', $compras_stock->idcompras_stock, $producto->_joinData->idproductos_comprasstock, $producto->idproductos],
                                                         ['confirm' => __('Desaprobar {0}?', $producto->_joinData->idproductos_comprasstock),
                                                             'class' => 'btn btn-danger bg-redrose data-toggle="tooltip" data-placement="top" title="Desaprobar la compra y cambar caracteristicas"','escape' => false]) ?>
                                                   <?php endif; ?>
                                               <?php endif; ?>
+                                             <?php endif; ?>
                                         </td>
-                                        <?php if(!$compras_stock->status):  ?>
 
-                                            <td class="actions" style="text-align: center">
-                                                <div class="d-flex justify-content-around gap-1">
-                                                <?= $this->Html->link($this->Html->tag('span', '', ['class' => 'fas fa-edit', 'aria-hidden' => 'true']),
-                                                    ['controller' => 'ProductosComprasstock' ,'action' => 'edit', $compras_stock->idcompras_stock, $producto->idproductos,
-                                                        $producto->_joinData->idproductos_comprasstock],
-                                                    ['class' => 'btn bg-lightpurple', 'escape' => false]) ?>
+                                        <?php if($compras_stock->is_closed == 0):  ?>
+                                            <?php if($compras_stock->status):  ?>
 
-                                                <?= $this->Form->postLink(__($this->Html->tag('span', '', ['class' => 'fas fa-trash-alt', 'aria-hidden' => 'true'])),
-                                                    ['controller' => 'ProductosPedidos', 'action' => 'delete', $producto->_joinData->pedidos_idpedidos, $producto->_joinData->idproductos_pedidos],
-                                                    ['confirm' => __('Eliminar {0}?', $producto->_joinData->idproductos_pedidos), 'class' => 'btn btn-danger bg-redrose','escape' => false]) ?>
-                                                </div>
-                                            </td>
+                                                <?php if($producto->_joinData->status == 1):  ?>
 
-                                        <?php endif; ?>
+                                                    <?php if($producto->_joinData->is_stock == 0):  ?>
 
-                                        <?php if($compras_stock->status):  ?>
-
-                                            <?php if($producto->_joinData->status == 1):  ?>
-
-                                                <?php if($producto->_joinData->is_stock == 0):  ?>
+                                                            <td class="actions" style="text-align: center">
+                                                            <?= $this->Form->postLink(__($this->Html->tag('span', '', ['class' => 'fas fa-check', 'aria-hidden' => 'true'])),
+                                                                ['action' => 'setIsStock', $producto->_joinData->idproductos_comprasstock, $compras_stock->idcompras_stock],
+                                                                ['confirm' => __('Asignar a Stock {0}?', $producto->_joinData->idproductos_comprasstock),
+                                                                    'class' => 'btn btn-primary data-toggle="tooltip" data-placement="top" title="Asignar el Producto al Stock General"','escape' => false]) ?>
+                                                            </td>
+                                                    <?php else: ?>
 
                                                         <td class="actions" style="text-align: center">
-                                                        <?= $this->Form->postLink(__($this->Html->tag('span', '', ['class' => 'fas fa-check', 'aria-hidden' => 'true'])),
-                                                            ['action' => 'setIsStock', $producto->_joinData->idproductos_comprasstock, $compras_stock->idcompras_stock],
-                                                            ['confirm' => __('Asignar a Stock {0}?', $producto->_joinData->idproductos_comprasstock),
-                                                                'class' => 'btn btn-primary data-toggle="tooltip" data-placement="top" title="Asignar el Producto al Stock General"','escape' => false]) ?>
+                                                            <?= $this->Form->postLink(__($this->Html->tag('span', '', ['class' => 'fas fa-minus-circle', 'aria-hidden' => 'true'])),
+                                                                ['action' => 'unSetStock', $producto->_joinData->idproductos_comprasstock, $compras_stock->idcompras_stock],
+                                                                ['confirm' => __('Quitar de Stock {0}?', $producto->_joinData->idproductos_comprasstock),
+                                                                    'class' => 'btn btn-warning data-toggle="tooltip" data-placement="top" title="Quitar el Producto al Stock General"','escape' => false]) ?>
                                                         </td>
+                                                    <?php endif; ?>
                                                 <?php else: ?>
-
-                                                    <td class="actions" style="text-align: center">
-                                                        <?= $this->Form->postLink(__($this->Html->tag('span', '', ['class' => 'fas fa-minus-circle', 'aria-hidden' => 'true'])),
-                                                            ['action' => 'unSetStock', $producto->_joinData->idproductos_comprasstock, $compras_stock->idcompras_stock],
-                                                            ['confirm' => __('Quitar de Stock {0}?', $producto->_joinData->idproductos_comprasstock),
-                                                                'class' => 'btn btn-warning data-toggle="tooltip" data-placement="top" title="Quitar el Producto al Stock General"','escape' => false]) ?>
-                                                    </td>
+                                                    <td class="dt-center align-middle font-weight-bold"><?= h('') ?></td>
                                                 <?php endif; ?>
-                                            <?php else: ?>
-                                                <td class="dt-center align-middle font-weight-bold"><?= h('') ?></td>
                                             <?php endif; ?>
-                                        <?php endif; ?>
-
-
+                                     <?php endif; ?>
                                     </tr>
                                 <?php endforeach; ?>
                                 </tbody>

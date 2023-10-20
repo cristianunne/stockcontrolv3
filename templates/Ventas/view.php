@@ -20,6 +20,22 @@ echo $this->element('sidebar');
 
                 <div class="col-xl-3 col-lg-3 col-md-4 col-sm-3">
 
+                    <div class="card card-primary">
+                        <div class="card-header" style="position: relative;">
+                            <h3 class="card-title">Imprimir Remito</h3>
+                            <!-- /.card-tools -->
+                        </div>
+                        <div class="card-body">
+                            <div class="pull-right">
+                                <?=  $this->HTML->link(
+                                    '<i class="fas fa-print"></i> Imprimir Remito',
+                                    ['controller' => 'Ventas', 'action' => 'printVenta', $idventa],
+                                    ['class' => 'btn btn-primary mr-3', 'escape' => false]) ?>
+                            </div>
+                        </div>
+
+                    </div>
+
                     <div class="card">
                         <div class="card-header bg-text-info text-darkbluestock">
                             <h3 class="card-title">Información de la Venta:</h3>
@@ -230,6 +246,12 @@ echo $this->element('sidebar');
                         <div class="card-header" style="position: relative;">
                             <h3 class="card-title">Devoluciones</h3>
                             <!-- /.card-tools -->
+                            <div class="card-tools">
+                                <?=  $this->Html->link(
+                                    '<i class="fas fa-plus"></i> Nueva Devolucion',
+                                    ['controller' => 'Devoluciones', 'action' => 'viewProducts', $ventas->idventas],
+                                    ['class' => 'btn btn-default mr-3', 'escape' => false]) ?>
+                            </div>
                         </div>
                         <!-- /.card-header -->
                         <div class="card-body table-responsive">
@@ -243,7 +265,10 @@ echo $this->element('sidebar');
                                     <th scope="col"><?= $this->Paginator->sort('Categoria') ?></th>
                                     <th scope="col"><?= $this->Paginator->sort('Subcategoria') ?></th>
                                     <th scope="col"><?= $this->Paginator->sort('Cantidad') ?></th>
-                                    <th scope="col"><?= $this->Paginator->sort('Devolución ($)') ?></th>
+                                    <th scope="col"><?= $this->Paginator->sort('Precio ($)') ?></th>
+                                    <th scope="col"><?= $this->Paginator->sort('Descuentos ($)') ?></th>
+                                    <th scope="col"><?= $this->Paginator->sort('Total ($)') ?></th>
+
                                     <th scope="col" class="actions"><?= __('Acciones') ?></th>
 
 
@@ -251,35 +276,35 @@ echo $this->element('sidebar');
                                 </thead>
                                 <tbody>
 
-                                <?php foreach ($ventas->productos as $producto): ?>
+                                <?php foreach ($ventas->devoluciones as $devoluciones): ?>
+
+
                                     <tr>
-                                        <td class="dt-center align-middle"><?= h($producto->name) ?></td>
-                                        <td class="dt-center align-middle"><?= h($producto->marca) ?></td>
-                                        <td class="dt-center align-middle"><?= h($producto->content) ?></td>
+                                        <td class="dt-center align-middle"><?= h($devoluciones->producto->name) ?></td>
+                                        <td class="dt-center align-middle"><?= h($devoluciones->producto->marca) ?></td>
+                                        <td class="dt-center align-middle"><?= h($devoluciones->producto->content) ?></td>
                                         <td class="dt-center align-middle">
                                              <span class="center badge" style="<?= h('background-color:'.$producto->category->color) ?> !important">
-                                                <?= h($producto->category->name) ?>
+                                                <?= h($devoluciones->producto->category->name) ?>
 
                                         </td>
-                                        <td class="dt-center align-middle"><?= h($producto->subcategory->name) ?></td>
-                                        <td class="dt-center align-middle"><?= h($producto->_joinData->cantidad) ?></td>
-                                        <td class="dt-center align-middle"><?= h($producto->_joinData->precio_unidad) ?></td>
-                                        <td class="dt-center align-middle"><?= h($producto->_joinData->descuento_unidad) ?></td>
-                                        <td class="dt-center align-middle"><?= h($producto->_joinData->precio_unidad * $producto->_joinData->cantidad -
-                                                ($producto->_joinData->descuento_unidad * $producto->_joinData->cantidad)) ?></td>
+                                        <td class="dt-center align-middle"><?= h($devoluciones->producto->subcategory->name) ?></td>
+                                        <td class="dt-center align-middle"><?= h($devoluciones->cantidad) ?></td>
+                                        <td class="dt-center align-middle"><?= h($devoluciones->precio_unidad) ?></td>
+                                        <td class="dt-center align-middle"><?= h($devoluciones->descuento_unidad) ?></td>
+                                        <td class="dt-center align-middle"><?= h($devoluciones->precio_unidad * $devoluciones->cantidad -
+                                                ($devoluciones->descuento_unidad * $devoluciones->cantidad)) ?></td>
 
 
                                         <td class="actions" style="text-align: center">
                                             <div class="d-flex justify-content-around gap-2">
                                                 <?= $this->Html->link($this->Html->tag('span', '', ['class' => 'fas fa-edit', 'aria-hidden' => 'true']),
-                                                    ['controller' => 'ProductosPedidos' ,'action' => 'edit', $producto->_joinData->pedidos_idpedidos,
-                                                        $producto->_joinData->idproductos_pedidos,
-                                                        $producto->name  . ' - ' .  $producto->marca . ' (' . $producto->content. ')'],
+                                                    ['controller' => 'ProductosPedidos' ,'action' => 'edit', $devoluciones->iddevoluciones],
                                                     ['class' => 'btn bg-lightpurple', 'escape' => false]) ?>
 
                                                 <?= $this->Form->postLink(__($this->Html->tag('span', '', ['class' => 'fas fa-trash-alt', 'aria-hidden' => 'true'])),
-                                                    ['controller' => 'ProductosPedidos', 'action' => 'delete', $producto->_joinData->pedidos_idpedidos, $producto->_joinData->idproductos_pedidos],
-                                                    ['confirm' => __('Eliminar {0}?', $producto->_joinData->idproductos_pedidos), 'class' => 'btn btn-danger bg-redrose','escape' => false]) ?>
+                                                    ['controller' => 'Devoluciones', 'action' => 'delete', $devoluciones->iddevoluciones],
+                                                    ['confirm' => __('Eliminar {0}?', $devoluciones->iddevoluciones), 'class' => 'btn btn-danger bg-redrose','escape' => false]) ?>
 
 
                                             </div>
@@ -287,6 +312,7 @@ echo $this->element('sidebar');
                                         </td>
 
                                     </tr>
+
                                 <?php endforeach; ?>
                                 </tbody>
                             </table>

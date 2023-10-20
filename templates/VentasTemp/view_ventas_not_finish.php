@@ -71,9 +71,10 @@
                                                 ['controller' => 'VentasTemp' ,'action' => 'view', $venta->idventas],
                                                 ['class' => 'btn btn-success', 'escape' => false]) ?>
 
-                                            <?= $this->Html->link($this->Html->tag('span', '', ['class' => 'fas fa-edit', 'aria-hidden' => 'true']),
-                                                ['controller' => 'Precios' ,'action' => 'edit', $venta->idventas],
-                                                ['class' => 'btn btn-warning', 'escape' => false]) ?>
+
+                                            <?= $this->Form->postLink(__($this->Html->tag('span', '', ['class' => 'fas fa-trash-alt', 'aria-hidden' => 'true'])),
+                                                ['action' => 'delete', $venta->idventas],
+                                                ['confirm' => __('Eliminar {0}?', $venta->idventas), 'class' => 'btn btn-danger bg-redrose','escape' => false]) ?>
 
 
                                         </td>

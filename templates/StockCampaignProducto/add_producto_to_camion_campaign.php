@@ -17,6 +17,10 @@ echo $this->element('sidebar');
 
             <div class="row justify-content-center">
                 <div class="col-xl-11 col-lg-11 col-md-11 col-sm-11">
+                    <div class="alert alert-warning" role="alert">
+                        <h4 class="alert-heading"><i class="fas fa-info-circle nav-icon"></i> Información</h4>
+                        <p>Ten en cuenta el Stock puede estar limitado dado que ya has asignado el Producto a otros Camiones.</p>
+                    </div>
 
                     <div class="card">
                         <div class="card-header" style="position: relative;">
@@ -47,15 +51,13 @@ echo $this->element('sidebar');
                                 <tbody>
 
                                 <?php foreach ($productos as $producto): ?>
+                                   <?php if(!empty($producto->stock_producto)):  ?>
+
                                     <tr>
-
-
                                         <td class="dt-center align-middle">
                                             <img src="data:image/png;base64, <?=h($producto->image)?>" alt="Sin Imagen"
                                                  class="mg-fluid img-responsive rounded product-image-table"/>
-
                                         </td>
-
 
                                         <td class="dt-center align-middle"><?= h($producto->name . ' ' .
                                                 $producto->content . '(' . $producto->unidad . ')') ?></td>
@@ -76,12 +78,11 @@ echo $this->element('sidebar');
                                         </td>
                                         <td class="dt-center align-middle">
                                             <?= h($producto->subcategory->name) ?>
-
                                             <?php if(!empty($producto->precios)):  ?>
-                                        <td class="dt-center align-middle"><?= h($producto->precios[0]->precio) ?></td>
-                                    <?php else: ?>
-                                        <td class="dt-center align-middle text-danger"><?= h('Sin Datos') ?></td>
-                                    <?php endif;?>
+                                                <td class="dt-center align-middle"><?= h($producto->precios[0]->precio) ?></td>
+                                            <?php else: ?>
+                                                <td class="dt-center align-middle text-danger"><?= h('Sin Datos') ?></td>
+                                            <?php endif;?>
 
                                         <?php if(!empty($producto->descuentos)):  ?>
                                             <td class="dt-center align-middle"><?= h($producto->descuentos[0]->precio) ?></td>
@@ -97,13 +98,17 @@ echo $this->element('sidebar');
 
 
                                         <td class="actions align-middle" style="text-align: center">
-                                            <?= $this->Html->link($this->Html->tag('span', '', ['class' => 'fas fa-plus', 'aria-hidden' => 'true']),
-                                                ['action' => 'add', $producto->idproductos, $idstock_camion_campaign, $idcampaign, $producto->stock_producto->stock,
-                                                    $id_camion], ['class' => 'btn bg-teal', 'escape' => false]) ?>
+                                              <?php if(!empty($producto->precios)):  ?>
+                                                <?= $this->Html->link($this->Html->tag('span', '', ['class' => 'fas fa-plus', 'aria-hidden' => 'true']),
+                                                    ['action' => 'add', $producto->idproductos, $idstock_camion_campaign, $idcampaign, $producto->stock_producto->stock,
+                                                        $id_camion], ['class' => 'btn bg-teal', 'escape' => false]) ?>
+                                              <?php endif;?>
                                         </td>
 
 
                                     </tr>
+
+                                    <?php endif;?>
                                 <?php endforeach; ?>
                                 </tbody>
                             </table>

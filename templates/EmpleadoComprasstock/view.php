@@ -97,32 +97,26 @@ echo $this->element('sidebar');
 
 
 
-
-
-
                                         <?php
                                             $caption = "<i class='fas fa-sync'></i>"; //defines the icon
                                             $options = ['escapeTitle' => false,'class' => 'btn btn-warning', 'type' => 'button',
                                                 'onclick' => 'uploadProductByEmpleado(this)', 'attr' => $producto->idempleado_comprastock]; //defines the submit button options
                                         ?>
-
-                                          <?php if(!$producto->status):  ?>
-                                              <td class="actions align-middle" style="text-align: center">
-                                                  <div class="d-flex justify-content-around gap-2">
-                                                      <?= $this->Form->button($caption, $options) ?>
-                                                  </div>
-                                              </td>
-                                            <?php else: ?>
-                                                <td class="actions align-middle" style="text-align: center">
-
-
-                                                    <?= $this->Html->link($this->Html->tag('span', '', ['class' => 'fas fa-edit', 'aria-hidden' => 'true']),
-                                                        ['controller' => 'EmpleadoComprasstock' ,'action' => 'edit', $producto->idempleado_comprastock, $producto->comprasstock_idcomprasstock],
-                                                        ['class' => 'btn bg-lightpurple', 'escape' => false]) ?>
-                                                </td>
-                                            <?php endif;?>
-
-
+                                        <?php if($producto->compras_stock->is_closed == 0):  ?>
+                                              <?php if(!$producto->status):  ?>
+                                                  <td class="actions align-middle" style="text-align: center">
+                                                      <div class="d-flex justify-content-around gap-2">
+                                                          <?= $this->Form->button($caption, $options) ?>
+                                                      </div>
+                                                  </td>
+                                                <?php else: ?>
+                                                  <td class="actions align-middle" style="text-align: center">
+                                                  </td>
+                                                <?php endif;?>
+                                        <?php else: ?>
+                                            <td class="actions align-middle" style="text-align: center">
+                                            </td>
+                                        <?php endif;?>
 
                                     </tr>
                                 <?php endforeach; ?>

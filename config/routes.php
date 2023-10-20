@@ -23,6 +23,7 @@
 
 use Cake\Routing\Route\DashedRoute;
 use Cake\Routing\RouteBuilder;
+use Cake\Routing\Router;
 
 return static function (RouteBuilder $routes) {
     /*
@@ -52,6 +53,7 @@ return static function (RouteBuilder $routes) {
          */
         $builder->connect('/', ['controller' => 'Index', 'action' => 'index']);
 
+
         /*
          * ...and connect the rest of 'Pages' controller's URLs.
          */
@@ -72,6 +74,56 @@ return static function (RouteBuilder $routes) {
          */
         $builder->fallbacks();
     });
+
+    $routes->connect(
+        '/API/index',
+        ['prefix' => 'API', 'controller' => 'Api', 'action' => 'index']
+    );
+
+    $routes->connect(
+        '/API/loginApp',
+        ['prefix' => 'API', 'controller' => 'Api', 'action' => 'loginApp']
+    );
+
+    $routes->connect(
+        '/API/getCompras',
+        ['prefix' => 'API', 'controller' => 'Api', 'action' => 'getCompras']
+    );
+
+    $routes->connect(
+        '/API/setCompras',
+        ['prefix' => 'API', 'controller' => 'Api', 'action' => 'setCompras']
+    );
+
+    $routes->connect(
+        '/API/addVenta',
+        ['prefix' => 'API', 'controller' => 'Api', 'action' => 'addVenta']
+    );
+
+     $routes->connect(
+         '/API/getCampaignUser',
+         ['prefix' => 'API', 'controller' => 'Api', 'action' => 'getCampaignUser']
+     );
+
+    $routes->connect(
+        '/API/getProductos',
+        ['prefix' => 'API', 'controller' => 'Api', 'action' => 'getProductos']
+    );
+
+    $routes->connect(
+        '/API/getCategories',
+        ['prefix' => 'API', 'controller' => 'Api', 'action' => 'getCategories']
+    );
+
+    $routes->connect(
+        '/API/getSubcategories',
+        ['prefix' => 'API', 'controller' => 'Api', 'action' => 'getSubcategories']
+    );
+
+    $routes->connect(
+        '/API/getProveedores',
+        ['prefix' => 'API', 'controller' => 'Api', 'action' => 'getProveedores']
+    );
 
     /*
      * If you need a different set of middleware or none at all,

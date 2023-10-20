@@ -603,16 +603,19 @@ async function aprobarProductoCompra(button)
 
         let cantidad = parseInt(  cantidad_input.innerText === '' ||  cantidad_input.innerText === undefined ? 0 :   cantidad_input.innerText);
 
+        if (isNaN(precio)){
+            alert('El Precio No puede estar vacio');
+        } else {
+            showButtonUpdateCompra(button);
+            //realizo el envio del producto
+            const data = await aprobarProductoDB(idempleado_comprastock, idcomprastock, idproducto, idproductos_comprasstock, cantidad, precio, descuento);
 
-        showButtonUpdateCompra(button);
-        //realizo el envio del producto
-        const data = await aprobarProductoDB(idempleado_comprastock, idcomprastock, idproducto, idproductos_comprasstock, cantidad, precio, descuento);
+            if (data.result){
+                setTimeout(function (){
+                    location.reload();
 
-        if (data.result){
-            setTimeout(function (){
-                location.reload();
-
-            }, 3000);
+                }, 3000);
+            }
         }
 
 

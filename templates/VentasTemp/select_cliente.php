@@ -36,7 +36,7 @@
 
                                 </div>
                                 <div class="pull-left">
-                                    <?= $this->Html->link("Volver", ['controller' => 'Campaign', 'action' => 'config'], ['class' => 'btn bg-redrose']) ?>
+                                    <?= $this->Html->link("Volver", ['controller' => 'VentasTemp', 'action' => 'viewVentasNotFinish', $id_campaign], ['class' => 'btn bg-redrose']) ?>
                                 </div>
 
                             </div>

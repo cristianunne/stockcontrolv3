@@ -10,7 +10,7 @@ echo $this->element('sidebar');
         <div class="container-fluid p-5">
 
             <div class="row justify-content-center">
-                <?php foreach ($camiones as $camion): ?>
+                <?php if($camiones != null): ?>
                     <div class="col-md-3">
                         <div class="card card-primary card-outline">
                             <div class="card-body box-profile">
@@ -20,21 +20,29 @@ echo $this->element('sidebar');
                                     </div>
 
                                 </div>
-                                <h3 class="profile-username text-center"><?= h($camion->nombre) ?> </h3>
-                                <p class="text-muted text-center"><?= h($camion->marca) ?></p>
+                                <h3 class="profile-username text-center"><?= h($camiones->nombre) ?> </h3>
+                                <p class="text-muted text-center"><?= h($camiones->marca) ?></p>
                                 <ul class="list-group list-group-unbordered mb-3">
                                     <li class="list-group-item">
-                                        <b>Matricula: </b> <a class="float-right"><?= h($camion->matricula) ?></a>
+                                        <b>Matricula: </b> <a class="float-right"><?= h($camiones->matricula) ?></a>
                                     </li>
 
+                                    <div class="center">
+                                        <?=  $this->Html->link(
+                                            '<i class="fas fa-list"></i> Stock',
+                                            ['controller' => 'Campaign', 'action' => 'stockCamionCampaign',
+                                                $campaign->stock_camion_campaign[0]->idstock_camion_campaign,
+                                                $camiones->idcamiones, $campaign->idcampaign],
+                                            ['class' => 'btn btn-block btn-primary', 'escape' => false]) ?>
+                                    </div>
+
                                 </ul>
-                                <a href="#" class="btn btn-primary btn-block"><b>Campañas</b></a>
                             </div>
 
                         </div>
 
                     </div>
-                <?php endforeach; ?>
+                <?php endif; ?>
 
 
             </div>

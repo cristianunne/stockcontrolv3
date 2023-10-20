@@ -24,14 +24,14 @@ class ProductosController extends AppController
         $this->Authentication->addUnauthenticatedActions(['login']);
 
         $user = $this->Authentication->getIdentity();
-        if(isset($user) and $user->role === 'user')
+        if(isset($user) and $user->role === 'empleado')
         {
-            if (!in_array($this->request->getParam('action'), ['index', 'edit', 'viewConfig', 'getSubCategoriesByCategory',
+            if (!in_array($this->request->getParam('action'), ['index', 'getSubCategoriesByCategory',
                 'getProductById', 'addProductoToCartSession', 'getPricesByProduct', 'getDescuentosByProduct', 'deleteDescuentoById',
                 'deleteProductFromCartSession'])) {
                 //$this->redirect($this->request->referer());
                 $this->Flash->error('Usted no esta autorizado para acceder al Sitio Solicitado');
-                $this->redirect(['controller' => 'Index', 'action' => 'index']);
+                $this->redirect($this->request->referer());
             }
 
         }
@@ -379,7 +379,6 @@ class ProductosController extends AppController
                 }, 'StockProductos' => ['StockEvents']]
             ]);
 
-            //debug($producto);
 
             //traigo los precios
             $precios = $this->getPricesByProduct($id);
@@ -451,6 +450,33 @@ class ProductosController extends AppController
         }
 
         return $this->json(['result' => false]);
+
+
+    }
+
+    public function getProductById2($id_producto = null)
+    {
+
+        //return $this->json(['result' => false]);
+
+        try{
+            $producto =$this->Productos->get($id_producto);
+
+            return $producto;
+
+
+
+        } catch (InvalidPrimaryKeyException $e){
+            return false;
+
+        } catch (RecordNotFoundException $e){
+            return false;
+        }
+        catch (Exception $e){
+            return false;
+        }
+
+        return false;
 
 
     }

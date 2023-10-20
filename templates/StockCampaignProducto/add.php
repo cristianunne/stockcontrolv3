@@ -4,6 +4,10 @@
     <div class="content">
         <?= $this->Flash->render() ?>
         <div class="container">
+            <div class="alert alert-warning" role="alert">
+                <h4 class="alert-heading"><i class="fas fa-info-circle nav-icon"></i> Información</h4>
+                <p>Ten en cuenta el Stock puede estar limitado dado que ya has asignado el Producto a otros Camiones.</p>
+            </div>
             <div class="card">
                 <div class="card-header" style="position: relative;">
                     <h3 class="card-title">Agregar Producto al Stock del Camion</h3>

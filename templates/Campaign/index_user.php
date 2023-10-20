@@ -104,6 +104,60 @@
 
                 <?php endif; ?>
 
+            <?php if ($is_campaign_active): ?>
+            <div class="col-md-7 col-sm-7 p-5">
+                <row class="row">
+                    <div class="col-md-4 col-sm-4">
+                        <div class="small-box bg-gradient-secondary">
+                            <div class="inner">
+                                <h4><sup style="font-size: 20px">$ </sup><?= h(number_format($resultados->subtotal,2,",",".")) ?></h4>
+                                <p style="margin-right: 50%;">Subtotal</p>
+
+                            </div>
+                            <div class="icon">
+                                <i class="ion ion-stats-bars"></i>
+                            </div>
+                            <a href="#" class="small-box-footer">
+                                <i class="fas fa-arrow-circle-right"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4 col-sm-4">
+                        <div class="small-box bg-gradient-yellow">
+                            <div class="inner">
+                                <h4><sup style="font-size: 20px">$ </sup><?= h(number_format($resultados->descuentos,2,",",".")) ?></h4>
+
+                                <p style="margin-right: 55px;">Descuentos</p>
+                            </div>
+                            <div class="icon">
+                                <i class="ion ion-stats-bars"></i>
+                            </div>
+                            <a href="#" class="small-box-footer">
+                                <i class="fas fa-arrow-circle-right"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="col-md-4 col-sm-4">
+                        <div class="small-box bg-gradient-teal">
+                            <div class="inner">
+                                <h4><sup style="font-size: 20px">$ </sup><?= h(number_format($resultados->total,2,",",".")) ?></h4>
+                                <p style="margin-right: 55px;">Total</p>
+                            </div>
+                            <div class="icon">
+                                <i class="ion ion-stats-bars"></i>
+                            </div>
+                            <a href="#" class="small-box-footer">
+                                <i class="fas fa-arrow-circle-right"></i>
+                            </a>
+                        </div>
+                    </div>
+                </row>
+            </div>
+
+            <?php endif; ?>
+
+
                 <div class="col-xl-12 col-md-12 col-sm-12 p-2 pt-2">
                     <div>
                         <div class="card" style="min-height: 670px;">

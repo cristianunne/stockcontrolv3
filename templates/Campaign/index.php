@@ -79,7 +79,17 @@
                                     ['class' => 'btn btn-danger mr-3', 'escape' => false]) ?>
                             </div>
                         </div>
-                        <?php endif;?>
+                        <?php else: ?>
+                        <div class="card-footer">
+                            <div class="pull-right">
+                                <?=  $this->Html->link(
+                                    '<i class="fas fa-plus"></i> Nueva Campaña',
+                                    ['controller' => 'Campaign' ,'action' => 'add'],
+                                    ['class' => 'btn btn-success', 'escape' => false]) ?>
+                            </div>
+                        </div>
+                        <?php endif; ?>
+
                     </div>
 
                 </div>

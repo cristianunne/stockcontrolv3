@@ -30,6 +30,12 @@ echo $this->element('sidebar');
 
                             <table class="table mt-2 table-borderless">
                                 <tbody>
+
+                                <tr>
+                                    <th class="align-middle w-25" scope="row">Cliente:</th>
+                                    <td class="align-middle" id="td_comercio"><?= h($ventas_temp->cliente->apellido . ' '.
+                                            $ventas_temp->cliente->nombre) ?></td>
+                                </tr>
                                 <tr>
                                     <th class="align-middle w-25" scope="row">Vendedor:</th>
                                     <td class="align-middle" id="td_comercio"><?= h($ventas_temp->user->firstname . ' '.
@@ -38,18 +44,6 @@ echo $this->element('sidebar');
                                 <tr>
                                     <th class="align-middle" scope="row" class="w-25">Fecha</th>
                                     <td class="dt-center"><?= h($ventas_temp->created->format('d-m-Y')) ?></td>
-                                </tr>
-                                <tr>
-                                    <th class="align-middle" scope="row" class="w-25">Empleado Asignado:</th>
-
-                                    <?php if(isset($ventas_temp->clientes_idclientes)):  ?>
-                                        <td class="dt-center align-middle"><?= h($ventas_temp->clientes_idclientes . ' ' . $ventas_temp->clientes_idclientes) ?></td>
-                                    <?php else:?>
-                                        <td></td>
-                                    <?php endif; ?>
-
-
-
                                 </tr>
 
                                 <tr>
@@ -140,9 +134,11 @@ echo $this->element('sidebar');
                             <div class="card-body" >
 
                                     <?php if($cant_productos > 0):  ?>
-                                        <?= $this->Form->postLink(__($this->Html->tag('span', ' Vender', ['class' => 'fas fa-check', 'aria-hidden' => 'true'])),
-                                            ['controller' => 'Ventas', 'action' => 'addByVentaTemp', $id_venta_temp],
-                                            ['confirm' => __('Concretar Venta?'), 'class' => 'btn btn-warning pull-right','escape' => false]) ?>
+
+
+                                        <?= $this->Html->link($this->Html->tag('span', ' Vender', ['class' => 'fas fa-check', 'aria-hidden' => 'true']),
+                                            ['controller' => 'VentasTemp' ,'action' => 'selectTypePay', $id_venta_temp],
+                                            ['class' => 'btn btn-warning pull-right', 'escape' => false]) ?>
                                     <?php else: ?>
                                         <td class="dt-center align-middle text-danger"><?= h('Agregue Productos al Pedido') ?></td>
                                     <?php endif;?>

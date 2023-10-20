@@ -80,10 +80,14 @@ class PreciosController extends AppController
         }
         $precio = $this->Precios->newEmptyEntity();
 
+        //debug($id_productos);
+
         //la compra tuvo que haber sido aprobada y estockeada
         $productos_compras_model = $this->getTableLocator()->get('ProductosComprasstock');
 
         $last_price = $productos_compras_model->find('GetLastPrecioCompra', ['productos_idproductos' => $id_productos])->first();
+
+        //debug($last_price);
 
         $last_price = isset($last_price->precio) ? $last_price->precio : 0;
 
@@ -138,7 +142,7 @@ class PreciosController extends AppController
 
 
         }
-
+        $this->set(compact('id_productos'));
         $this->set(compact('precio'));
 
     }

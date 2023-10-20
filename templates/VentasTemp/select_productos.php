@@ -25,6 +25,7 @@ echo $this->element('sidebar');
                             <!-- /.card-tools -->
                         </div>
                         <!-- /.card-header -->
+                        <?php if(isset($productos->stock_campaign_producto)):?>
                         <div class="card-body table-responsive">
                             <table id="tabladata" class="table table-bordered table-hover dataTable">
                                 <thead>
@@ -37,8 +38,6 @@ echo $this->element('sidebar');
                                     <th scope="col"><?= $this->Paginator->sort('Subcategoria') ?></th>
                                     <th scope="col"><?= $this->Paginator->sort('Stock') ?></th>
                                     <th scope="col" class="actions"><?= __('Acciones') ?></th>
-
-
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -80,23 +79,34 @@ echo $this->element('sidebar');
                                         <?php if(!empty($prod->cantidad)):  ?>
                                             <td class="dt-center align-middle"><?= h($prod->cantidad) ?></td>
                                         <?php else: ?>
-                                            <td class="dt-center align-middle text-danger"><?= h('Sin Datos') ?></td>
+                                            <td class="dt-center align-middle text-danger"><?= h('Sin Stock') ?></td>
                                         <?php endif;?>
 
-
+                                        <?php if(!empty($prod->cantidad)):  ?>
                                         <td class="actions align-middle" style="text-align: center">
                                             <?= $this->Html->link($this->Html->tag('span', '', ['class' => 'fas fa-plus', 'aria-hidden' => 'true']),
                                                 ['controller' => 'ProductosVentasTemp', 'action' => 'add', $ventas_temp->idventas, $prod->producto->idproductos],
                                                 ['class' => 'btn bg-teal', 'escape' => false]) ?>
                                         </td>
 
+                                        <?php else: ?>
+                                            <td class="dt-center align-middle text-danger"></td>
+                                        <?php endif;?>
+
 
 
                                     </tr>
                                 <?php endforeach; ?>
+
                                 </tbody>
                             </table>
                         </div>
+                        <?php else: ?>
+                            <div class="alert bg-danger" role="alert">
+                                <h4 class="alert-heading"><i class="fas fa-info-circle nav-icon"></i> Error</h4>
+                                <p>No existen productos cargados en el Stock del Camion.</p>
+                            </div>
+                         <?php endif;?>
                         <!-- /.card-body -->
 
                         <div class="card-footer">

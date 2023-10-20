@@ -38,7 +38,7 @@ echo $this->element('sidebar');
                                     <th scope="col"><?= $this->Paginator->sort('Fecha de Modificación') ?></th>
                                     <th scope="col"><?= $this->Paginator->sort('Descripcion') ?></th>
                                     <th scope="col" class="actions"><?= __('Ver') ?></th>
-                                    <th scope="col" class="actions"><?= __('Acciones') ?></th>
+
 
 
                                 </tr>
@@ -60,18 +60,6 @@ echo $this->element('sidebar');
                                                 ['action' => 'view', $compras->idcompras_stock], ['class' => 'btn bg-teal', 'escape' => false]) ?>
                                         </td>
 
-                                        <td class="actions align-middle" style="text-align: center">
-                                            <div class="d-flex justify-content-around gap-2">
-                                                <?= $this->Html->link($this->Html->tag('span', '', ['class' => 'fas fa-edit', 'aria-hidden' => 'true']),
-                                                    ['controller' => 'Productos' ,'action' => 'edit', $compras->idcompras_stock],
-                                                    ['class' => 'btn bg-lightpurple', 'escape' => false]) ?>
-
-                                                <?= $this->Form->postLink(__($this->Html->tag('span', '', ['class' => 'fas fa-trash-alt', 'aria-hidden' => 'true'])),
-                                                    ['controller' => 'Productos', 'action' => 'delete', $compras->idcompras_stock],
-                                                    ['confirm' => __('Eliminar {0}?', $compras->idcompras_stock),
-                                                        'class' => 'btn btn-danger bg-redrose','escape' => false]) ?>
-                                            </div>
-                                        </td>
 
                                     </tr>
                                 <?php endforeach; ?>
