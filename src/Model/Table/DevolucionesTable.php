@@ -62,7 +62,6 @@ class DevolucionesTable extends Table
             'bindingKey' => 'users_idusers', //actual pedidos_idpedidos
             'joinType' => 'INNER'
         ]);
-
     }
 
     /**
@@ -100,6 +99,13 @@ class DevolucionesTable extends Table
             ->integer('users_idusers')
             ->requirePresence('users_idusers', 'create')
             ->notEmptyString('users_idusers');
+
+        $validator
+            ->integer('id_productos_ventas')
+            ->allowEmptyString('id_productos_ventas');
+
+        $validator
+            ->allowEmptyString('is_stock');
 
         return $validator;
     }

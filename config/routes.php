@@ -91,8 +91,8 @@ return static function (RouteBuilder $routes) {
     );
 
     $routes->connect(
-        '/API/setCompras',
-        ['prefix' => 'API', 'controller' => 'Api', 'action' => 'setCompras']
+        '/API/setComprasEmpleado',
+        ['prefix' => 'API', 'controller' => 'Api', 'action' => 'setComprasEmpleado']
     );
 
     $routes->connect(
@@ -124,6 +124,87 @@ return static function (RouteBuilder $routes) {
         '/API/getProveedores',
         ['prefix' => 'API', 'controller' => 'Api', 'action' => 'getProveedores']
     );
+
+    $routes->connect(
+        '/API/getClientes',
+        ['prefix' => 'API', 'controller' => 'Api', 'action' => 'getClientes']
+    );
+
+    $routes->connect(
+        '/API/getCamiones',
+        ['prefix' => 'API', 'controller' => 'Api', 'action' => 'getCamiones']
+    );
+
+    $routes->connect(
+        '/API/getProductosForStock',
+        ['prefix' => 'API', 'controller' => 'Api', 'action' => 'getProductosForStock']
+    );
+
+    $routes->connect(
+        '/API/getAsignacionesProductosCamionesCampaign',
+        ['prefix' => 'API', 'controller' => 'Api', 'action' => 'getAsignacionesProductosCamionesCampaign']
+    );
+
+    $routes->connect(
+        '/API/addProductoToStockCamion',
+        ['prefix' => 'API', 'controller' => 'Api', 'action' => 'addProductoToStockCamion']
+    );
+
+    $routes->connect(
+        '/API/getProductosSolicitudesStock',
+        ['prefix' => 'API', 'controller' => 'Api', 'action' => 'getProductosSolicitudesStock']
+    );
+
+    $routes->connect(
+        '/API/editProductosSolicitudesStock',
+        ['prefix' => 'API', 'controller' => 'Api', 'action' => 'editProductosSolicitudesStock']
+    );
+
+    $routes->connect(
+        '/API/deleteProductosSolicitudStock',
+        ['prefix' => 'API', 'controller' => 'Api', 'action' => 'deleteProductosSolicitudStock']
+    );
+
+    $routes->connect(
+        '/API/getProductosStock',
+        ['prefix' => 'API', 'controller' => 'Api', 'action' => 'getProductosStock']
+    );
+
+    $routes->connect(
+        '/API/getCamionesWithoutCurrent',
+        ['prefix' => 'API', 'controller' => 'Api', 'action' => 'getCamionesWithoutCurrent']
+    );
+
+    $routes->connect(
+        '/API/uploadTransferProductoCamion',
+        ['prefix' => 'API', 'controller' => 'Api', 'action' => 'uploadTransferProductoCamion']
+    );
+
+    $routes->connect(
+        '/API/getProductosTransferenciasCamion',
+        ['prefix' => 'API', 'controller' => 'Api', 'action' => 'getProductosTransferenciasCamion']
+    );
+
+    $routes->connect(
+        '/API/acceptTransfersCamion',
+        ['prefix' => 'API', 'controller' => 'Api', 'action' => 'acceptTransfersCamion']
+    );
+
+    $routes->connect(
+        '/API/getProductosTransferenciasByCamion',
+        ['prefix' => 'API', 'controller' => 'Api', 'action' => 'getProductosTransferenciasByCamion']
+    );
+
+    $routes->connect(
+        '/API/deleteProductoTransferenciaCamion',
+        ['prefix' => 'API', 'controller' => 'Api', 'action' => 'deleteProductoTransferenciaCamion']
+    );
+
+    $routes->connect(
+        '/API/getPedidosByUser',
+        ['prefix' => 'API', 'controller' => 'Api', 'action' => 'getPedidosByUser']
+    );
+
 
     /*
      * If you need a different set of middleware or none at all,

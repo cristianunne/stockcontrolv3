@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use Cake\Datasource\Exception\InvalidPrimaryKeyException;
+use Cake\Datasource\Exception\RecordNotFoundException;
 use Cake\Event\EventInterface;
 
 /**
@@ -65,6 +67,47 @@ class SubcategoriesController extends AppController
 
         $this->set(compact('categories'));
         $this->set(compact('sub_categories'));
+    }
+
+    public function edit($id = null)
+    {
+        try{
+
+            $sub_categories =  $this->Subcategories->get($id);
+
+
+            $model_categories = $this->getTableLocator()->get('Categories');
+
+            $categories = $model_categories->find(
+                'list',
+                [
+                    'keyField' => 'idcategories',
+                    'valueField' => 'name',
+                    'order' => ['name' => 'ASC'],
+                ]
+            )->toArray();
+            $this->set(compact('categories'));
+
+            if ($this->request->is(['patch', 'post', 'put'])) {
+                $sub_categories = $this->Subcategories->patchEntity($sub_categories, $this->request->getData());
+                if ($this->Subcategories->save($sub_categories)) {
+                    $this->Flash->success(__('La Subcategoria se almaceno correctamente.'));
+
+                    return $this->redirect(['action' => 'index']);
+                }
+                $this->Flash->error(__('La Subcategoria no se pudo guardar. Intente nuevamente.'));
+
+            }
+            $this->set(compact('sub_categories'));
+        } catch (InvalidPrimaryKeyException $e){
+            $this->Flash->error(__('Error al almacenar los cambios. Intenta nuevamente'));
+
+        } catch (RecordNotFoundException $e){
+            $this->Flash->error(__('Error al almacenar los cambios. Intenta nuevamente'));
+        }
+        catch (Exception $e){
+            $this->Flash->error(__('Error al almacenar los cambios. Intenta nuevamente'));
+        }
     }
 
     public function getSubCategoriesByCategoryList($category = null)

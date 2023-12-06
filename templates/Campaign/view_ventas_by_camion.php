@@ -232,6 +232,7 @@
                                     <thead>
                                     <tr>
                                         <th scope="col"><?= $this->Paginator->sort('N°') ?></th>
+                                        <th scope="col"><?= $this->Paginator->sort('Tipo Pago') ?></th>
                                         <th scope="col"><?= $this->Paginator->sort('Vendedor') ?></th>
                                         <th scope="col"><?= $this->Paginator->sort('Cliente') ?></th>
                                         <th scope="col"><?= $this->Paginator->sort('Fecha') ?></th>
@@ -249,6 +250,11 @@
                                         <tr>
 
                                             <td class="dt-center font-weight-bold align-middle"><?= h($ventas->idventas) ?></td>
+                                            <?php if($ventas->cuenta_corriente == 0): ?>
+                                                <td class="dt-center font-weight-bold align-middle"><?= h('Efectivo') ?></td>
+                                            <?php else: ?>
+                                                <td class="dt-center font-weight-bold align-middle"><?= h('Crédito') ?></td>
+                                            <?php endif; ?>
                                             <td class="dt-center align-middle"><?= h($ventas->user->firstname . ' ' . $ventas->user->lastname) ?></td>
                                             <td class="dt-center align-middle"><?= h($ventas->cliente->apellido . ' ' . $ventas->cliente->nombre) ?></td>
                                             <td class="dt-center align-middle"><?= h($ventas->created->format('d-m-Y')) ?></td>

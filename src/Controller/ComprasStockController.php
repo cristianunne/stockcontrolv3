@@ -105,6 +105,8 @@ class ComprasStockController extends AppController
             ]);
 
 
+
+
             //puedo consultar la tabla del empleado y ver si hizo envios, si los hizo pongo un cartel de advertencia
 
             $model_empleado_comprasstock = $this->getTableLocator()->get('EmpleadoComprasstock');
@@ -278,6 +280,74 @@ class ComprasStockController extends AppController
 
             if ($productos_compras_stock->updateCompraToOk($idproductos_comprasstock, $idempleado_comprastock, $cantidad, $precio, $descuento, true)) {
                 return $this->json(['result' => true]);
+            }
+
+            return $this->json(['result' => false]);
+        }
+
+    }
+
+    public function desaprobarCompraNew()
+    {
+        if ($this->request->is('POST')) {
+
+
+            $array_data = $this->request->getData('array_data');
+            //debug($array_data);
+            $idcomprastock = $array_data['idcomprastock'];
+            $idempleado_comprastock = $array_data['idempleado_comprastock'];
+
+            try {
+
+                $model_empleado_comprasstock = $this->getTableLocator()->get('EmpleadoComprasstock');
+
+                $producto_compra_stock = $model_empleado_comprasstock->get($idempleado_comprastock);
+
+                $producto_compra_stock->status = 0;
+
+                //cambio el estado de compra stock para
+                //PAra ello cuento que no hayas envios en esta compra
+
+
+
+                $conn = ConnectionManager::get('default');
+                $conn->begin();
+
+                if($model_empleado_comprasstock->save($producto_compra_stock)){
+
+                    $productos_comprados = $model_empleado_comprasstock->find('all', [])
+                        ->where(['comprasstock_idcomprasstock' => $idcomprastock, 'status' => 1])->toArray();
+
+                    if(count($productos_comprados) <= 0){
+
+                        $compra_stock = $this->ComprasStock->get($idcomprastock);
+                        $compra_stock->has_sent = 0;
+                        if($this->ComprasStock->save($compra_stock)){
+                            $conn->commit();
+                            return $this->json(['result' => true]);
+                        }
+
+                    }
+
+                    $conn->commit();
+                    return $this->json(['result' => true]);
+                }
+
+                $conn->rollback();
+                return $this->json(['result' => false]);
+
+
+            } catch (InvalidPrimaryKeyException $e) {
+                //$this->redirect($this->request->referer());
+                return $this->json(['result' => false]);
+
+            } catch (RecordNotFoundException $e) {
+                //$this->redirect($this->request->referer());
+                return $this->json(['result' => false]);
+            } catch (Exception $e) {
+                //debug($e);
+                //$this->redirect($this->request->referer());
+                return $this->json(['result' => false]);
             }
 
             return $this->json(['result' => false]);

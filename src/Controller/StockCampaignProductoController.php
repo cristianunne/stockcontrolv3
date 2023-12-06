@@ -283,6 +283,27 @@ class StockCampaignProductoController extends AppController
     }
 
 
+    public function updateStockCamionById($idstock_campaign_producto = null, $cantidad = null)
+    {
+        try {
+
+            $stock_camion_producto = $this->StockCampaignProducto->get($idstock_campaign_producto);
+            $stock_camion_producto->cantidad = $stock_camion_producto->cantidad - $cantidad;
+
+            if ($this->StockCampaignProducto->save($stock_camion_producto)){
+                return true;
+            }
+            return false;
+
+        } catch (InvalidPrimaryKeyException $e) {
+            return false;
+
+        } catch (RecordNotFoundException $e) {
+            return false;
+        } catch (Exception $e) {
+            return false;
+        }
+    }
 
     public function updateStockCamion($idstock_camion_campaign = null, $id_producto = null, $cantidad = null)
     {

@@ -50,11 +50,27 @@ return [
             'url' => env('DATABASE_URL', null),
         ],
 
+    /*'Datasources' => [
+        'default' => [
+            'className' => 'Cake\Database\Connection',
+            'driver' => 'Cake\Database\Driver\Mysql',
+            'persistent' => false,
+            'host' => '156.67.73.151',
+            'port' => '3306',
+            'username' => 'u805137499_simm',
+            'password' => '2XPZ88Qwy$A$vr#',
+            'database' => 'u805137499_simm',
+            'encoding' => 'utf8mb4',
+            'timezone' => 'UTC',
+            'cacheMetadata' => true,
+            'url' => env('DATABASE_URL', null),
+        ],*/
+
 
         /*
          * The test connection is used during the test suite.
          */
-        'test' => [
+        /*'test' => [
             'host' => 'localhost',
             //'port' => 'non_standard_port_number',
             'username' => 'my_app',
@@ -62,7 +78,7 @@ return [
             'database' => 'test_myapp',
             //'schema' => 'myapp',
             'url' => env('DATABASE_TEST_URL', 'sqlite://127.0.0.1/tests.sqlite'),
-        ],
+        ],*/
     ],
 
     /*

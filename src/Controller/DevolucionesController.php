@@ -73,6 +73,8 @@ class DevolucionesController extends AppController
                         $devoluciones->descuento_unidad = $productos_ventas->descuento_unidad;
                         $devoluciones->ventas_idventas = $productos_ventas->ventas_idventas;
                         $devoluciones->users_idusers = $this->Authentication->getIdentity()->idusers;
+                        $devoluciones->id_productos_ventas = $id_productos_ventas;
+                        $devoluciones->is_stock = $is_stock;
 
                         $ventas_controller = new VentasController();
                         if ($ventas_controller->modifiedByDevolucion($devoluciones->ventas_idventas, $devoluciones->productos_idproductos, $cantidad))
@@ -80,17 +82,22 @@ class DevolucionesController extends AppController
                             //si esta ok agrego a las devoluciones
                             if($this->Devoluciones->save($devoluciones)){
 
-                                if($is_stock){
+                                if($is_stock) {
+
                                     $stock_controller = new StockProductosController();
-                                    $stock_controller->updateStockByDevolucion($productos_ventas->productos_idproductos, $cantidad);
+                                    if ($stock_controller->updateStockByDevolucion($productos_ventas->productos_idproductos, $cantidad))
+                                    {
+                                        $this->Flash->success(__('Se ha concretado la Devolución correctamente.'));
+                                        $conn->commit();
 
-
+                                        return $this->redirect(['controller' => 'ventas', 'action' => 'view', $productos_ventas->ventas_idventas]);
+                                    }
                                 }
 
-
                                 $this->Flash->success(__('Se ha concretado la Devolución correctamente.'));
+                                $conn->commit();
+                                return $this->redirect(['controller' => 'ventas', 'action' => 'view', $productos_ventas->ventas_idventas]);
 
-                                //$conn->commit();
                             } else {
                                 $this->Flash->error(__('La devolución no pudo realizarse. Intente nuevamente.'));
                             }
@@ -134,6 +141,100 @@ class DevolucionesController extends AppController
         $this->set(compact('id_venta'));
         $this->set(compact('devolucion'));
     }
+
+    public function deleteDevolucion($id_devolucion = null)
+    {
+        $this->autoRender = false;
+
+        try{
+            //devuelvo y luego elimino
+
+            $devolucion = $this->Devoluciones->get($id_devolucion);
+
+            $producto_venta_model = $this->getTableLocator()->get('ProductosVentas');
+
+            $producto_venta = $producto_venta_model->get($devolucion->id_productos_ventas);
+
+            $producto_venta->cantidad =  $producto_venta->cantidad + $devolucion->cantidad;
+
+            //necesito tambien la venta
+            $ventas_model = $this->getTableLocator()->get('Ventas');
+
+
+            $venta = $ventas_model->get($devolucion->ventas_idventas);
+
+            $venta->subtotal = $venta->subtotal + ($devolucion->cantidad * $devolucion->precio_unidad);
+            $venta->descuentos = $venta->descuentos + ($devolucion->descuentos * $devolucion->descuento_unidad);
+
+            $venta->total = $venta->subtotal - $venta->descuentos - $venta->descuento_general;
+
+            //traigo el stock del producto y actualizo
+
+            $stock_productos_model = $this->getTableLocator()->get('StockProductos');
+
+            $stock_productos = $stock_productos_model->find('all', [])
+            ->where(['productos_idproductos' => $devolucion->productos_idproductos])->first();
+
+
+
+            $conn = ConnectionManager::get('default');
+            $conn->begin();
+
+            if($ventas_model->save($venta)){
+
+                if($producto_venta_model->save($producto_venta)){
+
+                    if($devolucion->is_stock == 1){
+
+                        $stock_productos->stock = $stock_productos->stock - $devolucion->cantidad;
+
+                        if($stock_productos_model->save($stock_productos)){
+
+                            if($this->Devoluciones->delete($devolucion)){
+
+                                $conn->commit();
+                                $this->Flash->success(__('Se ha concretado la Devolución correctamente.'));
+
+                                return $this->redirect(['controller' => 'ventas', 'action' => 'view', $venta->idventas]);
+                            }
+                        }
+
+                    } else {
+                        //borro la devolucion
+                        if($this->Devoluciones->delete($devolucion)){
+
+                            $conn->commit();
+                            $this->Flash->success(__('Se ha concretado la Devolución correctamente.'));
+
+                            return $this->redirect(['controller' => 'ventas', 'action' => 'view', $venta->idventas]);
+                        }
+                    }
+
+                }
+            }
+
+            $this->Flash->error(__('La devolución no pudo eliminarse. Intente nuevamente.'));
+            $conn->rollback();
+
+        } catch (InvalidPrimaryKeyException $e){
+            debug('1');
+            debug($e);
+            $this->Flash->error(__('Error al almacenar los cambios. Intenta nuevamente'));
+
+        } catch (RecordNotFoundException $e){
+            debug('2');
+            debug($e);
+            $this->Flash->error(__('Error al almacenar los cambios. Intenta nuevamente'));
+        }
+        catch (Exception $e){
+            debug('3');
+            debug($e);
+            $this->Flash->error(__('Error al almacenar los cambios. Intenta nuevamente'));
+        }
+
+    }
+
+
 
     private function _getProductosByVenta($idventa = null)
     {

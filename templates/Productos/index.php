@@ -97,8 +97,12 @@ echo $this->element('sidebar');
                                                 <?= h($producto->category->name) ?>
 
                                         </td>
-                                        <td class="dt-center align-middle">
-                                            <?= h($producto->subcategory->name) ?>
+
+                                        <?php if(!empty($producto->subcategory)):  ?>
+                                            <td class="dt-center align-middle"><?= h($producto->subcategory->name) ?></td>
+                                            <?php else: ?>
+                                                <td class="dt-center align-middle text-danger"><?= h('') ?></td>
+                                            <?php endif;?>
 
                                         <?php if(!empty($producto->precios)):  ?>
                                             <td class="dt-center align-middle"><?= h($producto->precios[0]->precio) ?></td>
@@ -126,16 +130,18 @@ echo $this->element('sidebar');
 
 
                                         <td class="actions align-middle" style="text-align: center">
-                                            <div class="d-flex justify-content-around gap-2">
-                                                <?= $this->Html->link($this->Html->tag('span', '', ['class' => 'fas fa-edit', 'aria-hidden' => 'true']),
-                                                    ['controller' => 'Productos' ,'action' => 'edit', $producto->idproductos],
-                                                    ['class' => 'btn bg-lightpurple', 'escape' => false]) ?>
+                                                  <?php if($role == 'admin'):  ?>
+                                                        <div class="d-flex justify-content-around gap-2">
+                                                            <?= $this->Html->link($this->Html->tag('span', '', ['class' => 'fas fa-edit', 'aria-hidden' => 'true']),
+                                                                ['controller' => 'Productos' ,'action' => 'edit', $producto->idproductos],
+                                                                ['class' => 'btn bg-lightpurple', 'escape' => false]) ?>
 
-                                                <?= $this->Form->postLink(__($this->Html->tag('span', '', ['class' => 'fas fa-trash-alt', 'aria-hidden' => 'true'])),
-                                                    ['controller' => 'Productos', 'action' => 'delete', $producto->idproductos],
-                                                    ['confirm' => __('Eliminar {0}?', $producto->idproductos),
-                                                        'class' => 'btn btn-danger bg-redrose','escape' => false]) ?>
-                                            </div>
+                                                            <?= $this->Form->postLink(__($this->Html->tag('span', '', ['class' => 'fas fa-trash-alt', 'aria-hidden' => 'true'])),
+                                                                ['controller' => 'Productos', 'action' => 'delete', $producto->idproductos],
+                                                                ['confirm' => __('Eliminar {0}?', $producto->idproductos),
+                                                                    'class' => 'btn btn-danger bg-redrose','escape' => false]) ?>
+                                                        </div>
+                                                  <?php endif;?>
                                         </td>
 
                                     </tr>

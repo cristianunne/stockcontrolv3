@@ -134,22 +134,20 @@ echo $this->element('sidebar');
                                                                 ]) ?>
 
                                                                 <tr style="border-bottom: 1px solid #dedede">
-                                                                    <th scope="row"><?= h($i) ?></th>
-                                                                    <td>
+                                                                    <th scope="row" class="align-middle"><?= h($i) ?></th>
+                                                                    <td class="align-middle">
 
                                                                         <a href="#" class="text-danger" attr="<?= h($producto->idcart_session) ?>"
                                                                            onclick="removeItemFromCartTable(this)">
                                                                             <i class="fas fa-trash-alt"></i></a>
                                                                     </td>
-                                                                    <td>
-                                                                        <?= $this->Html->image($producto->producto->photo,
-                                                                            ['alt' => 'img', 'pathPrefix' => '/img/assets/products/', 'class' => ['img-fluid', 'img-circle'], 'style' => [
-                                                                                'width: 50px'
-                                                                            ]]); ?>
+                                                                    <td class="align-middle">
+                                                                        <img src="data:image/png;base64, <?=h($producto->producto->image)?>" alt="Sin Imagen"
+                                                                             class="img-fluid img-circle" style="width: 50px;"/>
 
                                                                     </td>
-                                                                    <td><strong><?= h($producto->producto->marca) ?>:</strong> <?= h($producto->producto->name) ?></td>
-                                                                    <td>
+                                                                    <td class="align-middle"><strong><?= h($producto->producto->marca) ?>:</strong> <?= h($producto->producto->name) ?></td>
+                                                                    <td class="align-middle">
                                                                         <div class="form-group mb-0">
 
 
@@ -167,8 +165,8 @@ echo $this->element('sidebar');
 
                                                                         </div>
                                                                     </td>
-                                                                    <td>
-                                                                        <div class="form-group">
+                                                                    <td class="align-middle">
+                                                                        <div class="form-group align-middle d-inline">
                                                                             <?php if(!empty($producto->producto->precios)):  ?>
 
                                                                                 <?= $this->Form->number($i.'.precio_unidad', ['class' => 'form-control', 'placeholder' => '',
@@ -189,8 +187,8 @@ echo $this->element('sidebar');
                                                                         </div>
                                                                     </td>
 
-                                                                    <td>
-                                                                        <div class="form-group">
+                                                                    <td class="align-middle">
+                                                                        <div class="form-group align-middle d-inline">
                                                                             <?php if(!empty($producto->producto->descuentos)):  ?>
 
                                                                                 <?= $this->Form->number($i.'.descuento_unidad', ['class' => 'form-control', 'placeholder' => '',
@@ -211,7 +209,7 @@ echo $this->element('sidebar');
                                                                             <?php endif;?>
                                                                         </div>
                                                                     </td>
-                                                                    <td>
+                                                                    <td class="align-middle">
                                                                         <?php
 
                                                                         $total = 0;

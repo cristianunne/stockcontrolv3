@@ -50,7 +50,7 @@ class ProductosTable extends Table
         $this->hasOne('Subcategories', [
             'foreignKey' => 'idsubcategories',
             'bindingKey' => 'subcategories_idsubcategories', //actual
-            'joinType' => 'INNER'
+            'joinType' => 'LEFT'
         ]);
 
         $this->hasOne('Categories', [
@@ -93,7 +93,19 @@ class ProductosTable extends Table
         $this->hasOne('StockProductos', [
             'foreignKey' => 'productos_idproductos',
             'bindingKey' => 'idproductos', //actual
+            'joinType' => 'INNER'
+        ]);
 
+        $this->hasOne('StockCampaignProducto', [
+            'foreignKey' => 'productos_idproductos',
+            'bindingKey' => 'idproductos', //actual
+            'joinType' => 'INNER'
+        ]);
+
+        $this->hasMany('TransferenciaStock', [
+            'foreignKey' => 'productos_idproductos',
+            'bindingKey' => 'idproductos', //actual
+            'joinType' => 'INNER'
         ]);
 
 

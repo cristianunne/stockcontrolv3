@@ -44,7 +44,6 @@ class StockCampaignProductoTable extends Table
         $this->setPrimaryKey('idstock_campaign_producto');
 
         $this->addBehavior('Timestamp');
-
         $this->hasOne('Productos', [
             'foreignKey' => 'idproductos',
             'bindingKey' => 'productos_idproductos', //actual
@@ -81,6 +80,10 @@ class StockCampaignProductoTable extends Table
 
         $validator
             ->notEmptyString('status');
+
+        $validator
+            ->integer('cant_transfer')
+            ->allowEmptyString('cant_transfer');
 
         return $validator;
     }

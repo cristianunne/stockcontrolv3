@@ -16,6 +16,7 @@ use Cake\ORM\Entity;
  * @property \Cake\I18n\FrozenTime|null $modified
  * @property int $cantidad_initial
  * @property int $status
+ * @property int|null $cant_transfer
  *
  * @property \App\Model\Entity\Producto $producto
  */
@@ -38,6 +39,7 @@ class StockCampaignProducto extends Entity
         'modified' => true,
         'cantidad_initial' => true,
         'status' => true,
+        'cant_transfer' => true,
         'producto' => true,
     ];
 }

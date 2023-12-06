@@ -22,6 +22,8 @@ echo $this->element('sidebar');
 
 
                     <?php if($pedidos->status != \App\Utility\PedidosStatusEnum::COMPLETED):  ?>
+
+                        <?php if($role == 'admin'):  ?>
                         <div class="card card-warning">
                             <div class="card-header">
                                 <h3 class="card-title text-darkgreen">Realizar Venta</h3>
@@ -41,6 +43,7 @@ echo $this->element('sidebar');
                             </div>
                         </div>
 
+
                         <div class="card card-secondary">
                             <div class="card-header">
                                 <h3 class="card-title text-darkgreen">Cambiar Estado del Pedido</h3>
@@ -54,6 +57,7 @@ echo $this->element('sidebar');
 
                             </div>
                         </div>
+                        <?php endif;?>
 
                         <div class="card card-danger">
                             <div class="card-header">

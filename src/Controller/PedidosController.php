@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Utility\PedidosStatusEnum;
+use Cake\Datasource\ConnectionManager;
 use Cake\Datasource\Exception\InvalidPrimaryKeyException;
 use Cake\Datasource\Exception\RecordNotFoundException;
 use Cake\Event\EventInterface;
@@ -44,13 +45,30 @@ class PedidosController extends AppController
     {
 
         $pedidos = $this->Pedidos->find('all', [
-            'contain' => ['Clientes', 'Productos']
+            'contain' => ['Clientes', 'Productos', 'Empleado', 'Users']
         ]);
 
         //debug($pedidos->toArray());
 
         $this->set(compact('pedidos'));
 
+
+    }
+
+    public function indexEmpleado()
+    {
+        $user = $this->Authentication->getIdentity()->idusers;
+        $role =  $this->Authentication->getIdentity()->role;
+
+
+        $pedidos = $this->Pedidos->find('all', [
+            'contain' => ['Clientes', 'Productos', 'Empleado']
+        ])->where(['users_idusers' => $user]);
+
+        //debug($pedidos->toArray());
+
+        $this->set(compact('pedidos'));
+        $this->set(compact('role'));
 
     }
 
@@ -166,6 +184,110 @@ class PedidosController extends AppController
             }
 
 
+        }
+
+    }
+
+
+    public function delete($id)
+    {
+        $this->request->allowMethod(['post', 'delete']);
+
+        try{
+            $clientes =  $this->Pedidos->get($id);
+
+            if ($this->Pedidos->delete($clientes)) {
+                $this->Flash->success(__('El Registro ha sido eliminado.'));
+
+                return $this->redirect(['action' => 'index']);
+            } else {
+                $this->Flash->error(__('El Registro no pudo ser eliminado. Intente nuevamente.'));
+            }
+
+        } catch (InvalidPrimaryKeyException $e){
+            $this->Flash->error(__('El Registro no pudo ser eliminado. Intente nuevamente.'));
+
+        } catch (RecordNotFoundException $e){
+            $this->Flash->error(__('El Registro no pudo ser eliminado. Intente nuevamente.'));
+        }
+        catch (Exception $e){
+            $this->Flash->error(__('El Registro no pudo ser eliminado. Intente nuevamente.'));
+        }
+
+    }
+
+    public function asignar($id_pedido = null)
+    {
+        try{
+            $pedidos =  $this->Pedidos->get($id_pedido);
+
+            $users_model = $this->getTableLocator()->get('Users');
+            $empleados = $users_model->find('list', [
+                'keyField' => 'idusers',
+                'valueField' => function($q){
+                    return $q['firstname'] . ' ' . $q['lastname'];
+                },
+                'order' => ['firstname' => 'ASC'],
+            ])->toArray();
+
+            $this->set(compact('empleados'));
+            $this->set(compact('pedidos'));
+
+            if ($this->request->is(['patch', 'post', 'put'])) {
+
+                $pedidos = $this->Pedidos->patchEntity($pedidos, $this->request->getData());
+                $pedidos->assign = 1;
+
+                if($this->Pedidos->save($pedidos)){
+                    $this->Flash->success(__('EL Pedido fue asignado correctamente.'));
+
+                    return $this->redirect(['action' => 'index']);
+                }
+
+                $this->Flash->error(__('El Pedido no pudo ser actualizado. Intente nuevamente.'));
+
+
+            }
+
+        } catch (InvalidPrimaryKeyException $e){
+            $this->Flash->error(__('El Registro no pudo ser eliminado. Intente nuevamente.'));
+
+        } catch (RecordNotFoundException $e){
+            $this->Flash->error(__('El Registro no pudo ser eliminado. Intente nuevamente.'));
+        }
+        catch (Exception $e){
+            $this->Flash->error(__('El Registro no pudo ser eliminado. Intente nuevamente.'));
+        }
+
+    }
+
+    public function quitarAsignacion($id_pedido = null)
+    {
+        $this->request->allowMethod(['post', 'delete']);
+        try{
+            $pedidos =  $this->Pedidos->get($id_pedido);
+
+            if ($this->request->is(['patch', 'post', 'put'])) {
+
+                $pedidos->empleado_idempleado = null;
+                $pedidos->assign = 0;
+
+                if($this->Pedidos->save($pedidos)){
+                    $this->Flash->success(__('Se quito la asignacion correctamente.'));
+
+                    return $this->redirect(['action' => 'index']);
+                }
+                $this->Flash->error(__('El Pedido no pudo ser actualizado. Intente nuevamente.'));
+
+            }
+        } catch (InvalidPrimaryKeyException $e){
+            $this->Flash->error(__('El Registro no pudo ser eliminado. Intente nuevamente.'));
+
+        } catch (RecordNotFoundException $e){
+            $this->Flash->error(__('El Registro no pudo ser eliminado. Intente nuevamente.'));
+        }
+        catch (Exception $e){
+            $this->Flash->error(__('El Registro no pudo ser eliminado. Intente nuevamente.'));
         }
 
     }
@@ -298,8 +420,6 @@ class PedidosController extends AppController
 
     }
 
-
-
     public function setDescuentoGeneral($id = null)
     {
         if ($id == null)
@@ -387,4 +507,99 @@ class PedidosController extends AppController
         return $total;
 
     }
+
+    public function selectEmpleadoPedidos()
+    {
+
+       $users_controller = new UsersController();
+       $empleados = $users_controller->getEmpleadosList();
+       $this->set(compact('empleados'));
+
+       if($this->request->is('post')){
+
+           //$fecha_inicio = $this->request->getData('fecha_inicio');
+           //$fecha_fin = $this->request->getData('fecha_fin');
+           $users_idusers = $this->request->getData('users_idusers');
+
+           return $this->redirect(['action' => 'printPedidos', $users_idusers]);
+
+       }
+
+
+
+    }
+    public function printPedidos($empleado = null)
+    {
+
+        $users_model= $this->getTableLocator()->get('Users');
+        $empleado_object = $users_model->get($empleado);
+
+        $this->set(compact('empleado_object'));
+
+        $clientes_ids = $this->Pedidos->find('all', [
+            'fields' => ['clientes_idclientes']
+        ])
+            ->where(['status_val' => 0, 'empleado_idempleado' => $empleado])
+        ->distinct(['Pedidos.clientes_idclientes'])
+        ->group(['Pedidos.clientes_idclientes']);
+
+        //traigo las localidades considerando la lista de clientes
+        $model_clientes = $this->getTableLocator()->get('Clientes');
+
+        $localidades = $model_clientes->find('all', [
+            'fields' => ['localidad']
+        ])->where(['idclientes IN' => $clientes_ids])
+        ->distinct(['localidad']);
+
+        $this->set(compact('localidades'));
+
+        $pedidos_ids = $this->Pedidos->find('all', [
+            'fields' => ['idpedidos']
+        ])
+            ->where(['status_val' => 0, 'empleado_idempleado' => $empleado]);
+
+        //productos
+        $prod_pedidos_model = $this->getTableLocator()->get('ProductosPedidos');
+
+
+        $productos_ped = $prod_pedidos_model->find('all', [
+            'contain' => ['ProdPedidos' => ['Categories']]
+        ])->where(['pedidos_idpedidos IN' => $pedidos_ids]);
+
+        //debug($productos_ped->toArray());
+
+        $this->set(compact('productos_ped'));
+
+        $productos_ped_distinct = $prod_pedidos_model->find('all', [
+            'fields' => ['productos_idproductos'],
+            'order' => [
+                'ProdPedidos.categories_idcategories ASC',
+                'ProdPedidos.name ASC',
+            ]
+        ])->where(['pedidos_idpedidos IN' => $pedidos_ids])
+            ->innerJoinWith('ProdPedidos')
+
+            ->distinct(['productos_idproductos']);
+
+        $this->set(compact('productos_ped_distinct'));
+
+
+
+        $conn = ConnectionManager::get('default');
+
+        $query = 'select cli.localidad, prod_ped.productos_idproductos as producto_id, sum(prod_ped.cantidad) as suma from 
+                    pedidos as ped inner join productos_pedidos as prod_ped ON  prod_ped.pedidos_idpedidos = ped.idpedidos 
+                    INNER JOIN clientes as cli ON cli.idclientes = ped.clientes_idclientes
+                    where empleado_idempleado = ? group by cli.localidad, prod_ped.productos_idproductos';
+
+        $productos_sum_loc = $conn->execute($query, [$empleado])
+
+            ->fetchAll('assoc');;
+
+        $this->set(compact('productos_sum_loc'));
+
+
+
+    }
+
 }

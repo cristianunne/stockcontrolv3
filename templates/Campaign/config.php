@@ -145,7 +145,7 @@
                                                 <?=  $this->Html->link(
                                                     '<i class="fas fa-list"></i> Stock',
                                                     ['controller' => 'Campaign', 'action' => 'stockCamionCampaign', $camion->idstock_camion_campaign,
-                                                        $camion->camione->idcamiones, $campaign->idcampaign],
+                                                        $camion->camione->idcamiones, $campaign->idcampaign, $campaign->status],
                                                     ['class' => 'btn btn-block btn-primary', 'escape' => false]) ?>
                                             </div>
                                             <?php endif; ?>

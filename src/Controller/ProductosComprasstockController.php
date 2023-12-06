@@ -57,7 +57,7 @@ class ProductosComprasstockController extends AppController
 
                 $productos_compras->productos_idproductos = $idproducto;
                 $productos_compras->comprasstock_idcomprasstock = $id_compras_stock;
-                $productos_compras->cantidad_pedido = $productos_compras->cantidad;
+                //$productos_compras->cantidad_pedido = $productos_compras->cantidad;
 
                 //debug($productos_compras);
                 if($this->ProductosComprasstock->save($productos_compras)){
@@ -102,7 +102,7 @@ class ProductosComprasstockController extends AppController
 
                     if($this->ProductosComprasstock->save($productos_compras)){
 
-                        $this->Flash->success(__('El Producto se ha agregado correctamente'));
+                        $this->Flash->success(__('El Producto se ha editado correctamente'));
                         return $this->redirect(['controller' => 'ComprasStock', 'action' => 'view', $id_compras_stock]);
                     }
 
@@ -307,7 +307,7 @@ class ProductosComprasstockController extends AppController
     }
 
 
-    public function delete($comprasstock_idcomprasstock = null, $producto_idproducto = null, $idproductos_comprasstock = null)
+    public function delete($comprasstock_idcomprasstock = null, $idproductos_comprasstock = null)
     {
         //al eliminarlo, tengo que eliminar tmb de empleados
         $this->autoRender = false;

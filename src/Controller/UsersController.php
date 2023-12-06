@@ -192,6 +192,22 @@ class UsersController extends AppController
 
     }
 
+    public function getEmpleadosList()
+    {
+
+        $users = $this->Users->find('list', [
+            'keyField' => 'idusers',
+            'valueField' => function($row){
+                return $row['firstname'] . ' ' .$row['lastname'];
+            },
+            'order' => ['firstname' => 'ASC']
+        ])->where(['role LIKE' => 'empleado']);
+
+        return $users->toArray();
+
+    }
+
+
 
     public function loginApp()
     {

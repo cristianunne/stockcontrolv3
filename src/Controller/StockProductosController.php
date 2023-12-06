@@ -31,6 +31,13 @@ class StockProductosController extends AppController
                 $this->redirect(['controller' => 'Index', 'action' => 'index']);
             }
 
+        } elseif (isset($user) and $user->role === 'preventista')
+        {
+            if (!in_array($this->request->getParam('action'), [])) {
+                //$this->redirect($this->request->referer());
+                $this->Flash->error('Usted no esta autorizado para acceder al Sitio Solicitado');
+                $this->redirect($this->request->referer());
+            }
         }
         $this->loadCartProduct();
     }
@@ -296,20 +303,34 @@ class StockProductosController extends AppController
     public function updateStockByDevolucion($id_producto = null, $cantidad = null)
     {
         $stock_producto =  $this->StockProductos->find('all', [])
-            ->where(['productos_idproductos' => $id_producto]);
+            ->where(['productos_idproductos' => $id_producto])->first();
+
+        if ($stock_producto == null){
+
+            return false;
+
+        } else {
 
 
-        if ($stock_producto->toArray() !== null){
+            $model_stock_events = $this->getTableLocator()->get('StockEvents');
+            $stock_event_entity = $model_stock_events->newEmptyEntity();
 
-            $stock_prod_entity =  $this->StockProductos->get($stock_producto->toArray()[0]->idstock_productos, [
-                'contain' => ['StockEvents']
-            ]);
+            $stock_event_entity->categoria = StockEventsEnum::DEVOLUCIONES;
+            $stock_event_entity->stockproductos_id = $stock_producto->idstock_productos;
+            $stock_event_entity->cantidad = $cantidad;
 
-            debug($stock_prod_entity);
+            if ($model_stock_events->save($stock_event_entity)){
 
+                $stock_producto->stock = $stock_producto->stock + $cantidad;
+
+                if($this->StockProductos->save($stock_producto)){
+                    return true;
+                }
+
+            }
+
+            return false;
         }
-
-
     }
 
     public function getStockByProducto($id_producto = null)

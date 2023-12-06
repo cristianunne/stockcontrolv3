@@ -68,6 +68,11 @@
                                     </div>
 
                                     <div class="form-group">
+                                        <?=  $this->Form->label('Telefono: ') ?>
+                                        <?= $this->Form->text('telefono', ['class' => 'form-control', 'placeholder' => 'Telefono', 'required']) ?>
+                                    </div>
+
+                                    <div class="form-group">
                                         <?=  $this->Form->label('Nombre del Comercio: ') ?>
                                         <?= $this->Form->text('shop_name', ['class' => 'form-control', 'placeholder' => 'Nombre del Comercio', 'required']) ?>
                                     </div>

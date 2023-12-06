@@ -29,6 +29,13 @@ class DescuentosController extends AppController
                 $this->redirect(['controller' => 'Index', 'action' => 'index']);
             }
 
+        } elseif (isset($user) and $user->role === 'preventista')
+        {
+            if (!in_array($this->request->getParam('action'), [])) {
+                //$this->redirect($this->request->referer());
+                $this->Flash->error('Usted no esta autorizado para acceder al Sitio Solicitado');
+                $this->redirect($this->request->referer());
+            }
         }
         $this->loadCartProduct();
     }
@@ -79,9 +86,9 @@ class DescuentosController extends AppController
                     }
 
 
-                    $this->Flash->error(__('El Descuento no se pudo guardar. Intente nuevamente.'));
+                    $this->Flash->error(__('El Descuento no se pudo guardar. Intente nuevamente12312312.'));
                 } else {
-                    $this->Flash->error(__('El Descuento no se pudo guardar. Intente nuevamente.'));
+                    $this->Flash->error(__('El Descuento no se pudo guardar. Intente nuevamente44444.'));
                 }
             } else {
 
@@ -107,7 +114,7 @@ class DescuentosController extends AppController
                         return $this->redirect(['controller' => 'Productos', 'action' => 'viewConfig', $id_productos]);
                     }
                 }
-                $this->Flash->error(__('El Descuento no se pudo guardar. Intente nuevamente.'));
+                $this->Flash->error(__('El Descuento no se pudo guardar. Intente nuevamente55555.'));
             }
 
 

@@ -19,11 +19,13 @@ use Cake\ORM\Entity;
  * @property int|null $assign
  * @property int $is_closed
  * @property string|null $hash_control
+ * @property int $has_sent
  *
  * @property \App\Model\Entity\User $Users
  * @property \App\Model\Entity\User $UsersComprador
  * @property \App\Model\Entity\Producto[] $productos
  * @property \App\Model\Entity\EmpleadoComprasstock[] $empleado_comprasstock
+ * @property \App\Model\Entity\ProductosComprasstock[] $productos_comprasstock
  */
 class ComprasStock extends Entity
 {
@@ -47,9 +49,11 @@ class ComprasStock extends Entity
         'assign' => true,
         'is_closed' => true,
         'hash_control' => true,
+        'has_sent' => true,
         'Users' => true,
         'UsersComprador' => true,
         'productos' => true,
         'empleado_comprasstock' => true,
+        'productos_comprasstock' => true,
     ];
 }

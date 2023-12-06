@@ -253,7 +253,7 @@
                                                     <?=  $this->Html->link(
                                                         '<i class="fas fa-list"></i> Stock',
                                                         ['controller' => 'Campaign', 'action' => 'stockCamionCampaign', $camion->idstock_camion_campaign,
-                                                            $camion->camione->idcamiones, $campaign->idcampaign],
+                                                            $camion->camione->idcamiones, $campaign->idcampaign, $campaign->status],
                                                         ['class' => 'btn btn-block btn-primary', 'escape' => false]) ?>
                                                 </div>
                                                 <br>
@@ -265,6 +265,15 @@
                                                         ['class' => 'btn btn-block btn-success', 'escape' => false]) ?>
                                                 </div>
 
+                                                <br>
+                                                <div class="center">
+                                                    <?=  $this->Html->link(
+                                                        '<i class="fas fa-calendar"></i> Ver Ventas Diarias',
+                                                        ['controller' => 'Campaign', 'action' => 'selectFechaVentas', $campaign->idcampaign,
+                                                            $camion->camione->idcamiones],
+                                                        ['class' => 'btn btn-block btn-warning', 'escape' => false]) ?>
+                                                </div>
+
                                             </div>
 
                                         </div>
@@ -274,22 +283,23 @@
                         </div>
 
                     </div>
-
-                    <div class="card card-danger">
-                        <div class="card-header" style="position: relative;">
-                            <h3 class="card-title">Ventas sin Concretar</h3>
-                            <!-- /.card-tools -->
-                        </div>
-                        <div class="card-body">
-                            <div class="pull-right">
-                                <?=  $this->Html->link(
-                                    '<i class="fas fa-search"></i> Ventas',
-                                    ['controller' => 'VentasTemp', 'action' => 'viewVentasNotFinish', $campaign->idcampaign],
-                                    ['class' => 'btn btn-danger mr-3', 'escape' => false]) ?>
+                    <?php if($role == 'admin'): ?>
+                        <div class="card card-danger">
+                            <div class="card-header" style="position: relative;">
+                                <h3 class="card-title">Ventas sin Concretar</h3>
+                                <!-- /.card-tools -->
                             </div>
-                        </div>
+                            <div class="card-body">
+                                <div class="pull-right">
+                                    <?=  $this->Html->link(
+                                        '<i class="fas fa-search"></i> Ventas',
+                                        ['controller' => 'VentasTemp', 'action' => 'viewVentasNotFinish', $campaign->idcampaign],
+                                        ['class' => 'btn btn-danger mr-3', 'escape' => false]) ?>
+                                </div>
+                            </div>
 
-                    </div>
+                        </div>
+                    <?php endif; ?>
 
                 </div>
 

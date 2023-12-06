@@ -195,13 +195,15 @@ echo $this->element('sidebar');
 
 
                                             <td class="actions" style="text-align: center">
-                                                <?= $this->Html->link($this->Html->tag('span', '', ['class' => 'fas fa-edit', 'aria-hidden' => 'true']),
-                                                    ['controller' => 'Precios' ,'action' => 'edit', $precio->idprecios, $precio->productos_idproductos], ['class' => 'btn bg-lightpurple', 'escape' => false]) ?>
 
-                                                <?= $this->Form->postLink(__($this->Html->tag('span', '', ['class' => 'fas fa-trash-alt', 'aria-hidden' => 'true'])),
-                                                    ['action' => 'deletePriceById', $precio->idprecios],
-                                                    ['confirm' => __('Eliminar {0}?', $precio->precio), 'class' => 'btn btn-danger bg-redrose','escape' => false]) ?>
+                                                <?php if($role == 'admin'):  ?>
+                                                    <?= $this->Html->link($this->Html->tag('span', '', ['class' => 'fas fa-edit', 'aria-hidden' => 'true']),
+                                                        ['controller' => 'Precios' ,'action' => 'edit', $precio->idprecios, $precio->productos_idproductos], ['class' => 'btn bg-lightpurple', 'escape' => false]) ?>
 
+                                                    <?= $this->Form->postLink(__($this->Html->tag('span', '', ['class' => 'fas fa-trash-alt', 'aria-hidden' => 'true'])),
+                                                        ['action' => 'deletePriceById', $precio->idprecios],
+                                                        ['confirm' => __('Eliminar {0}?', $precio->precio), 'class' => 'btn btn-danger bg-redrose','escape' => false]) ?>
+                                                <?php endif;?>
                                             </td>
                                         </tr>
                                     <?php endforeach; ?>
@@ -259,19 +261,19 @@ echo $this->element('sidebar');
 
 
                                             <td class="actions" style="text-align: center">
+                                              <?php if($role == 'admin'):  ?>
+                                                    <?= $this->Form->postLink(__($this->Html->tag('span', '', ['class' => 'fas fa-ban', 'aria-hidden' => 'true'])),
+                                                        ['controller' => 'Descuentos', 'action' => 'setDescuentoToFalse', $descuento->iddescuentos],
+                                                        ['confirm' => __('Desactivar {0}?', $descuento->precio), 'class' => 'btn bg-main-color','escape' => false,
+                                                            'data-toggle' => "tooltip", 'data-placement' => "top",  'title' => "Desactivar Descuento"]) ?>
 
-                                                <?= $this->Form->postLink(__($this->Html->tag('span', '', ['class' => 'fas fa-ban', 'aria-hidden' => 'true'])),
-                                                    ['controller' => 'Descuentos', 'action' => 'setDescuentoToFalse', $descuento->iddescuentos],
-                                                    ['confirm' => __('Desactivar {0}?', $descuento->precio), 'class' => 'btn bg-main-color','escape' => false,
-                                                        'data-toggle' => "tooltip", 'data-placement' => "top",  'title' => "Desactivar Descuento"]) ?>
+                                                    <?= $this->Html->link($this->Html->tag('span', '', ['class' => 'fas fa-edit', 'aria-hidden' => 'true']),
+                                                        ['controller' => 'Descuentos', 'action' => 'edit', $descuento->iddescuentos, $descuento->productos_idproductos], ['class' => 'btn bg-lightpurple', 'escape' => false]) ?>
 
-                                                <?= $this->Html->link($this->Html->tag('span', '', ['class' => 'fas fa-edit', 'aria-hidden' => 'true']),
-                                                    ['controller' => 'Descuentos', 'action' => 'edit', $descuento->iddescuentos, $descuento->productos_idproductos], ['class' => 'btn bg-lightpurple', 'escape' => false]) ?>
-
-                                                <?= $this->Form->postLink(__($this->Html->tag('span', '', ['class' => 'fas fa-trash-alt', 'aria-hidden' => 'true'])),
-                                                    ['action' => 'deleteDescuentoById', $descuento->iddescuentos],
-                                                    ['confirm' => __('Eliminar {0}?', $descuento->precio), 'class' => 'btn btn-danger bg-redrose','escape' => false]) ?>
-
+                                                    <?= $this->Form->postLink(__($this->Html->tag('span', '', ['class' => 'fas fa-trash-alt', 'aria-hidden' => 'true'])),
+                                                        ['action' => 'deleteDescuentoById', $descuento->iddescuentos],
+                                                        ['confirm' => __('Eliminar {0}?', $descuento->precio), 'class' => 'btn btn-danger bg-redrose','escape' => false]) ?>
+                                              <?php endif;?>
                                             </td>
                                         </tr>
                                     <?php endforeach; ?>

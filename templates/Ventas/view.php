@@ -204,7 +204,7 @@ echo $this->element('sidebar');
 
                                         <td class="actions" style="text-align: center">
                                             <?= $this->Html->link($this->Html->tag('span', '', ['class' => 'fas fa-eye', 'aria-hidden' => 'true']),
-                                                ['action' => 'view', $producto->idproductos], ['class' => 'btn bg-teal', 'escape' => false]) ?>
+                                                ['controller' => 'Productos' ,'action' => 'viewConfig', $producto->idproductos], ['class' => 'btn bg-teal', 'escape' => false]) ?>
 
                                         </td>
 
@@ -303,7 +303,7 @@ echo $this->element('sidebar');
                                                     ['class' => 'btn bg-lightpurple', 'escape' => false]) ?>
 
                                                 <?= $this->Form->postLink(__($this->Html->tag('span', '', ['class' => 'fas fa-trash-alt', 'aria-hidden' => 'true'])),
-                                                    ['controller' => 'Devoluciones', 'action' => 'delete', $devoluciones->iddevoluciones],
+                                                    ['controller' => 'Devoluciones', 'action' => 'deleteDevolucion', $devoluciones->iddevoluciones],
                                                     ['confirm' => __('Eliminar {0}?', $devoluciones->iddevoluciones), 'class' => 'btn btn-danger bg-redrose','escape' => false]) ?>
 
 

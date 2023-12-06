@@ -1,9 +1,9 @@
 <aside class="main-sidebar sidebar-light-blue">
 
-    <a href="index3.html" class="brand-link">
+    <?=  $this->Html->link(
+        '  <span class="brand-text font-weight-light">Stock Control</span>',
+        ['controller' => 'Index', 'action' => 'index'], ['class' => 'brand-link', 'escape' => false]) ?>
 
-        <span class="brand-text font-weight-light">Stock Control</span>
-    </a>
 
     <div class="sidebar os-host os-theme-light os-host-overflow os-host-overflow-y os-host-resize-disabled os-host-scrollbar-horizontal-hidden os-host-transition"
     style="margin-top: 50px;">
@@ -17,10 +17,9 @@
 
                             <li class="nav-item">
 
-                                <a href="#" class="nav-link">
-                                    <i class="nav-icon fas fa-home text-info"></i>
-                                    <p>Inicio</p>
-                                </a>
+                                <?=  $this->Html->link(
+                                    '<i class="fas fa-home nav-icon text-info"></i> Inicio',
+                                    ['controller' => 'Index', 'action' => 'index'], ['class' => 'nav-link', 'escape' => false]) ?>
                             </li>
 
                             <?php if($role == 'admin'):  ?>
@@ -29,7 +28,7 @@
                                         '<i class="fas fa-calendar-alt nav-icon text-info"></i> Campañas',
                                         ['controller' => 'Campaign', 'action' => 'index'], ['class' => 'nav-link', 'escape' => false]) ?>
                                 </li>
-                            <?php else:?>
+                            <?php elseif ($role == 'empleado'):?>
 
                                 <li class="nav-item">
                                     <?=  $this->Html->link(
@@ -38,11 +37,13 @@
                                 </li>
                             <?php endif;?>
 
+                            <?php if($role == 'admin'):  ?>
                             <li class="nav-item">
                                 <?=  $this->Html->link(
                                     '<i class="fas fa-store nav-icon text-info"></i> Catálogo',
                                     ['controller' => 'Productos', 'action' => 'index'], ['class' => 'nav-link', 'escape' => false]) ?>
                             </li>
+                            <?php endif;?>
 
                             <?php if($role == 'admin'):  ?>
                                 <li class="nav-item">
@@ -61,9 +62,8 @@
                                 </li>
                             <?php endif;?>
 
-
-
-                            <li class="nav-item menu-close" id="sidebar_compras">
+                            <?php if($role == 'admin' or  $role == 'empleado'):  ?>
+                                <li class="nav-item menu-close" id="sidebar_compras">
 
                                     <a href="#" class="nav-link" id="title-analisis_costos">
                                         <i class="fas fa-shopping-bag nav-icon text-info"></i>
@@ -102,15 +102,21 @@
 
                                     </ul>
                                 </li>
-
-
-
+                            <?php endif;?>
 
                             <?php if($role == 'admin'):  ?>
                                 <li class="nav-item">
                                     <?=  $this->Html->link(
                                         '<i class="fas fa-clipboard-list nav-icon text-info"></i> Pedidos',
                                         ['controller' => 'Pedidos', 'action' => 'index'], ['class' => 'nav-link', 'escape' => false]) ?>
+                                </li>
+
+                            <?php elseif ($role == 'empleado' or $role == 'preventista'):  ?>
+
+                                <li class="nav-item">
+                                    <?=  $this->Html->link(
+                                        '<i class="fas fa-clipboard-list nav-icon text-info"></i> Pedidos',
+                                        ['controller' => 'Pedidos', 'action' => 'indexEmpleado'], ['class' => 'nav-link', 'escape' => false]) ?>
                                 </li>
                             <?php endif;?>
 
@@ -132,7 +138,7 @@
                                 </li>
                             <?php endif;?>
 
-
+                            <?php if($role == 'admin' or  $role == 'empleado'):  ?>
 
                                 <li class="nav-item menu-close" id="sidebar_configuracion">
 
@@ -173,7 +179,7 @@
                                     </ul>
                                 </li>
 
-
+                            <?php endif;?>
 
 
 

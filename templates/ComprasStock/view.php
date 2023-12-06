@@ -96,6 +96,7 @@ echo $this->element('sidebar');
 
                     <?php endif; ?>
 
+                    <?php if($compras_stock->is_closed == 0):  ?>
                     <?php if($number_compras_update <= 0):  ?>
                         <div class="card card-secondary">
                         <div class="card-header">
@@ -109,17 +110,18 @@ echo $this->element('sidebar');
 
                         </div>
                     </div>
+                        <?php endif; ?>
+                        <?php if($compras_stock->is_closed == 0):  ?>
+                            <?php if($compras_stock->has_sent == 0):  ?>
 
-                        <div class="card card-warning ">
+                            <div class="card card-warning ">
                         <div class="card-header">
                             <h3 class="card-title text-darkgreen">Asignar Compra</h3>
                         </div>
                         <div class="card-body" >
+
                             <?php if(!empty($compras_stock->users_comprador)):  ?>
-
                                 <?php if(!empty($compras_stock->productos)):  ?>
-
-
                                         <?php if($compras_stock->assign == 0):  ?>
 
                                             <?= $this->Form->postLink(__($this->Html->tag('span', ' Asignar', ['class' => 'fas fa-check', 'aria-hidden' => 'true'])),
@@ -152,6 +154,8 @@ echo $this->element('sidebar');
 
                         </div>
                     </div>
+                            <?php endif; ?>
+                        <?php endif; ?>
                     <?php endif; ?>
 
                 </div>
@@ -201,8 +205,13 @@ echo $this->element('sidebar');
                                     <th scope="col"><?= $this->Paginator->sort('Total ($)') ?></th>
                                     <th scope="col" class="actions"><?= __('Ver') ?></th>
                                     <th scope="col" class="actions"><?= __('Compra') ?></th>
-                                    <?php if($compras_stock->status):  ?>
-                                    <th scope="col" class="actions"><?= __('Stock?') ?></th>
+                                    <?php if($compras_stock->status == 1):  ?>
+                                        <th scope="col" class="actions"><?= __('Stock?') ?></th>
+                                    <?php endif; ?>
+                                    <?php if($compras_stock->is_closed == 0):  ?>
+                                        <?php if($compras_stock->status == 0):  ?>
+                                            <th scope="col" class="actions"><?= __('Acciones') ?></th>
+                                        <?php endif; ?>
                                     <?php endif; ?>
 
 
@@ -255,7 +264,7 @@ echo $this->element('sidebar');
                                         </td>
 
                                         <?php if($compras_stock->is_closed == 0):  ?>
-                                            <?php if($compras_stock->status):  ?>
+                                            <?php if($compras_stock->status == 1):  ?>
 
                                                 <?php if($producto->_joinData->status == 1):  ?>
 
@@ -270,6 +279,7 @@ echo $this->element('sidebar');
                                                     <?php else: ?>
 
                                                         <td class="actions" style="text-align: center">
+
                                                             <?= $this->Form->postLink(__($this->Html->tag('span', '', ['class' => 'fas fa-minus-circle', 'aria-hidden' => 'true'])),
                                                                 ['action' => 'unSetStock', $producto->_joinData->idproductos_comprasstock, $compras_stock->idcompras_stock],
                                                                 ['confirm' => __('Quitar de Stock {0}?', $producto->_joinData->idproductos_comprasstock),
@@ -279,8 +289,29 @@ echo $this->element('sidebar');
                                                 <?php else: ?>
                                                     <td class="dt-center align-middle font-weight-bold"><?= h('') ?></td>
                                                 <?php endif; ?>
+
                                             <?php endif; ?>
-                                     <?php endif; ?>
+                                        <?php endif; ?>
+
+                                          <?php if($compras_stock->is_closed == 0):  ?>
+                                            <?php if($compras_stock->assign == 0):  ?>
+                                                <?php if($compras_stock->status == 0):  ?>
+
+                                                    <td class="actions" style="text-align: center">
+                                                        <div class="d-flex justify-content-around gap-2">
+                                                        <?= $this->Html->link($this->Html->tag('span', '', ['class' => 'fas fa-edit', 'aria-hidden' => 'true']),
+                                                            ['controller' => 'ProductosComprasstock', 'action' => 'edit', $compras_stock->idcompras_stock, $producto->idproductos, $producto->_joinData->idproductos_comprasstock],
+                                                            ['class' => 'btn bg-yellow', 'escape' => false]) ?>
+
+
+                                                        <?= $this->Form->postLink(__($this->Html->tag('span', '', ['class' => 'fas fa-trash-alt', 'aria-hidden' => 'true'])),
+                                                            ['controller' => 'ProductosComprasstock', 'action' => 'delete', $compras_stock->idcompras_stock, $producto->_joinData->idproductos_comprasstock],
+                                                            ['confirm' => __('Eliminar {0}?'), 'class' => 'btn btn-danger bg-redrose','escape' => false]) ?>
+                                                        </div>
+                                                    </td>
+                                                <?php endif; ?>
+                                          <?php endif; ?>
+                                          <?php endif; ?>
                                     </tr>
                                 <?php endforeach; ?>
                                 </tbody>

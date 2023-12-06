@@ -29,7 +29,7 @@ use Cake\Validation\Validator;
  *
  * @mixin \Cake\ORM\Behavior\TimestampBehavior
  */
-class PedidosTable extends Table
+class PedidosTable_ extends Table
 {
     /**
      * Initialize method
@@ -65,14 +65,6 @@ class PedidosTable extends Table
             'foreignKey' => 'idusers',
             'bindingKey' => 'empleado_idempleado', //actual
             'propertyName' => 'Empleado'
-        ]);
-
-
-        $this->hasOne('Users', [
-            'className' => 'Users',
-            'foreignKey' => 'idusers',
-            'bindingKey' => 'users_idusers', //actual
-            'propertyName' => 'Users'
         ]);
     }
 
@@ -130,17 +122,6 @@ class PedidosTable extends Table
             ->scalar('observaciones')
             ->maxLength('observaciones', 500)
             ->allowEmptyString('observaciones');
-
-        $validator
-            ->notEmptyString('assign');
-
-        $validator
-            ->integer('empleado_idempleado')
-            ->allowEmptyString('empleado_idempleado');
-
-        $validator
-            ->integer('status_val')
-            ->allowEmptyString('status_val');
 
         return $validator;
     }

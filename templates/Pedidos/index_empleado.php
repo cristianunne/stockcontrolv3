@@ -23,10 +23,6 @@ echo $this->element('sidebar');
                             '<i class="fas fa-plus "></i> Nuevo',
                             ['controller' => 'Productos', 'action' => 'index'], ['class' => 'btn bg-teal', 'escape' => false]) ?>
 
-                        <?=  $this->Html->link(
-                            '<i class="fas fa-print "></i> Imprimir',
-                            ['controller' => 'Pedidos', 'action' => 'selectEmpleadoPedidos'], ['class' => 'btn btn-primary', 'escape' => false]) ?>
-
                     </div>
                     <!-- /.card-tools -->
                 </div>
@@ -37,9 +33,7 @@ echo $this->element('sidebar');
                         <tr>
 
                             <th scope="col"><?= $this->Paginator->sort('Estado') ?></th>
-                            <th scope="col"><?= $this->Paginator->sort('Asignado?') ?></th>
                             <th scope="col"><?= $this->Paginator->sort('Numero') ?></th>
-                            <th scope="col"><?= $this->Paginator->sort('Preventista') ?></th>
                             <th scope="col"><?= $this->Paginator->sort('Fecha') ?></th>
                             <th scope="col"><?= $this->Paginator->sort('Cliente') ?></th>
                             <th scope="col"><?= $this->Paginator->sort('Subtotal') ?></th>
@@ -48,8 +42,6 @@ echo $this->element('sidebar');
                             <th scope="col"><?= $this->Paginator->sort('Total') ?></th>
                             <th scope="col"><?= $this->Paginator->sort('N° Productos') ?></th>
                             <th scope="col" class="actions"><?= __('Ver') ?></th>
-                            <th scope="col" class="actions"><?= __('Asignar') ?></th>
-                            <th scope="col" class="actions"><?= __('Acciones') ?></th>
 
                         </tr>
                         </thead>
@@ -70,18 +62,8 @@ echo $this->element('sidebar');
                                     <td class="dt-center align-middle font-weight-bold"><?= h('Sin Estado') ?></td>
                                 <?php endif;?>
 
-                                 <?php if($ped->assign == 1):  ?>
-                                    <?php if(!is_null($ped->Empleado)):  ?>
-                                         <td class="dt-center align-middle font-weight-bold" style="background-color: #f5f122"><?= h($ped->Empleado->firstname . ' ' . $ped->Empleado->lastname) ?></td>
-                                     <?php endif;?>
-
-                                 <?php else: ?>
-                                     <td class="dt-center align-middle font-weight-bold" style="background-color: #ff5858"><?= h('No Asignado') ?></td>
-
-                                 <?php endif;?>
 
                                 <td class="dt-center align-middle"><?= h($ped->number) ?></td>
-                                <td class="dt-center align-middle"><?= h($ped->Users->firstname . ' ' . $ped->Users->lastname) ?></td>
 
                                 <td class="dt-center align-middle"><?= h($ped->created) ?></td>
                                 <td class="dt-center align-middle"><?= h($ped->cliente->shop_name) ?></td>
@@ -92,11 +74,11 @@ echo $this->element('sidebar');
                                 <td class="dt-center align-middle"><?= h($ped->total) ?></td>
 
                                 <td class="dt-center align-middle">
-                                     <?php if(!empty($ped->productos)):  ?>
+                                    <?php if(!empty($ped->productos)):  ?>
                                         <?= h(count($ped->productos)) ?>
-                                     <?php else: ?>
-                                         <?= h('') ?>
-                                     <?php endif;?>
+                                    <?php else: ?>
+                                        <?= h('') ?>
+                                    <?php endif;?>
 
                                 </td>
 
@@ -105,35 +87,7 @@ echo $this->element('sidebar');
                                         ['action' => 'view', $ped->idpedidos], ['class' => 'btn bg-teal', 'escape' => false]) ?>
                                 </td>
 
-                                <td class="actions" style="text-align: center">
 
-                                      <?php if($ped->status_val == 0):  ?>
-
-                                          <?php if($ped->assign == 0):  ?>
-                                              <?= $this->Html->link($this->Html->tag('span', '', ['class' => 'fas fa-check', 'aria-hidden' => 'true']),
-                                                  ['action' => 'asignar', $ped->idpedidos], ['class' => 'btn bg-yellow', 'escape' => false]) ?>
-                                          <?php else: ?>
-                                              <?= $this->Form->postLink(__($this->Html->tag('span', '', ['class' => 'fas fa-ban', 'aria-hidden' => 'true'])),
-                                                  ['action' => 'quitarAsignacion', $ped->idpedidos],
-                                                  ['confirm' => __('Quitar Asignacion {0}?', $ped->number), 'class' => 'btn btn-danger','escape' => false]) ?>
-
-                                          <?php endif;?>
-                                       <?php else: ?>
-
-                                      <?php endif;?>
-
-
-
-
-                                </td>
-
-                                <td class="actions" style="text-align: center">
-
-                                    <?= $this->Form->postLink(__($this->Html->tag('span', '', ['class' => 'fas fa-trash-alt', 'aria-hidden' => 'true'])),
-                                        ['action' => 'delete', $ped->idpedidos],
-                                        ['confirm' => __('Eliminar {0}?', $ped->idpedidos), 'class' => 'btn btn-danger bg-redrose','escape' => false]) ?>
-
-                                </td>
                             </tr>
                         <?php endforeach; ?>
                         </tbody>
@@ -176,4 +130,3 @@ echo $this->element('sidebar');
         });
     })
 </script>
-

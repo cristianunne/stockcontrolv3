@@ -21,9 +21,13 @@ use Cake\ORM\Entity;
  * @property float|null $descuento_general
  * @property string $hash
  * @property string|null $observaciones
+ * @property int $assign
+ * @property int|null $empleado_idempleado
+ * @property int|null $status_val
  *
  * @property \App\Model\Entity\Producto[] $productos
  * @property \App\Model\Entity\Cliente $cliente
+ * @property \App\Model\Entity\User $Empleado
  */
 class Pedido extends Entity
 {
@@ -49,7 +53,11 @@ class Pedido extends Entity
         'descuento_general' => true,
         'hash' => true,
         'observaciones' => true,
+        'assign' => true,
+        'empleado_idempleado' => true,
+        'status_val' => true,
         'productos' => true,
         'cliente' => true,
+        'Empleado' => true,
     ];
 }

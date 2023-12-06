@@ -70,6 +70,13 @@ class ComprasStockTable extends Table
         $this->hasMany('EmpleadoComprasstock', [
             'foreignKey' => 'comprasstock_idcomprasstock',
             'bindingKey' => 'idcompras_stock', //actual
+            'joinType' => 'INNER'
+        ]);
+
+        $this->hasMany('ProductosComprasstock', [
+            'foreignKey' => 'comprasstock_idcomprasstock',
+            'bindingKey' => 'idcompras_stock', //actual
+            'joinType' => 'INNER'
         ]);
     }
 
@@ -112,6 +119,9 @@ class ComprasStockTable extends Table
             ->scalar('hash_control')
             ->maxLength('hash_control', 255)
             ->allowEmptyString('hash_control');
+
+        $validator
+            ->notEmptyString('has_sent');
 
         return $validator;
     }

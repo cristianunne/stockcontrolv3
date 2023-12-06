@@ -18,9 +18,7 @@ use Cake\ORM\Entity;
  * @property int|null $users_idusers
  * @property int|null $status
  * @property string|null $observaciones
- *
- * @property \App\Model\Entity\User $Users
- * @property \App\Model\Entity\Producto $producto
+ * @property int|null $cantidad_comprada
  */
 class EmpleadoComprasstock extends Entity
 {
@@ -43,7 +41,6 @@ class EmpleadoComprasstock extends Entity
         'users_idusers' => true,
         'status' => true,
         'observaciones' => true,
-        'Users' => true,
-        'producto' => true,
+        'cantidad_comprada' => true,
     ];
 }

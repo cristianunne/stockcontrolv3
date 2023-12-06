@@ -55,7 +55,7 @@ echo $this->element('sidebar');
                                         <td class="dt-center align-middle"><?= h($producto->marca) ?></td>
                                         <td class="dt-center align-middle"><?= h($producto->content) ?></td>
 
-                                        <td class="dt-center align-middle"><?= h($producto->_joinData->cantidad) ?></td>
+                                        <td class="dt-center align-middle"><?= h($producto->_joinData->cantidad_pedido) ?></td>
 
 
                                         <td class="dt-center align-middle"><?= h($producto->_joinData->precio_unidad) ?></td>
@@ -120,9 +120,9 @@ echo $this->element('sidebar');
 
                                                     </td>
                                                 <?php else: ?>
-                                                    <td></td>
-                                                    <td></td>
-                                                    <td></td>
+                                                    <td class="dt-center align-middle"></td>
+                                                    <td class="dt-center align-middle"></td>
+                                                    <td class="dt-center align-middle"></td>
                                                 <?php endif; ?>
 
                                                 <td class="dt-center align-middle"><?= h($producto_empl->observaciones) ?></td>
@@ -130,14 +130,29 @@ echo $this->element('sidebar');
 
                                                 <?php if($producto->_joinData->status == 0):  ?>
                                                     <td class="actions" style="text-align: center">
-                                                        <button class="btn btn-success"
-                                                                attr="<?= h($producto_empl->idempleado_comprastock) ?>"
-                                                                idcomprastock = "<?= h($compras_stock->idcompras_stock) ?>"
-                                                                idproducto = "<?= h($producto->idproductos) ?>"
-                                                                idproductos_comprasstock = "<?= h($producto->_joinData->idproductos_comprasstock) ?>"
-                                                                onclick="aprobarProductoCompra(this)">
-                                                            <i class="fas fa-check"></i>
-                                                        </button>
+                                                        <div class="d-flex justify-content-around gap-2">
+                                                            <div>
+                                                            <button class="btn btn-danger"
+                                                                    idempleado_comprastock = "<?= h($producto_empl->idempleado_comprastock) ?>"
+                                                                    idcomprastock = "<?= h($compras_stock->idcompras_stock) ?>"
+                                                                    onclick="desaprobarProductoCompra(this)">
+                                                                <i class="fas fa-times"></i>
+                                                            </button>
+                                                            </div>
+
+                                                            <div>
+                                                            <button class="btn btn-success"
+                                                                    attr="<?= h($producto_empl->idempleado_comprastock) ?>"
+                                                                    idcomprastock = "<?= h($compras_stock->idcompras_stock) ?>"
+                                                                    idproducto = "<?= h($producto->idproductos) ?>"
+                                                                    idproductos_comprasstock = "<?= h($producto->_joinData->idproductos_comprasstock) ?>"
+                                                                    onclick="aprobarProductoCompra(this)">
+                                                                <i class="fas fa-check"></i>
+                                                            </button>
+                                                        </div>
+
+                                                        </div>
+
                                                     </td>
 
 
@@ -146,20 +161,21 @@ echo $this->element('sidebar');
 
                                                 <?php endif; ?>
 
-
                                             <?php endif; ?>
                                         <?php endforeach; ?>
 
                                     </tr>
                                     <tr>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
+                                        <td class="dt-center align-middle"></td>
+                                        <td class="dt-center align-middle"></td>
+                                        <td class="dt-center align-middle"></td>
+                                        <td class="dt-center align-middle"></td>
+                                        <td class="dt-center align-middle"></td>
+                                        <td class="dt-center align-middle"></td>
+                                        <td class="dt-center align-middle"></td>
+                                        <td class="dt-center align-middle"></td>
+                                        <td class="dt-center align-middle"></td>
+                                        <td class="dt-center align-middle"></td>
                                     </tr>
                                 <?php endforeach; ?>
                                 </tbody>

@@ -79,9 +79,6 @@ echo $this->element('sidebar');
 
                                         <td class="actions align-middle" style="text-align: center">
                                             <div class="d-flex justify-content-around gap-2">
-                                                <?= $this->Html->link($this->Html->tag('span', '', ['class' => 'fas fa-edit', 'aria-hidden' => 'true']),
-                                                    ['controller' => 'Productos' ,'action' => 'edit', $compras->idcompras_stock],
-                                                    ['class' => 'btn bg-lightpurple', 'escape' => false]) ?>
 
                                                 <?= $this->Form->postLink(__($this->Html->tag('span', '', ['class' => 'fas fa-trash-alt', 'aria-hidden' => 'true'])),
                                                     ['controller' => 'Productos', 'action' => 'delete', $compras->idcompras_stock],

@@ -30,7 +30,7 @@
                                 <?=  $this->Form->label('Producto: ') ?>
                                 <?= $this->Form->control('prod', ['class' => 'form-control', 'placeholder' => 'Producto',
                                     'label' => false, 'readonly',
-                                    'value' => $prod]) ?>
+                                    'value' => $producto]) ?>
                             </div>
 
                             <div class="form-group">

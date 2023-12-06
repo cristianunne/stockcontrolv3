@@ -167,10 +167,21 @@ async function getCategories()
     headers.append('Accept', 'application/json'); // This one is enough for GET requests
     headers.append('Content-Type', 'application/json'); // This one sends body
     // headers.append('X-CSRF-Token', csrf);
+    /*
 
-    let data = {idusers : 3}
+      $idtransferencia_stock = $this->request->getData('idtransferencia_stock');
+            $idstock_campaign_producto = $this->request->getData('idstock_campaign_producto');
+            $cantidad = $this->request->getData('cantidad');
+            $idcamion = $this->request->getData('idcamion');
+            $idcampaign = $this->request->getData('idcampaign');*/
 
-    const rawResponse = await fetch('http://localhost/stockcontrolv3/API/getCompras', {
+
+    /*let data = {idtransferencia_stock : 12, idstock_campaign_producto : 30,
+    cantidad : 20, idcamion : 2, idcampaign : 7, productos_idproductos : 44}*/
+
+    let data = {idcampaign : 7, camion_destino : 1}
+
+    const rawResponse = await fetch('http://localhost/stockcontrolv3/API/getProductosTransferenciasCamion', {
         method: 'POST',
         headers: headers,
         body: JSON.stringify(data)

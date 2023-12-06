@@ -178,18 +178,30 @@ class EmpleadoComprasstockController extends AppController
 
             try{
                 $emp_compras =  $this->EmpleadoComprasstock->get($id_empl_compra);
-
-
                 $emp_compras->cantidad = $cantidad;
-
                 $emp_compras->status = 1;
 
+                //tmb tengo que setear compra stock a 1 para que no se puedan editar las asignaciones
+                $model_compra_stock = $this->getTableLocator()->get('ComprasStock');
+
+                $compra_stock = $model_compra_stock->get($emp_compras->comprasstock_idcomprasstock);
+                $compra_stock->status = 1;
+
+                $conn = ConnectionManager::get('default');
+                $conn->begin();
 
                 if ($this->EmpleadoComprasstock->save($emp_compras)) {
 
-                    return $this->json(['result' => true]);
-
+                    if($model_compra_stock->save($compra_stock)){
+                        $conn->commit();
+                        return $this->json(['result' => true]);
+                    }
+                    $conn->rollback();
+                    return $this->json(['result' => false]);
                 }
+
+                $conn->rollback();
+                return $this->json(['result' => false]);
 
 
             } catch (InvalidPrimaryKeyException $e){

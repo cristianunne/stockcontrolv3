@@ -624,6 +624,75 @@ async function aprobarProductoCompra(button)
 
 }
 
+async function desaprobarProductoCompra(button)
+{
+    let res = confirm('Desaprobar producto?');
+
+    if(res){
+
+        //traigo las variables
+
+        let idempleado_comprastock = parseInt(button.getAttribute('idempleado_comprastock'));
+        let idcomprastock = parseInt(button.getAttribute('idcomprastock'));
+
+        showButtonDesaprobarCompra(button);
+        const data = await desaprobarProductoDB(idcomprastock, idempleado_comprastock);
+        if (data.result){
+            setTimeout(function (){
+                location.reload();
+
+            }, 3000);
+        }
+
+
+    }
+
+}
+
+async function desaprobarProductoDB(idcomprastock, idempleado_comprastock){
+
+    array_data = {
+        idcomprastock : idcomprastock,
+        idempleado_comprastock : idempleado_comprastock,
+    }
+
+    let url = '../desaprobarCompraNew';
+    let headers = new Headers();
+
+
+    //const csrfToken = $.cookie('csrfToken');
+    let csrf = $("meta[name='csrfToken']").attr("content");
+
+    headers.append('Accept', 'application/json'); // This one is enough for GET requests
+    headers.append('Content-Type', 'application/json'); // This one sends body
+    headers.append('X-CSRF-Token', csrf);
+
+    try {
+        const response = await fetch(url, {
+            method: 'POST',
+            mode: 'same-origin',
+            credentials: 'include',
+            redirect: 'follow',
+            headers: headers,
+            body: JSON.stringify({
+                array_data
+            }),
+
+
+        });
+
+        const data =  await response.json();
+
+        return Promise.resolve(data);
+
+
+
+    } catch (e) {
+        return Promise.reject(e);
+    }
+
+}
+
 
 async  function aprobarProductoDB(idempleado_comprastock, idcomprastock, idproducto, idproductos_comprasstock, cantidad, precio, descuento)
 {
@@ -687,6 +756,26 @@ function showButtonUpdateCompra(element)
 
     let button = document.createElement('button');
     button.classList.add('btn', 'btn-success', 'buttonload');
+
+    let icon_trash = document.createElement('i');
+    icon_trash.classList.add('fas', 'fa-spinner', 'fa-spin');
+    button.appendChild(icon_trash);
+
+    div_parent.appendChild(button);
+
+    return button;
+
+
+}
+
+function showButtonDesaprobarCompra(element)
+{
+    let div_parent = element.parentElement;
+
+    element.style.display = 'none';
+
+    let button = document.createElement('button');
+    button.classList.add('btn', 'btn-danger', 'buttonload');
 
     let icon_trash = document.createElement('i');
     icon_trash.classList.add('fas', 'fa-spinner', 'fa-spin');

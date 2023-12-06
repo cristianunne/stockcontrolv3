@@ -44,6 +44,15 @@ class ProductosPedidosTable extends Table
         $this->setPrimaryKey('idproductos_pedidos');
 
         $this->addBehavior('Timestamp');
+
+        $this->hasOne('ProdPedidos', [
+            'className' => 'Productos',
+            'foreignKey' => 'idproductos',
+            'bindingKey' => 'productos_idproductos', //actual
+            'joinType' => 'INNER'
+        ]);
+
+
     }
 
     /**

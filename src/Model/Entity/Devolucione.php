@@ -17,9 +17,12 @@ use Cake\ORM\Entity;
  * @property \Cake\I18n\FrozenTime|null $created
  * @property \Cake\I18n\FrozenTime|null $modified
  * @property int $users_idusers
+ * @property int|null $id_productos_ventas
+ * @property int|null $is_stock
  *
  * @property \App\Model\Entity\Venta $venta
  * @property \App\Model\Entity\Producto $producto
+ * @property \App\Model\Entity\User $user
  */
 class Devolucione extends Entity
 {
@@ -41,7 +44,10 @@ class Devolucione extends Entity
         'created' => true,
         'modified' => true,
         'users_idusers' => true,
+        'id_productos_ventas' => true,
+        'is_stock' => true,
         'venta' => true,
         'producto' => true,
+        'user' => true,
     ];
 }

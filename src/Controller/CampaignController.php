@@ -161,21 +161,37 @@ class CampaignController extends AppController
     }
 
 
-    public function viewVentasByCamion($id_campaign = null, $id_camion = null)
+    public function viewVentasByCamion($id_campaign = null, $id_camion = null, $fecha = null)
     {
 
         //traigo las ventas filtrada con el camion y las CAmpa;as
-        $campaign = $this->Campaign->find('all', [
-            'contain' => ['StockCamionCampaign' => ['Camiones', 'Users'], 'Ventas' => function($q) use($id_camion) {
-                return $q
-                    ->contain(['Clientes', 'Users'])
-                    ->where(['camion_idcamion' => $id_camion]);
-            }]
-        ])
-        ->where(['idcampaign' => $id_campaign])->first();
+        $campaign = null;
+
+        if($fecha == null){
+            $campaign = $this->Campaign->find('all', [
+                'contain' => ['StockCamionCampaign' => ['Camiones', 'Users'], 'Ventas' => function($q) use($id_camion) {
+                    return $q
+                        ->contain(['Clientes', 'Users'])
+                        ->where(['camion_idcamion' => $id_camion]);
+                }]
+            ])
+                ->where(['idcampaign' => $id_campaign])->first();
+        } else {
+
+            $campaign = $this->Campaign->find('all', [
+                'contain' => ['StockCamionCampaign' => ['Camiones', 'Users'], 'Ventas' => function($q) use($id_camion, $fecha) {
+                    return $q
+                        ->contain(['Clientes', 'Users'])
+                        ->where(['camion_idcamion' => $id_camion, 'date(Ventas.created)' => $fecha]);
+                }]
+            ])
+                ->where(['idcampaign' => $id_campaign])->first();
+        }
+
 
         $option['idcampaign'] = $id_campaign;
         $option['camion_idcamion'] = $id_camion;
+        $option['fecha'] = $fecha;
 
         //traigo los resumenes de las ventas
         $resultados = $this->_getTotalesVentas($option);
@@ -284,7 +300,7 @@ class CampaignController extends AppController
 
     }
 
-    public function stockCamionCampaign($idstock_camion_campaign = null, $id_camion = null, $idcampaign = null)
+    public function stockCamionCampaign($idstock_camion_campaign = null, $id_camion = null, $idcampaign = null, $status = null)
     {
 
         //Traigo el stockcamion campaing
@@ -292,21 +308,15 @@ class CampaignController extends AppController
 
         $productos = $model_stock_camion_campaign->find('all', [
             'contain' => ['StockCampaignProducto' => ['Productos' => ['Categories', 'Subcategories', 'Proveedores', 'StockProductos']]]
-
         ])->where(['campaign_idcampaign' => $idcampaign, 'camion_idcamion' => $id_camion])->first();
 
-
-        //debug($productos);
-
-        //el stockviene de otro
-
-
-
         $this->set(compact('productos'));
-
         $this->set(compact('idstock_camion_campaign'));
         $this->set(compact('id_camion'));
         $this->set(compact('idcampaign'));
+        $this->set(compact('status'));
+
+        //debug($productos);
     }
 
 
@@ -340,6 +350,46 @@ class CampaignController extends AppController
             $this->Flash->error(__('Error al almacenar los cambios. Intenta nuevamente'));
         }
 
+
+    }
+
+
+    public function selectFechaVentas($id_campaign = null, $id_camion = null)
+    {
+
+        $campaign = $this->Campaign->find('all', [])
+            ->where(['status' => 1])->first();
+
+        $min_year = $campaign->fecha_inicio->year;
+        $max_year = $campaign->fecha_fin->year;
+
+
+        if($this->request->is('post')){
+
+            $fecha = $this->request->getData('fecha');
+            $fecha_select = strtotime($fecha);
+
+            $fecha_inicio =  strtotime($campaign->fecha_inicio->toDateString());
+            $fecha_fin =  strtotime($campaign->fecha_fin->toDateString());
+
+
+            if($fecha_select >= $fecha_inicio && $fecha_select <= $fecha_fin){
+
+                $fecha_select = date('Y-m-d',$fecha_select);
+
+                return $this->redirect(['action' => 'viewVentasByCamion', $id_campaign, $id_camion, $fecha_select]);
+
+            } else {
+                $this->Flash->error(__('Debe seleccionar una Fecha comprendida en el rango de la Campaña'));
+            }
+
+
+        }
+
+        $this->set(compact('id_campaign'));
+        $this->set(compact('campaign'));
+        $this->set(compact('min_year'));
+        $this->set(compact('max_year'));
 
     }
 

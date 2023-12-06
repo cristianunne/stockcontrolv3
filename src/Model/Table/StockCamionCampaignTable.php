@@ -62,9 +62,7 @@ class StockCamionCampaignTable extends Table
         $this->hasMany('StockCampaignProducto', [
             'foreignKey' => 'stock_camion_campaign_idstock_camion_campaign',
             'bindingKey' => 'idstock_camion_campaign', //actual
-            'joinType' => 'INNER'
         ]);
-
     }
 
     /**

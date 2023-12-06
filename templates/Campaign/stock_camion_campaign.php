@@ -25,10 +25,11 @@ echo $this->element('sidebar');
                             <div class="card-tools">
                                 <!-- Buttons, labels, and many other things can be placed here! -->
                                 <!-- Here is a label for example -->
+                                <?php if($status):  ?>
                                 <?=  $this->Html->link(
                                     '<i class="fas fa-plus "></i> Nuevo',
                                     ['controller' => 'StockCampaignProducto', 'action' => 'addProductoToCamionCampaign', $idstock_camion_campaign, $id_camion, $idcampaign], ['class' => 'btn bg-teal', 'escape' => false]) ?>
-
+                                <?php endif;?>
                             </div>
                             <!-- /.card-tools -->
                         </div>
@@ -44,7 +45,8 @@ echo $this->element('sidebar');
                                     <th scope="col"><?= $this->Paginator->sort('Categoria') ?></th>
                                     <th scope="col"><?= $this->Paginator->sort('Subcategoria') ?></th>
                                     <th scope="col"><?= $this->Paginator->sort('Stock') ?></th>
-
+                                    <th scope="col"><?= $this->Paginator->sort('Cantidad Inicial') ?></th>
+                                    <th scope="col"><?= $this->Paginator->sort('Transferidos') ?></th>
                                     <th scope="col" class="actions"><?= __('Ver') ?></th>
                                     <th scope="col" class="actions"><?= __('Acciones') ?></th>
 
@@ -95,6 +97,18 @@ echo $this->element('sidebar');
                                             <td class="dt-center align-middle text-danger"><?= h('Sin Datos') ?></td>
                                         <?php endif;?>
 
+                                        <?php if(!empty($prod->cantidad_initial)):  ?>
+                                            <td class="dt-center align-middle"><?= h($prod->cantidad_initial) ?></td>
+                                        <?php else: ?>
+                                            <td class="dt-center align-middle text-danger"><?= h('Sin Datos') ?></td>
+                                        <?php endif;?>
+
+                                        <?php if(!empty($prod->cant_transfer)):  ?>
+                                            <td class="dt-center align-middle"><?= h($prod->cant_transfer) ?></td>
+                                        <?php else: ?>
+                                            <td class="dt-center align-middle text-danger"><?= h('Sin Datos') ?></td>
+                                        <?php endif;?>
+
 
                                         <td class="actions align-middle" style="text-align: center">
                                             <?= $this->Html->link($this->Html->tag('span', '', ['class' => 'fas fa-eye', 'aria-hidden' => 'true']),
@@ -125,7 +139,7 @@ echo $this->element('sidebar');
 
 
                                             <?php if($role == 'admin'):  ?>
-
+                                                <?php if($status):  ?>
                                                 <div class="d-flex justify-content-around gap-2">
                                                     <?= $this->Html->link($this->Html->tag('span', '', ['class' => 'fas fa-edit', 'aria-hidden' => 'true']),
                                                         ['controller' => 'StockCampaignProducto', 'action' => 'edit', $prod->idstock_campaign_producto, $prod->producto->idproductos, $idstock_camion_campaign,
@@ -137,39 +151,41 @@ echo $this->element('sidebar');
                                                         ['confirm' => __('Eliminar {0}?', $prod->producto->name),
                                                             'class' => 'btn btn-danger bg-redrose','escape' => false]) ?>
                                                 </div>
-
+                                                <?php endif;?>
                                             <?php endif;?>
-
 
                                         </td>
-                                        <?php if($role == 'admin'):  ?>
-                                            <?php if($prod->status == 0):  ?>
+                                            <?php if($status):  ?>
+                                                <?php if($role == 'admin'):  ?>
+                                                    <?php if($prod->status == 0):  ?>
 
-                                                <td>
+                                                        <td class="actions align-middle" style="text-align: center">
 
-                                                    <div class="d-flex justify-content-around gap-2">
 
-                                                            <?= $this->Form->postLink(__($this->Html->tag('span', '', ['class' => 'fas fa-check', 'aria-hidden' => 'true'])),
-                                                                ['controller' => 'StockCampaignProducto', 'action' => 'setStateProducto', $prod->idstock_campaign_producto, 1],
-                                                                ['confirm' => __('Aprobar {0}?', $prod->producto->name),
-                                                                    'class' => 'btn btn-primary','escape' => false]) ?>
 
-                                                    </div>
-                                                </td>
-                                            <?php else: ?>
+                                                                    <?= $this->Form->postLink(__($this->Html->tag('span', '', ['class' => 'fas fa-check', 'aria-hidden' => 'true'])),
+                                                                        ['controller' => 'StockCampaignProducto', 'action' => 'setStateProducto', $prod->idstock_campaign_producto, 1],
+                                                                        ['confirm' => __('Aprobar {0}?', $prod->producto->name),
+                                                                            'class' => 'btn btn-primary','escape' => false]) ?>
 
-                                                <td>
 
-                                                    <div class="d-flex justify-content-around gap-2">
+                                                        </td>
+                                                    <?php else: ?>
 
-                                                        <?= $this->Form->postLink(__($this->Html->tag('span', '', ['class' => 'fas fa-times', 'aria-hidden' => 'true'])),
-                                                            ['controller' => 'StockCampaignProducto', 'action' => 'setStateProducto', $prod->idstock_campaign_producto, 0],
-                                                            ['confirm' => __('Quitar Aprobacion {0}?', $prod->producto->name),
-                                                                'class' => 'btn btn-warning','escape' => false]) ?>
+                                                        <td class="actions align-middle" style="text-align: center">
 
-                                                    </div>
-                                                </td>
-                                            <?php endif;?>
+
+
+                                                                <?= $this->Form->postLink(__($this->Html->tag('span', '', ['class' => 'fas fa-times', 'aria-hidden' => 'true'])),
+                                                                    ['controller' => 'StockCampaignProducto', 'action' => 'setStateProducto', $prod->idstock_campaign_producto, 0],
+                                                                    ['confirm' => __('Quitar Aprobacion {0}?', $prod->producto->name),
+                                                                        'class' => 'btn btn-warning','escape' => false]) ?>
+
+                                                        </td>
+                                                    <?php endif;?>
+                                                <?php endif;?>
+                                            <?php else:?>
+                                            <td></td>
                                         <?php endif;?>
                                     </tr>
                                 <?php endforeach; ?>

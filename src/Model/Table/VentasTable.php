@@ -184,6 +184,12 @@ class VentasTable extends Table
             }
         }
 
+        if(isset($options['fecha'])){
+            if($options['fecha'] != 0 && $options['fecha'] != null) {
+                $conditions['date(created)'] = $options['fecha'];
+            }
+        }
+
         $conditions['campaign_idcampaign'] = $options['idcampaign'];
         $conditions['cuenta_corriente'] = 0;
 
@@ -203,6 +209,12 @@ class VentasTable extends Table
         if(isset($options['camion_idcamion'])){
             if($options['camion_idcamion'] != 0 && $options['camion_idcamion'] != null) {
                 $conditions['camion_idcamion'] = $options['camion_idcamion'];
+            }
+        }
+
+        if(isset($options['fecha'])){
+            if($options['fecha'] != 0 && $options['fecha'] != null) {
+                $conditions['date(created)'] = $options['fecha'];
             }
         }
 
@@ -228,6 +240,12 @@ class VentasTable extends Table
             }
         }
 
+        if(isset($options['fecha'])){
+            if($options['fecha'] != 0 && $options['fecha'] != null) {
+                $conditions['date(created)'] = $options['fecha'];
+            }
+        }
+
         $conditions['campaign_idcampaign'] = $options['idcampaign'];
         $conditions['cuenta_corriente'] = 0;
 
@@ -246,6 +264,12 @@ class VentasTable extends Table
         if(isset($options['camion_idcamion'])){
             if($options['camion_idcamion'] != 0 && $options['camion_idcamion'] != null) {
                 $conditions['camion_idcamion'] = $options['camion_idcamion'];
+            }
+        }
+
+        if(isset($options['fecha'])){
+            if($options['fecha'] != 0 && $options['fecha'] != null) {
+                $conditions['date(created)'] = $options['fecha'];
             }
         }
 
@@ -270,6 +294,12 @@ class VentasTable extends Table
             }
         }
 
+        if(isset($options['fecha'])){
+            if($options['fecha'] != 0 && $options['fecha'] != null) {
+                $conditions['date(created)'] = $options['fecha'];
+            }
+        }
+
         $conditions['campaign_idcampaign'] = $options['idcampaign'];
         $conditions['cuenta_corriente'] = 1;
 
@@ -290,6 +320,12 @@ class VentasTable extends Table
         if(isset($options['camion_idcamion'])){
             if($options['camion_idcamion'] != 0 && $options['camion_idcamion'] != null) {
                 $conditions['camion_idcamion'] = $options['camion_idcamion'];
+            }
+        }
+
+        if(isset($options['fecha'])){
+            if($options['fecha'] != 0 && $options['fecha'] != null) {
+                $conditions['date(created)'] = $options['fecha'];
             }
         }
 

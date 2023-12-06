@@ -14,6 +14,10 @@ use Cake\ORM\Entity;
  * @property int $users_idusers
  * @property \Cake\I18n\FrozenTime|null $created
  * @property \Cake\I18n\FrozenTime|null $modified
+ *
+ * @property \App\Model\Entity\User $user
+ * @property \App\Model\Entity\Camione $camione
+ * @property \App\Model\Entity\StockCampaignProducto[] $stock_campaign_producto
  */
 class StockCamionCampaign extends Entity
 {
@@ -32,5 +36,8 @@ class StockCamionCampaign extends Entity
         'users_idusers' => true,
         'created' => true,
         'modified' => true,
+        'user' => true,
+        'camione' => true,
+        'stock_campaign_producto' => true,
     ];
 }

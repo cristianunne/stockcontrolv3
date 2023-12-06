@@ -63,19 +63,22 @@ echo $this->element('sidebar');
                            </div>
 
                            <div class="card-footer">
-                               <?php if($role == 'admin'): ?>
+                               <?php if($role == 'admin' or $role == 'gerente'): ?>
                                    <div class="pull-right">
                                        <?=  $this->Html->link(
                                            '<i class="fas fa-search"></i> Ver',
                                            ['controller' => 'Campaign' ,'action' => 'viewAdmin', $campaign->idcampaign],
                                            ['class' => 'btn btn-warning', 'escape' => false]) ?>
                                    </div>
+
+                               <?php if($role == 'admin'): ?>
                                    <div class="pull-right">
                                        <?=  $this->Html->link(
                                            '<i class="fas fa-cog"></i> Configurar',
                                            ['controller' => 'Campaign', 'action' => 'config', $campaign->idcampaign],
                                            ['class' => 'btn btn-danger mr-3', 'escape' => false]) ?>
                                    </div>
+                                   <?php endif;?>
                                <?php else:?>
 
                                    <div class="pull-right">
