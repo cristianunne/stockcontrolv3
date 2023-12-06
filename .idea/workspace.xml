@@ -4,72 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="be7ad65a-ea4a-48e0-a565-60de1707b04b" name="Changes" comment="MOdificaciones mayores">
-      <change afterPath="$PROJECT_DIR$/src/Model/Table/PedidosTable_.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/Campaign/select_fecha_ventas.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/Pedidos/asignar.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/Pedidos/index_empleado.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/Pedidos/print_pedidos.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/Pedidos/select_empleado_pedidos.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/Subcategories/edit.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/Ventas/print_venta_without.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/app_local.php" beforeDir="false" afterPath="$PROJECT_DIR$/config/app_local.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/routes.php" beforeDir="false" afterPath="$PROJECT_DIR$/config/routes.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Controller/API/ApiController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/API/ApiController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Controller/CampaignController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/CampaignController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Controller/ComprasStockController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/ComprasStockController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Controller/DescuentosController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/DescuentosController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Controller/DevolucionesController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/DevolucionesController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Controller/EmpleadoComprasstockController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/EmpleadoComprasstockController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Controller/PedidosController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/PedidosController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Controller/PreciosController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/PreciosController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Controller/ProductosComprasstockController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/ProductosComprasstockController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Controller/StockCampaignProductoController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/StockCampaignProductoController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Controller/StockProductosController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/StockProductosController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Controller/SubcategoriesController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/SubcategoriesController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Controller/UsersController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/UsersController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Controller/VentasController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/VentasController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Model/Entity/ComprasStock.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Model/Entity/ComprasStock.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Model/Entity/Devolucione.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Model/Entity/Devolucione.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Model/Entity/EmpleadoComprasstock.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Model/Entity/EmpleadoComprasstock.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Model/Entity/Pedido.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Model/Entity/Pedido.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Model/Entity/StockCamionCampaign.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Model/Entity/StockCamionCampaign.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Model/Entity/StockCampaignProducto.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Model/Entity/StockCampaignProducto.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Model/Table/ComprasStockTable.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Model/Table/ComprasStockTable.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Model/Table/DevolucionesTable.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Model/Table/DevolucionesTable.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Model/Table/EmpleadoComprasstockTable.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Model/Table/EmpleadoComprasstockTable_.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Model/Table/PedidosTable.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Model/Table/PedidosTable.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Model/Table/ProductosPedidosTable.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Model/Table/ProductosPedidosTable.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Model/Table/ProductosTable.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Model/Table/ProductosTable.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Model/Table/StockCamionCampaignTable.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Model/Table/StockCamionCampaignTable.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Model/Table/StockCampaignProductoTable.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Model/Table/StockCampaignProductoTable.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Model/Table/VentasTable.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Model/Table/VentasTable.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/Campaign/config.php" beforeDir="false" afterPath="$PROJECT_DIR$/templates/Campaign/config.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/Campaign/stock_camion_campaign.php" beforeDir="false" afterPath="$PROJECT_DIR$/templates/Campaign/stock_camion_campaign.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/Campaign/view_admin.php" beforeDir="false" afterPath="$PROJECT_DIR$/templates/Campaign/view_admin.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/Campaign/view_user.php" beforeDir="false" afterPath="$PROJECT_DIR$/templates/Campaign/view_user.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/Campaign/view_ventas_by_camion.php" beforeDir="false" afterPath="$PROJECT_DIR$/templates/Campaign/view_ventas_by_camion.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/CartShop/index.php" beforeDir="false" afterPath="$PROJECT_DIR$/templates/CartShop/index.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/Clientes/add.php" beforeDir="false" afterPath="$PROJECT_DIR$/templates/Clientes/add.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/Clientes/edit.php" beforeDir="false" afterPath="$PROJECT_DIR$/templates/Clientes/edit.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/ComprasStock/aprobar_compras.php" beforeDir="false" afterPath="$PROJECT_DIR$/templates/ComprasStock/aprobar_compras.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/ComprasStock/index.php" beforeDir="false" afterPath="$PROJECT_DIR$/templates/ComprasStock/index.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/ComprasStock/view.php" beforeDir="false" afterPath="$PROJECT_DIR$/templates/ComprasStock/view.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/Index/index.php" beforeDir="false" afterPath="$PROJECT_DIR$/templates/Index/index.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/Pedidos/index.php" beforeDir="false" afterPath="$PROJECT_DIR$/templates/Pedidos/index.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/Pedidos/view.php" beforeDir="false" afterPath="$PROJECT_DIR$/templates/Pedidos/view.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/Precios/add_all_productos.php" beforeDir="false" afterPath="$PROJECT_DIR$/templates/Precios/add_all_productos.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/Productos/index.php" beforeDir="false" afterPath="$PROJECT_DIR$/templates/Productos/index.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/Productos/view_config.php" beforeDir="false" afterPath="$PROJECT_DIR$/templates/Productos/view_config.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/ProductosComprasstock/add.php" beforeDir="false" afterPath="$PROJECT_DIR$/templates/ProductosComprasstock/add.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/ProductosPedidos/add.php" beforeDir="false" afterPath="$PROJECT_DIR$/templates/ProductosPedidos/add.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/Ventas/print_venta.php" beforeDir="false" afterPath="$PROJECT_DIR$/templates/Ventas/print_venta.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/Ventas/view.php" beforeDir="false" afterPath="$PROJECT_DIR$/templates/Ventas/view.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/element/sidebar.php" beforeDir="false" afterPath="$PROJECT_DIR$/templates/element/sidebar.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/webroot/js/pruebas_app.js" beforeDir="false" afterPath="$PROJECT_DIR$/webroot/js/pruebas_app.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/webroot/js/shopping_cart.js" beforeDir="false" afterPath="$PROJECT_DIR$/webroot/js/shopping_cart.js" afterDir="false" />
-    </list>
+    <list default="true" id="be7ad65a-ea4a-48e0-a565-60de1707b04b" name="Changes" comment="MOdificaciones mayores" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
